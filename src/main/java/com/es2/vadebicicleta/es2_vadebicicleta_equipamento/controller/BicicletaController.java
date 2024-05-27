@@ -1,8 +1,8 @@
-package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.Controller;
+package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller;
 
-import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.Service.BicicletaService;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.BicicletaService;
 import org.springframework.http.ResponseEntity;
-import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.Domain.Bicicleta;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

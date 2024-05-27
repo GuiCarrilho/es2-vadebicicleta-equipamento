@@ -1,4 +1,4 @@
-package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.Domain;
+package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
