@@ -1,15 +1,13 @@
 package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.Controller;
 
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.Service.BicicletaService;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.Domain.Bicicleta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class BicicletaController {
@@ -25,10 +23,18 @@ public class BicicletaController {
 
     @PostMapping("/bicicleta")
     public ResponseEntity<Bicicleta> postBicicleta(@RequestBody Bicicleta bicicleta) {
-        Bicicleta novaBicicleta = service.cadastrarBicicleta(bicicleta);
+        Bicicleta novaBicicleta = service.save(bicicleta);
         return ResponseEntity.ok(novaBicicleta);
     }
 
+    @GetMapping("/bicicleta/{idBicicleta}")
+    public ResponseEntity<Object> getBicicletaById(@PathVariable Integer idBicicleta) {
+        Optional<Bicicleta> bicicleta = service.getById(idBicicleta);
+        if (bicicleta.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(bicicleta);
+    }
 }
 
 
