@@ -12,7 +12,6 @@ import java.util.Optional;
 @Service
 public class BicicletaService {
     private static int contador;
-    private static HashMap<Integer, Bicicleta> bicicletas;
 
     private final BicicletaRepository repository;
 

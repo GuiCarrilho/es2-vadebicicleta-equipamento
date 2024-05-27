@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public class BicicletaRepository {
 
-    private static HashMap<Integer, Bicicleta> bicicletas = null;
+    private static HashMap<Integer, Bicicleta> bicicletas;
 
     public Bicicleta save(Bicicleta bicicleta){
         bicicletas.replace(bicicleta.getId(), bicicleta);
