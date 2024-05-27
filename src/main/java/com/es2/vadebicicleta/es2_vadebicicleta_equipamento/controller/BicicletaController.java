@@ -22,6 +22,9 @@ public class BicicletaController {
     @GetMapping("/bicicleta")
     public ResponseEntity<List<Bicicleta>> getBicicletas() {
         List<Bicicleta> bicicletas = service.getAll();
+        if(bicicletas == null){
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok(bicicletas);
     }
 
