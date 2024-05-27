@@ -29,7 +29,7 @@ public class BicicletaRepository {
     }
 
     public Bicicleta deleteById(Integer idBicicleta){
-        if(findById(idBicicleta).isEmpty()){
+        if(findById(idBicicleta).isPresent()){
             return bicicletas.remove(idBicicleta);
         }
         return null;

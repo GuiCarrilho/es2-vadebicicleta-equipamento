@@ -46,7 +46,7 @@ public class BicicletaController {
     @PutMapping("/bicicleta/{idBicicleta}")
     public ResponseEntity<Bicicleta> putBicicleta(@PathVariable Integer idBicicleta, @RequestBody Bicicleta novaBicicleta) {
         Bicicleta bicicletaAtualizada = service.updateBicicleta(idBicicleta, novaBicicleta);
-        if (bicicletaAtualizada != null) {
+        if(bicicletaAtualizada != null) {
             return ResponseEntity.ok(bicicletaAtualizada);
         } else {
             return ResponseEntity.notFound().build();

@@ -4,10 +4,7 @@ import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Totem;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.TotemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,5 +31,23 @@ public class TotemController {
     public ResponseEntity<Totem> postTotem(@RequestBody Totem totem){
         Totem novoTotem = service.save(totem);
         return ResponseEntity.ok(novoTotem);
+    }
+
+    @PutMapping("/totem/{idTotem}")
+    public ResponseEntity<Totem> putTotem(@PathVariable Integer idTotem, @RequestBody Totem novoTotem){
+        Totem totemAtualizado = service.updateTotem(idTotem, novoTotem);
+        if(totemAtualizado == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(totemAtualizado);
+    }
+
+    @DeleteMapping("/totem/{idTotem}")
+    public ResponseEntity<Totem> deleteTotem(@PathVariable Integer idTotem){
+        Totem totemRemovido = service.deleteTotem(idTotem);
+        if(totemRemovido == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().build();
     }
 }
