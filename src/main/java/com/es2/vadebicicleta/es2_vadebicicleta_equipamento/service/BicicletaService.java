@@ -14,8 +14,12 @@ public class BicicletaService {
     private static int contador;
     private static HashMap<Integer, Bicicleta> bicicletas;
 
+    private final BicicletaRepository repository;
+
     @Autowired
-    private BicicletaRepository repository;
+    public BicicletaService(BicicletaRepository repository) {
+        this.repository = repository;
+    }
 
 
     public Bicicleta save(Bicicleta bicicleta) {

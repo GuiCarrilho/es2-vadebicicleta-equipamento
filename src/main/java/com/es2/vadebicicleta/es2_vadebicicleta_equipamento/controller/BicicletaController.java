@@ -12,8 +12,12 @@ import java.util.Optional;
 @RestController
 public class BicicletaController {
 
+    private final BicicletaService service;
+
     @Autowired
-    private BicicletaService service;
+    public BicicletaController(BicicletaService service) {
+        this.service = service;
+    }
 
     @GetMapping("/bicicleta")
     public ResponseEntity<List<Bicicleta>> getBicicletas() {
