@@ -21,7 +21,7 @@ public class BicicletaController {
 
     @GetMapping("/bicicleta")
     public ResponseEntity<List<Bicicleta>> getBicicletas() {
-        List<Bicicleta> bicicletas = service.listarBicicletas();
+        List<Bicicleta> bicicletas = service.getAll();
         return ResponseEntity.ok(bicicletas);
     }
 
@@ -38,6 +38,25 @@ public class BicicletaController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(bicicleta);
+    }
+
+    @PutMapping("/bicicleta/{idBicicleta}")
+    public ResponseEntity<Bicicleta> putBicicleta(@PathVariable Integer idBicicleta, @RequestBody Bicicleta novaBicicleta) {
+        Bicicleta bicicletaAtualizada = service.updateBicicleta(idBicicleta, novaBicicleta);
+        if (bicicletaAtualizada != null) {
+            return ResponseEntity.ok(bicicletaAtualizada);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/bicicleta/{idBicicleta}")
+    public ResponseEntity<Bicicleta> deleteBicicleta(@PathVariable Integer idBicicleta) {
+        Bicicleta bicicletaRemovida = service.deleteBicicleta(idBicicleta);
+        if(bicicletaRemovida == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().build();
     }
 }
 

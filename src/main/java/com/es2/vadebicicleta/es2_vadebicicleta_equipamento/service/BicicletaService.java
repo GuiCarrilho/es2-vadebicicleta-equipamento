@@ -13,8 +13,6 @@ import java.util.Optional;
 @Service
 public class BicicletaService {
 
-    private IdGenerator id;
-
     private final BicicletaRepository repository;
 
     @Autowired
@@ -24,18 +22,34 @@ public class BicicletaService {
 
 
     public Bicicleta save(Bicicleta bicicleta) {
-        if (bicicleta.getId() == null) {
-            bicicleta.setId(id.geradorId());
-        }
         return repository.save(bicicleta);
     }
 
-    public List<Bicicleta> listarBicicletas() {
+    public List<Bicicleta> getAll() {
         return repository.findAll();
     }
 
     public Optional<Bicicleta> getById(Integer id){
         return repository.findById(id);
+    }
+
+    public Bicicleta updateBicicleta(Integer idBicicleta, Bicicleta bicicletaNova){
+        Optional<Bicicleta> bicicleta = getById(idBicicleta);
+        if(bicicleta.isPresent()){
+            Bicicleta bicicletaAtualizada = bicicleta.get();
+            bicicletaAtualizada.setAno(bicicletaNova.getAno());
+            bicicletaAtualizada.setMarca(bicicletaNova.getMarca());
+            bicicletaAtualizada.setStatus(bicicletaNova.getStatus());
+            bicicletaAtualizada.setNumero(bicicletaNova.getNumero());
+            bicicletaAtualizada.setModelo(bicicletaNova.getModelo());
+
+            return repository.save(bicicletaAtualizada);
+        }
+        return null;
+    }
+
+    public Bicicleta deleteBicicleta(Integer idBicicleta){
+        return repository.deleteById(idBicicleta);
     }
 }
 

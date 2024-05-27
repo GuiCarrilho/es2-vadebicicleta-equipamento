@@ -12,8 +12,12 @@ import java.util.Optional;
 public class BicicletaRepository {
 
     private static HashMap<Integer, Bicicleta> bicicletas;
+    private IdGenerator id;
 
     public Bicicleta save(Bicicleta bicicleta){
+        if (bicicleta.getId() == null) {
+            bicicleta.setId(id.geradorId());
+        }
         bicicletas.replace(bicicleta.getId(), bicicleta);
         return bicicleta;
     }
@@ -23,5 +27,12 @@ public class BicicletaRepository {
 
     public Optional<Bicicleta> findById(Integer id){
         return Optional.ofNullable(bicicletas.get(id));
+    }
+
+    public Bicicleta deleteById(Integer idBicicleta){
+        if(findById(idBicicleta).isEmpty()){
+            return bicicletas.remove(idBicicleta);
+        }
+        return null;
     }
 }
