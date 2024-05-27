@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Bicicleta {
 
-    private Long id;
+    private Integer id;
     private String marca;
     private String modelo;
     private String ano;
