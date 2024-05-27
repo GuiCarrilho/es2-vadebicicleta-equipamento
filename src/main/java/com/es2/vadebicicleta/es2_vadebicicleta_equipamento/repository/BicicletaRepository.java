@@ -11,14 +11,14 @@ import java.util.Optional;
 @Repository
 public class BicicletaRepository {
 
-    private static HashMap<Integer, Bicicleta> bicicletas;
+    private static HashMap<Integer, Bicicleta> bicicletas = null;
+
     public Bicicleta save(Bicicleta bicicleta){
         bicicletas.replace(bicicleta.getId(), bicicleta);
         return bicicleta;
     }
     public List<Bicicleta> findAll(){
-        List<Bicicleta> allBicicletas = new ArrayList<>(bicicletas.values());
-        return allBicicletas;
+        return (List<Bicicleta>) bicicletas.values();
     }
 
     public Optional<Bicicleta> findById(Integer id){
