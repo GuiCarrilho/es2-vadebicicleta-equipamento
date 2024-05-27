@@ -3,7 +3,6 @@ package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
