@@ -31,7 +31,7 @@ public class BicicletaController {
     @PostMapping("/bicicleta")
     public ResponseEntity<Bicicleta> postBicicleta(@RequestBody Bicicleta bicicleta) {
         Bicicleta novaBicicleta = service.save(bicicleta);
-        return ResponseEntity.ok(novaBicicleta);
+        return ResponseEntity.ok().body(novaBicicleta);
     }
 
     @GetMapping("/bicicleta/{idBicicleta}")
@@ -40,14 +40,14 @@ public class BicicletaController {
         if (bicicleta.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(bicicleta);
+        return ResponseEntity.ok().body(bicicleta);
     }
 
     @PutMapping("/bicicleta/{idBicicleta}")
     public ResponseEntity<Bicicleta> putBicicleta(@PathVariable Integer idBicicleta, @RequestBody Bicicleta novaBicicleta) {
         Bicicleta bicicletaAtualizada = service.updateBicicleta(idBicicleta, novaBicicleta);
         if(bicicletaAtualizada != null) {
-            return ResponseEntity.ok(bicicletaAtualizada);
+            return ResponseEntity.ok().body(bicicletaAtualizada);
         } else {
             return ResponseEntity.notFound().build();
         }

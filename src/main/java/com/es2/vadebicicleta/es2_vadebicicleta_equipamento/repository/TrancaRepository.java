@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class TrancaRepository {
@@ -24,4 +25,9 @@ public class TrancaRepository {
     public List<Tranca> findAll(){
         return (List<Tranca>) trancas.values();
     }
+
+    public Optional<Tranca> findById(Integer id){
+        return Optional.ofNullable(trancas.get(id));
+    }
+
 }
