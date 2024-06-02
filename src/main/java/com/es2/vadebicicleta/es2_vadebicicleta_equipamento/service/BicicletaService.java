@@ -2,11 +2,9 @@ package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service;
 
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.BicicletaRepository;
-import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
