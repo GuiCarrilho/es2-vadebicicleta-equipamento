@@ -56,5 +56,7 @@ public class TrancaService {
         return repository.deleteById(idTranca);
     }
 
-
+    public Bicicleta getBicicletaByTranca(Integer idTranca){
+        return repository.findBicicletaByTrancaId(idTranca);
+    }
 }

@@ -1,5 +1,6 @@
 package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller;
 
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.TrancaDto;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.TrancaService;
@@ -58,5 +59,15 @@ public class TrancaController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/tranca/{idTranca}/bicicleta")
+    public ResponseEntity<Bicicleta> getBicicletaByTranca(@PathVariable Integer idTranca){
+        Bicicleta bicicleta = service.getBicicletaByTranca(idTranca);
+
+        if(bicicleta != null){
+            return ResponseEntity.ok().body(bicicleta);
+        }
+        return null;
     }
 }

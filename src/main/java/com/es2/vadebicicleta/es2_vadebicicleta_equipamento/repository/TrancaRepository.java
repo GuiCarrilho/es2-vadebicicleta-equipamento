@@ -1,5 +1,6 @@
 package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository;
 
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
 import org.springframework.stereotype.Repository;
 
@@ -11,6 +12,8 @@ import java.util.Optional;
 public class TrancaRepository {
 
     private static HashMap<Integer, Tranca> trancas;
+
+    private static HashMap<Integer, Bicicleta> bicicletaByTrancaId;
 
     private IdGenerator id;
 
@@ -37,4 +40,11 @@ public class TrancaRepository {
         return null;
     }
 
+    public void addBicicletaByTrancaId(Integer idTranca, Bicicleta bicicleta){
+        bicicletaByTrancaId.put(idTranca, bicicleta);
+    }
+
+    public Bicicleta findBicicletaByTrancaId(Integer idTranca){
+        return bicicletaByTrancaId.get(idTranca);
+    }
 }
