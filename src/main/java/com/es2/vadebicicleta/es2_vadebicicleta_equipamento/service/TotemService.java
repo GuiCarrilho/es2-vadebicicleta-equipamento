@@ -1,5 +1,6 @@
 package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service;
 
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Totem;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.TotemRepository;
@@ -49,5 +50,9 @@ public class TotemService {
 
     public List<Tranca> getTrancasByTotem(Integer idTotem){
         return repository.findTrancasByTotemId(idTotem);
+    }
+
+    public List<Bicicleta> getBicicletasByTotem(Integer idTotem){
+        return repository.findBicicletasByTotemId(idTotem);
     }
 }
