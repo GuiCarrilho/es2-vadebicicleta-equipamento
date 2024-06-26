@@ -51,12 +51,10 @@ public class TotemRepository {
     }
 
     public List<Tranca> findTrancasByTotemId(Integer idTotem){
-
         return trancasByTotemId.get(idTotem);
     }
 
     public List<Bicicleta> findBicicletasByTotemId(Integer idTotem){
-
         return bicicletasByTotemId.get(idTotem);
     }
 }
