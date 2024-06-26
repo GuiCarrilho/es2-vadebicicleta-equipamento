@@ -42,11 +42,14 @@ public class TrancaController {
 
     @GetMapping("/tranca/{idTranca}")
     public ResponseEntity<TrancaDto> getTrancaById(@PathVariable Integer idTranca){
-        Optional<Tranca> tranca = service.getById(idTranca);
-        if(tranca.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok().body(converter.entityToDto(tranca.get()));
+        Tranca tranca = service.getById(idTranca);
+        return ResponseEntity.ok().body(converter.entityToDto(tranca));
+    }
+
+    @PutMapping("/tranca/{idTranca}")
+    public ResponseEntity<TrancaDto> putTranca(@PathVariable Integer idTranca, @RequestBody TrancaDto novaTranca){
+        Tranca trancaAtualizada = service.updateTranca(idTranca, novaTranca);
+        return ResponseEntity.ok().body(converter.entityToDto(trancaAtualizada));
     }
 
 }

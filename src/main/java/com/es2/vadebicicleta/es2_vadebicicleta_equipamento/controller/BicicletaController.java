@@ -36,10 +36,7 @@ public class BicicletaController {
 
     @GetMapping("/bicicleta/{idBicicleta}")
     public ResponseEntity<Object> getBicicletaById(@PathVariable Integer idBicicleta) {
-        Optional<Bicicleta> bicicleta = service.getById(idBicicleta);
-        if (bicicleta.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
+        Bicicleta bicicleta = service.getById(idBicicleta);
         return ResponseEntity.ok().body(bicicleta);
     }
 

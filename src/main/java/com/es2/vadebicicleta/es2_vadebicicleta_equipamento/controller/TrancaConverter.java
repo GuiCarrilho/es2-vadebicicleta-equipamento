@@ -2,11 +2,11 @@ package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller;
 
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.TrancaDto;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.BicicletaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-
-import java.util.NoSuchElementException;
 
 @Component
 public class TrancaConverter {
@@ -43,9 +43,7 @@ public class TrancaConverter {
         tranca.setModelo(dto.getModelo());
         tranca.setStatus(dto.getStatus());
         if(dto.getBicicletaId() != null){
-            tranca.setBicicleta(service.getById(dto.getBicicletaId()).orElseThrow(
-                    () -> new NoSuchElementException("Não existe bicicleta com id: " + dto.getBicicletaId())
-            ));
+            tranca.setBicicleta(service.getById(dto.getBicicletaId()));
         }
         return tranca;
     }

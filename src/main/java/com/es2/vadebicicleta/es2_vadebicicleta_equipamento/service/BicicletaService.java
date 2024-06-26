@@ -1,8 +1,10 @@
 package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service;
 
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.BicicletaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,14 +29,13 @@ public class BicicletaService {
         return repository.findAll();
     }
 
-    public Optional<Bicicleta> getById(Integer id){
-        return repository.findById(id);
+    public Bicicleta getById(Integer id){
+        return repository.findById(id).orElseThrow(
+                () -> new NotFoundException("Bicicleta não existe", HttpStatus.NOT_FOUND.toString()));
     }
 
     public Bicicleta updateBicicleta(Integer idBicicleta, Bicicleta bicicletaNova){
-        Optional<Bicicleta> bicicleta = getById(idBicicleta);
-        if(bicicleta.isPresent()){
-            Bicicleta bicicletaAtualizada = bicicleta.get();
+        Bicicleta bicicletaAtualizada = getById(idBicicleta);
             bicicletaAtualizada.setAno(bicicletaNova.getAno());
             bicicletaAtualizada.setMarca(bicicletaNova.getMarca());
             bicicletaAtualizada.setStatus(bicicletaNova.getStatus());
@@ -42,8 +43,6 @@ public class BicicletaService {
             bicicletaAtualizada.setModelo(bicicletaNova.getModelo());
 
             return repository.save(bicicletaAtualizada);
-        }
-        return null;
     }
 
     public Bicicleta deleteBicicleta(Integer idBicicleta){
