@@ -1,6 +1,7 @@
 package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository;
 
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Totem;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -11,6 +12,8 @@ import java.util.Optional;
 public class TotemRepository {
 
     private static HashMap<Integer, Totem> totens;
+
+    private static HashMap<Integer, List<Tranca>> trancasByTotemId;
     private IdGenerator id;
 
     public Totem save(Totem totem){
@@ -34,6 +37,16 @@ public class TotemRepository {
             return totens.remove(idTotem);
         }
         return null;
+    }
+
+    public void addTrancasByTotemId(Integer idTotem, List<Tranca> trancas){
+        trancasByTotemId.put(idTotem, trancas);
+    }
+
+    public List<Tranca> findTrancasByTotemId(Integer idTotem){
+        List<Tranca> trancas = trancasByTotemId.get(idTotem);
+
+        return trancas;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service;
 
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Totem;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.TotemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,5 +45,9 @@ public class TotemService {
 
     public Totem deleteTotem(Integer idTotem){
         return repository.deleteById(idTotem);
+    }
+
+    public List<Tranca> getTrancasByTotem(Integer idTotem){
+        return repository.findTrancasByTotemId(idTotem);
     }
 }
