@@ -1,5 +1,6 @@
 package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller;
 
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.TrancaDto;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.TrancaService;
@@ -8,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class TrancaController {
@@ -52,4 +52,12 @@ public class TrancaController {
         return ResponseEntity.ok().body(converter.entityToDto(trancaAtualizada));
     }
 
+    @DeleteMapping("/tranca/{idTranca}")
+    public ResponseEntity<Tranca> deleteBicicleta(@PathVariable Integer idTranca){
+        Tranca trancaRemovida = service.deleteTranca(idTranca);
+        if(trancaRemovida == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().build();
+    }
 }

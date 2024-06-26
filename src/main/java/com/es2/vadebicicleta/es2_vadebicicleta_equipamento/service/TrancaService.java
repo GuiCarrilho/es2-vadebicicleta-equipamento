@@ -52,5 +52,9 @@ public class TrancaService {
         return repository.save(trancaAtualizada);
     }
 
+    public Tranca deleteTranca(Integer idTranca){
+        return repository.deleteById(idTranca);
+    }
+
 
 }
