@@ -1,6 +1,7 @@
 package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service;
 
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusEnum;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.BicicletaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,10 @@ public class BicicletaService {
 
     public Bicicleta deleteBicicleta(Integer idBicicleta){
         return repository.deleteById(idBicicleta);
+    }
+
+    public Bicicleta postStatus(Integer idBicicleta, StatusEnum acao){
+        return repository.postStatus(idBicicleta, acao);
     }
 }
 

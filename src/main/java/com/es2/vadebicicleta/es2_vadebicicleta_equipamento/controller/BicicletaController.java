@@ -1,5 +1,6 @@
 package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller;
 
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusEnum;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.BicicletaService;
 import org.springframework.http.ResponseEntity;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
@@ -56,6 +57,13 @@ public class BicicletaController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/bicicleta/{idBicicleta}/status/{acao}")
+    public ResponseEntity<Bicicleta> postStatus(@PathVariable Integer idBicicleta, @PathVariable StatusEnum acao){
+        Bicicleta bicicletaNovoStatus = service.postStatus(idBicicleta, acao);
+
+        return ResponseEntity.ok().body(bicicletaNovoStatus);
     }
 }
 
