@@ -1,6 +1,7 @@
 package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller;
 
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusTrancaEnum;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.TrancaDto;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.TrancaService;
@@ -53,7 +54,7 @@ public class TrancaController {
     }
 
     @DeleteMapping("/tranca/{idTranca}")
-    public ResponseEntity<Tranca> deleteBicicleta(@PathVariable Integer idTranca){
+    public ResponseEntity<Tranca> deleteTranca(@PathVariable Integer idTranca){
         Tranca trancaRemovida = service.deleteTranca(idTranca);
         if(trancaRemovida == null){
             return ResponseEntity.notFound().build();
@@ -69,5 +70,12 @@ public class TrancaController {
             return ResponseEntity.ok().body(bicicleta);
         }
         return null;
+    }
+
+    @PostMapping("/tranca/{idTranca}/status/acao")
+    public ResponseEntity<Tranca> postStatus(@PathVariable Integer idTranca, @PathVariable StatusTrancaEnum acao){
+        Tranca trancaNovoStatus = service.postStatus(idTranca, acao);
+
+        return ResponseEntity.ok().body(trancaNovoStatus);
     }
 }

@@ -1,6 +1,7 @@
 package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service;
 
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusTrancaEnum;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.TrancaDto;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
@@ -32,12 +33,12 @@ public class TrancaService {
         return repository.findAll();
     }
 
-    public Tranca getById(Integer id){
+    public Tranca getById(Integer id) {
         return repository.findById(id).orElseThrow(
                 () -> new NotFoundException("Tranca não existe", HttpStatus.NOT_FOUND.toString()));
     }
 
-    public Tranca updateTranca(Integer idTranca, TrancaDto novaTranca){
+    public Tranca updateTranca(Integer idTranca, TrancaDto novaTranca) {
 
         Tranca trancaAtualizada = getById(idTranca);
 
@@ -52,11 +53,16 @@ public class TrancaService {
         return repository.save(trancaAtualizada);
     }
 
-    public Tranca deleteTranca(Integer idTranca){
+    public Tranca deleteTranca(Integer idTranca) {
         return repository.deleteById(idTranca);
     }
 
-    public Bicicleta getBicicletaByTranca(Integer idTranca){
+    public Bicicleta getBicicletaByTranca(Integer idTranca) {
         return repository.findBicicletaByTrancaId(idTranca);
     }
+
+    public Tranca postStatus(Integer idTranca, StatusTrancaEnum acao){
+        return repository.postStatus(idTranca, acao);
+    }
 }
+

@@ -1,7 +1,10 @@
 package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository;
 
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusTrancaEnum;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -46,5 +49,23 @@ public class TrancaRepository {
 
     public Bicicleta findBicicletaByTrancaId(Integer idTranca){
         return bicicletaByTrancaId.get(idTranca);
+    }
+
+    public Tranca postStatus(Integer idTranca, StatusTrancaEnum acao){
+        Tranca tranca = findById(idTranca).orElseThrow(
+                () -> new NotFoundException("Tranca não encontrada", HttpStatus.NOT_FOUND.toString()));
+
+        switch (acao){
+            case DESTRANCAR:
+                tranca.setStatus("DESTRANCAR");
+                break;
+            case TRANCAR:
+                tranca.setStatus("TRANCAR");
+                break;
+            default:
+                throw new NotFoundException("Status não escolhido", HttpStatus.NOT_FOUND.toString());
+        }
+        save(tranca);
+        return tranca;
     }
 }
