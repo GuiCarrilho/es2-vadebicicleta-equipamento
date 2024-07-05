@@ -1,17 +1,14 @@
 package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository;
 
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
-import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusEnum;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusBicicletaEnum;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
-import javax.sound.midi.InvalidMidiDataException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-
-import static com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusEnum.DISPONIVEL;
 
 @Repository
 public class BicicletaRepository {
@@ -41,7 +38,7 @@ public class BicicletaRepository {
         return null;
     }
 
-    public Bicicleta postStatus(Integer idBicicleta, StatusEnum acao){
+    public Bicicleta postStatus(Integer idBicicleta, StatusBicicletaEnum acao){
         Bicicleta bicicleta = findById(idBicicleta).orElseThrow(
                 () -> new NotFoundException("Bicicleta não encontrada", HttpStatus.NOT_FOUND.toString()));
 
