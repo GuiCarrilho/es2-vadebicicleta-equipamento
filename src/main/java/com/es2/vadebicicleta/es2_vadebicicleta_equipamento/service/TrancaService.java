@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @Service
 public class TrancaService {
@@ -63,6 +64,29 @@ public class TrancaService {
 
     public Tranca postStatus(Integer idTranca, StatusTrancaEnum acao){
         return repository.postStatus(idTranca, acao);
+    }
+
+    public Tranca trancar(Integer idTranca, Integer idBicicleta){
+        Tranca tranca = getById(idTranca);
+        if(tranca == null){
+            throw new NotFoundException("Tranca não encontrada", HttpStatus.NOT_FOUND.toString());
+        }
+        if(Objects.equals(tranca.getStatus(), "TRANCAR")){
+            throw new NotFoundException("Tranca não encontrada", HttpStatus.NOT_FOUND.toString());
+        }
+        tranca.setStatus("TRANCAR");
+        repository.save(tranca);
+        if(idBicicleta != null) {
+            Bicicleta bicicleta = bicicletaService.getById(idBicicleta);
+            if(bicicleta == null){
+                throw new NotFoundException("Bicicleta não encontrada", HttpStatus.NOT_FOUND.toString());
+            }
+            bicicleta.setStatus("DISPONIVEL");
+            bicicletaService.save(bicicleta);
+            repository.addBicicletaByTrancaId(idTranca, bicicleta);
+            return tranca;
+        }
+        return tranca;
     }
 }
 

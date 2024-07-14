@@ -72,7 +72,13 @@ public class TrancaController {
         return null;
     }
 
-    @PostMapping("/tranca/{idTranca}/status/acao")
+    @PostMapping("/tranca/{idTranca}/trancar")
+    public ResponseEntity<TrancaDto> statusTrancar(@PathVariable Integer idTranca, @RequestBody(required = false) Integer idBicicleta){
+        Tranca tranca = service.trancar(idTranca, idBicicleta);
+        return ResponseEntity.ok().body(converter.entityToDto(tranca));
+    }
+
+    @PostMapping("/tranca/{idTranca}/status/{acao}")
     public ResponseEntity<Tranca> postStatus(@PathVariable Integer idTranca, @PathVariable StatusTrancaEnum acao){
         Tranca trancaNovoStatus = service.postStatus(idTranca, acao);
 
