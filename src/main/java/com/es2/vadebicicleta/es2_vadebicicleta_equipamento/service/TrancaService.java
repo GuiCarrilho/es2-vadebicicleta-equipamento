@@ -62,23 +62,23 @@ public class TrancaService {
         return repository.findBicicletaByTrancaId(idTranca);
     }
 
-    public Tranca postStatus(Integer idTranca, StatusTrancaEnum acao){
+    public Tranca postStatus(Integer idTranca, StatusTrancaEnum acao) {
         return repository.postStatus(idTranca, acao);
     }
 
-    public Tranca trancar(Integer idTranca, Integer idBicicleta){
+    public Tranca trancar(Integer idTranca, Integer idBicicleta) {
         Tranca tranca = getById(idTranca);
-        if(tranca == null){
+        if (tranca == null) {
             throw new NotFoundException("Tranca não encontrada", HttpStatus.NOT_FOUND.toString());
         }
-        if(Objects.equals(tranca.getStatus(), "TRANCAR")){
+        if (Objects.equals(tranca.getStatus(), "TRANCAR")) {
             throw new NotFoundException("Tranca não encontrada", HttpStatus.NOT_FOUND.toString());
         }
         tranca.setStatus("TRANCAR");
         repository.save(tranca);
-        if(idBicicleta != null) {
+        if (idBicicleta != null) {
             Bicicleta bicicleta = bicicletaService.getById(idBicicleta);
-            if(bicicleta == null){
+            if (bicicleta == null) {
                 throw new NotFoundException("Bicicleta não encontrada", HttpStatus.NOT_FOUND.toString());
             }
             bicicleta.setStatus("DISPONIVEL");
@@ -88,5 +88,29 @@ public class TrancaService {
         }
         return tranca;
     }
+
+    public Tranca destrancar(Integer idTranca, Integer idBicicleta) {
+        Tranca tranca = getById(idTranca);
+        if (tranca == null) {
+            throw new NotFoundException("Tranca não encontrada", HttpStatus.NOT_FOUND.toString());
+        }
+        if (Objects.equals(tranca.getStatus(), "TRANCAR")) {
+            throw new NotFoundException("Tranca não encontrada", HttpStatus.NOT_FOUND.toString());
+        }
+        tranca.setStatus("DESTRANCAR");
+        repository.save(tranca);
+        if (idBicicleta != null) {
+            Bicicleta bicicleta = bicicletaService.getById(idBicicleta);
+            if (bicicleta == null) {
+                throw new NotFoundException("Bicicleta não encontrada", HttpStatus.NOT_FOUND.toString());
+            }
+            bicicleta.setStatus("EM_USO");
+            bicicletaService.save(bicicleta);
+            repository.removeBicicletaByTrancaId(idTranca, bicicleta);
+            return tranca;
+        }
+        return tranca;
+    }
 }
+
 
