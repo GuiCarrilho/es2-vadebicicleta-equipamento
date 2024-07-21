@@ -22,6 +22,7 @@ public class BicicletaRepository {
             return bicicleta;
         }
         Integer idBicicleta = id.idBicicletaGenerator();
+        bicicleta.setId(idBicicleta);
         bicicletas.put(idBicicleta, bicicleta);
         return bicicleta;
     }

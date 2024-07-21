@@ -1,6 +1,7 @@
 package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller;
 
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusBicicletaEnum;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.BicicletaDto;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.Erro;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.InvalidActionException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
@@ -16,10 +17,13 @@ import java.util.List;
 public class BicicletaController {
 
     private final BicicletaService service;
+    private final BicicletaConverter converter;
 
     @Autowired
-    public BicicletaController(BicicletaService service) {
+    public BicicletaController(BicicletaService service, BicicletaConverter converter) {
+
         this.service = service;
+        this.converter = converter;
     }
 
     @GetMapping("/bicicleta")
@@ -32,8 +36,9 @@ public class BicicletaController {
     }
 
     @PostMapping("/bicicleta")
-    public ResponseEntity<Object> postBicicleta(@RequestBody Bicicleta bicicleta) {
+    public ResponseEntity<Object> postBicicleta(@RequestBody BicicletaDto bicicletaDto) {
         try {
+            Bicicleta bicicleta = converter.dtoToEntity(bicicletaDto);
             Bicicleta novaBicicleta = service.save(bicicleta);
             return ResponseEntity.ok().body(novaBicicleta);
         } catch (InvalidActionException e){
@@ -52,8 +57,9 @@ public class BicicletaController {
     }
 
     @PutMapping("/bicicleta/{idBicicleta}")
-    public ResponseEntity<Object> putBicicleta(@PathVariable Integer idBicicleta, @RequestBody Bicicleta novaBicicleta) {
+    public ResponseEntity<Object> putBicicleta(@PathVariable Integer idBicicleta, @RequestBody BicicletaDto bicicletaDto) {
         try {
+            Bicicleta novaBicicleta = converter.dtoToEntity(bicicletaDto);
             Bicicleta bicicletaAtualizada = service.updateBicicleta(idBicicleta, novaBicicleta);
             return ResponseEntity.ok().body(bicicletaAtualizada);
         }catch (NotFoundException e){
