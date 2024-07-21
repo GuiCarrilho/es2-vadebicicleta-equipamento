@@ -33,11 +33,12 @@ public class BicicletaRepository {
         return Optional.ofNullable(bicicletas.get(id));
     }
 
-    public Bicicleta deleteById(Integer idBicicleta){
+    public boolean deleteById(Integer idBicicleta){
         if(findById(idBicicleta).isPresent()){
-            return bicicletas.remove(idBicicleta);
+            bicicletas.remove(idBicicleta);
+            return true;
         }
-        return null;
+        return false;
     }
 
     public Bicicleta postStatus(Integer idBicicleta, StatusBicicletaEnum acao){
