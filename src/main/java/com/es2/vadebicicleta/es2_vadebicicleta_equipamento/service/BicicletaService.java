@@ -50,7 +50,7 @@ public class BicicletaService {
         if(bicicletaAtualizada.getId() == null){
             throw new NotFoundException(HttpStatus.NOT_FOUND.toString(), "Bicicleta não existe");
         }
-        if(validateBicicleta(bicicletaAtualizada)){
+        if(!validateBicicleta(bicicletaAtualizada)){
             throw new InvalidActionException(HttpStatus.UNPROCESSABLE_ENTITY.toString(), "Dados da bicicleta inválidos");
         }
             bicicletaAtualizada.setAno(bicicletaNova.getAno());
