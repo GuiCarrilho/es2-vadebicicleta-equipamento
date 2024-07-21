@@ -17,10 +17,12 @@ public class BicicletaRepository {
     private IdGenerator id;
 
     public Bicicleta save(Bicicleta bicicleta){
-        if (bicicleta.getId() == null) {
-            bicicleta.setId(id.geradorId());
+        if (findById(bicicleta.getId()).isPresent()) {
+            bicicletas.replace(bicicleta.getId(), bicicleta);
+            return bicicleta;
         }
-        bicicletas.replace(bicicleta.getId(), bicicleta);
+        Integer idBicicleta = id.idBicicletaGenerator();
+        bicicletas.put(idBicicleta, bicicleta);
         return bicicleta;
     }
     public List<Bicicleta> findAll(){

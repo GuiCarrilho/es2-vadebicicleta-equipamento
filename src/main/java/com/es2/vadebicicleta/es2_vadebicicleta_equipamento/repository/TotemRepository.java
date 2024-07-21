@@ -20,10 +20,12 @@ public class TotemRepository {
     private IdGenerator id;
 
     public Totem save(Totem totem){
-        if(totem.getId() == null){
-            totem.setId(id.geradorId());
+        if(findById(totem.getId()).isPresent()){
+            totens.replace(totem.getId(), totem);
+            return totem;
         }
-        totens.replace(totem.getId(), totem);
+        Integer idTotem = id.idTotemGenerator();
+        totens.put(idTotem, totem);
         return totem;
     }
 

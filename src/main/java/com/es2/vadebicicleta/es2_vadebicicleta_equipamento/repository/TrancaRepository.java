@@ -21,10 +21,12 @@ public class TrancaRepository {
     private IdGenerator id;
 
     public Tranca save(Tranca tranca){
-        if(tranca.getId() == null){
-            tranca.setId(id.geradorId());
+        if(findById(tranca.getId()).isPresent()){
+            trancas.replace(tranca.getId(), tranca);
+            return tranca;
         }
-        trancas.replace(tranca.getId(), tranca);
+        Integer idTranca = id.idTrancaGenerator();
+        trancas.put(idTranca, tranca);
         return tranca;
     }
 
