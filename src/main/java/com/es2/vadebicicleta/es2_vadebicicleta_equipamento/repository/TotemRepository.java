@@ -12,12 +12,16 @@ import java.util.Optional;
 @Repository
 public class TotemRepository {
 
-    private static HashMap<Integer, Totem> totens;
+    private static HashMap<Integer, Totem> totens = new HashMap<>();
 
-    private static HashMap<Integer, List<Tranca>> trancasByTotemId;
+    private static HashMap<Integer, List<Tranca>> trancasByTotemId = new HashMap<>();
 
-    private static HashMap<Integer, List<Bicicleta>> bicicletasByTotemId;
+    private static HashMap<Integer, List<Bicicleta>> bicicletasByTotemId = new HashMap<>();
     private IdGenerator id;
+
+    public TotemRepository(IdGenerator id){
+        this.id = id;
+    }
 
     public Totem save(Totem totem){
         if(findById(totem.getId()).isPresent()){

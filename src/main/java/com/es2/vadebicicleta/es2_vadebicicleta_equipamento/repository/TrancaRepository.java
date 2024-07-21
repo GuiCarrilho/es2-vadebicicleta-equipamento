@@ -14,11 +14,15 @@ import java.util.Optional;
 @Repository
 public class TrancaRepository {
 
-    private static HashMap<Integer, Tranca> trancas;
+    private static HashMap<Integer, Tranca> trancas = new HashMap<>();
 
-    private static HashMap<Integer, Bicicleta> bicicletaByTrancaId;
+    private static HashMap<Integer, Bicicleta> bicicletaByTrancaId = new HashMap<>();
 
     private IdGenerator id;
+
+    public TrancaRepository(IdGenerator id){
+        this.id = id;
+    }
 
     public Tranca save(Tranca tranca){
         if(findById(tranca.getId()).isPresent()){
