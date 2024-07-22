@@ -29,7 +29,7 @@ public class TotemService {
 
     public Totem save(Totem totem) {
         if(!validateTotem(totem)){
-            throw new InvalidActionException(HttpStatus.UNPROCESSABLE_ENTITY.toString(), "Dados do totem inválidos");
+            throw new InvalidActionException("Dados do totem inválidos");
         }
         return repository.save(totem);
     }
@@ -43,16 +43,16 @@ public class TotemService {
 
     public Totem getById(Integer id){
         return repository.findById(id).orElseThrow(
-                () -> new NotFoundException(HttpStatus.NOT_FOUND.toString(), "Totem não existe"));
+                () -> new NotFoundException("Totem não existe"));
     }
 
     public Totem updateTotem(Integer idTotem, Totem novoTotem){
         Totem totemAtualizado = getById(idTotem);
         if(totemAtualizado.getId() == null) {
-            throw new NotFoundException(HttpStatus.NOT_FOUND.toString(), "Totem não existe");
+            throw new NotFoundException("Totem não existe");
         }
         if(!validateTotem(totemAtualizado)){
-            throw new InvalidActionException(HttpStatus.UNPROCESSABLE_ENTITY.toString(), "Dados do totem inválidos");
+            throw new InvalidActionException("Dados do totem inválidos");
         }
 
             totemAtualizado.setDescricao(novoTotem.getDescricao());
@@ -63,7 +63,7 @@ public class TotemService {
 
     public void deleteTotem(Integer idTotem){
         if(!repository.deleteById(idTotem)){
-            throw new NotFoundException(HttpStatus.NOT_FOUND.toString(), "Totem não encontrado");
+            throw new NotFoundException("Totem não encontrado");
         }
     }
 
