@@ -16,8 +16,6 @@ public class TrancaRepository {
 
     private static HashMap<Integer, Tranca> trancas = new HashMap<>();
 
-    private static HashMap<Integer, Bicicleta> bicicletaByTrancaId = new HashMap<>();
-
     private IdGenerator id;
 
     public TrancaRepository(IdGenerator id){
@@ -47,17 +45,5 @@ public class TrancaRepository {
             return trancas.remove(idTranca);
         }
         return null;
-    }
-
-    public void addBicicletaByTrancaId(Integer idTranca, Bicicleta bicicleta){
-        bicicletaByTrancaId.put(idTranca, bicicleta);
-    }
-
-    public void removeBicicletaByTrancaId(Integer idTranca, Bicicleta bicicleta){
-        bicicletaByTrancaId.remove(idTranca, bicicleta);
-    }
-
-    public Bicicleta findBicicletaByTrancaId(Integer idTranca){
-        return bicicletaByTrancaId.get(idTranca);
     }
 }
