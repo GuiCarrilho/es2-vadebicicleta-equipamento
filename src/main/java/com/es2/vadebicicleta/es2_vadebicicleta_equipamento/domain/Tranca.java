@@ -12,7 +12,7 @@ import lombok.Setter;
 public class Tranca {
 
     private Integer id;
-    private Bicicleta bicicleta;
+    private Integer bicicleta;
     private Integer numero;
     private String localizacao;
     private String anoDeFabricacao;

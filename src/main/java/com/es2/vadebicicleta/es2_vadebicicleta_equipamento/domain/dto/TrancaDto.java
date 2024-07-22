@@ -11,8 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class TrancaDto {
 
-    private Integer id;
-    private Integer bicicletaId;
     private Integer numero;
     private String localizacao;
     private String anoDeFabricacao;
