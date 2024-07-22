@@ -1,13 +1,11 @@
 package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception;
 
-import lombok.Getter;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Getter
+@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
 public class InvalidActionException extends RuntimeException{
-    private final String codigo;
-
-    public InvalidActionException(String codigo, String mensagem){
+    public InvalidActionException(String mensagem){
         super(mensagem);
-        this.codigo = codigo;
     }
 }
