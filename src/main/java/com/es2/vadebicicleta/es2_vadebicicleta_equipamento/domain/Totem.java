@@ -13,8 +13,6 @@ import lombok.Setter;
 public class Totem {
 
     private Integer id = null;
-    @NotNull
     private String localizacao;
-    @NotNull
     private String descricao;
 }
