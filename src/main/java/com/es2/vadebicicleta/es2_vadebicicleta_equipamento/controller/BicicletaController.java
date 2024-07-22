@@ -56,19 +56,14 @@ public class BicicletaController {
     }
 
     @DeleteMapping("/bicicleta/{idBicicleta}")
-    public ResponseEntity<?> deleteBicicleta(@PathVariable Integer idBicicleta) {
-        try {
-            service.deleteBicicleta(idBicicleta);
-            return ResponseEntity.ok().build();
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(404).body(new Erro("404", e.getMessage()));
-        }
+    public ResponseEntity<Void> deleteBicicleta(@PathVariable Integer idBicicleta) {
+        service.deleteBicicleta(idBicicleta);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/bicicleta/{idBicicleta}/status/{acao}")
     public ResponseEntity<Bicicleta> postStatus(@PathVariable Integer idBicicleta, @PathVariable StatusBicicletaEnum acao){
         Bicicleta bicicletaNovoStatus = service.postStatus(idBicicleta, acao);
-
         return ResponseEntity.ok().body(bicicletaNovoStatus);
     }
 }
