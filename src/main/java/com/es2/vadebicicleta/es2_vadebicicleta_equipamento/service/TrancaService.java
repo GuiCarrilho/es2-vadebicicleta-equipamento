@@ -57,8 +57,13 @@ public class TrancaService {
         return repository.deleteById(idTranca);
     }
 
-    public Bicicleta getBicicletaByTranca(Integer idTranca) {
-        return repository.findBicicletaByTrancaId(idTranca);
+    public Bicicleta getBicicletaByTrancaId(Integer idTranca) {
+        Tranca tranca = Tranca tranca = repository.findById(idTranca).orElseThrow(
+                () -> new InvalidActionException("Id da tranca inválido");
+        Integer idBicicleta = tranca.getBicicleta().orElseThrow(
+                () -> new NotFoundException("Bicicleta não encontrada");
+        Bicicleta bicicleta = bicicletaService.getById(idBicicleta);
+        return bicicleta;
     }
 
     public Tranca postStatus(Integer idTranca, StatusTrancaEnum acao){
