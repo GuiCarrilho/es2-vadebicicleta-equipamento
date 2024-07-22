@@ -89,6 +89,9 @@ public class TrancaService {
         if (tranca == null) {
             throw new NotFoundException("Tranca não encontrada");
         }
+        (Objects.equals(tranca.getStatus(), "TRANCAR")) {
+            throw new NotFoundException("Dados inválidos ou tranca já se encontra trancada");
+        }
         tranca.setStatus("TRANCAR");
         repository.save(tranca);
         if (idBicicleta != null) {
@@ -98,7 +101,6 @@ public class TrancaService {
             }
             bicicleta.setStatus("DISPONIVEL");
             bicicletaService.save(bicicleta);
-            repository.addBicicletaByTrancaId(idTranca, bicicleta);
             tranca.setStatus(idBicicleta);
             return tranca;
         }
@@ -110,6 +112,9 @@ public class TrancaService {
         if (tranca == null) {
             throw new NotFoundException("Tranca não encontrada");
         }
+        (Objects.equals(tranca.getStatus(), "DESTRANCAR")) {
+            throw new NotFoundException("Dados inválidos ou tranca já se encontra destrancada");
+        }
         tranca.setStatus("DESTRANCAR");
         repository.save(tranca);
         if (idBicicleta != null) {
@@ -119,7 +124,6 @@ public class TrancaService {
             }
             bicicleta.setStatus("EM_USO");
             bicicletaService.save(bicicleta);
-            repository.removeBicicletaByTrancaId(idTranca, bicicleta);
             tranca.setStatus(null);
             return tranca;
         }
