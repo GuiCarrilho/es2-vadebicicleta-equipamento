@@ -77,6 +77,15 @@ public class TrancaService {
             case TRANCAR:
                 tranca.setStatus("TRANCAR");
                 break;
+            case APOSENTADA:
+                tranca.setStatus("APOSENTADA");
+                break;
+            case NOVA:
+                tranca.setStatus("NOVA");
+                break;
+            case EM_REPARO:
+                tranca.setStatus("EM_REPARO");
+                break;
             default:
                 throw new InvalidActionException("Status não escolhido");
         }
