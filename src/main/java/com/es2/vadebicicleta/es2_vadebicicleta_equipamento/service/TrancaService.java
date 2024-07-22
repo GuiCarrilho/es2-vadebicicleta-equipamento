@@ -84,9 +84,6 @@ public class TrancaService {
         if (tranca == null) {
             throw new NotFoundException("Tranca não encontrada");
         }
-        if (Objects.equals(tranca.getStatus(), "TRANCAR")) {
-            throw new NotFoundException("Tranca não encontrada");
-        }
         tranca.setStatus("TRANCAR");
         repository.save(tranca);
         if (idBicicleta != null) {
@@ -105,9 +102,6 @@ public class TrancaService {
     public Tranca destrancar(Integer idTranca, Integer idBicicleta) {
         Tranca tranca = getById(idTranca);
         if (tranca == null) {
-            throw new NotFoundException("Tranca não encontrada");
-        }
-        if (Objects.equals(tranca.getStatus(), "TRANCAR")) {
             throw new NotFoundException("Tranca não encontrada");
         }
         tranca.setStatus("DESTRANCAR");
