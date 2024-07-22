@@ -32,7 +32,7 @@ public class BicicletaController {
         if(bicicletas == null){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(bicicletas);
+        return ResponseEntity.ok().body(bicicletas);
     }
 
     @PostMapping("/bicicleta")
