@@ -39,7 +39,7 @@ public class TrancaService {
                 () -> new NotFoundException("Tranca não existe", HttpStatus.NOT_FOUND.toString()));
     }
 
-    public Tranca updateTranca(Integer idTranca, TrancaDto novaTranca) {
+    public Tranca updateTranca(Integer idTranca, Tranca novaTranca) {
 
         Tranca trancaAtualizada = getById(idTranca);
 
@@ -48,8 +48,7 @@ public class TrancaService {
         trancaAtualizada.setStatus(novaTranca.getStatus());
         trancaAtualizada.setAnoDeFabricacao(novaTranca.getAnoDeFabricacao());
         trancaAtualizada.setLocalizacao(novaTranca.getLocalizacao());
-        Bicicleta bicicleta = bicicletaService.getById(novaTranca.getBicicletaId());
-        trancaAtualizada.setBicicleta(bicicleta);
+
 
         return repository.save(trancaAtualizada);
     }

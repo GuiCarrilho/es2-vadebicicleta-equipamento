@@ -73,7 +73,7 @@ public class BicicletaController {
     public ResponseEntity<?> deleteBicicleta(@PathVariable Integer idBicicleta) {
         try {
             service.deleteBicicleta(idBicicleta);
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok().build();
         } catch (NotFoundException e) {
             return ResponseEntity.status(404).body(new Erro("404", e.getMessage()));
         }
