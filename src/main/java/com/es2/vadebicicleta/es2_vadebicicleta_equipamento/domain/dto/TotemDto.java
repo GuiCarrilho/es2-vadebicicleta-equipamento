@@ -12,8 +12,6 @@ import lombok.Setter;
 @Data
 public class TotemDto {
 
-    @NotNull
     private String localizacao;
-    @NotNull
     private String descricao;
 }
