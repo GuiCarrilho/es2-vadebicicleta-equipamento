@@ -37,47 +37,29 @@ public class TrancaController {
     }
 
     @PostMapping("/tranca")
-    public ResponseEntity<?> postTranca(@RequestBody TrancaDto trancaDto){
-        try {
-            Tranca tranca = converter.dtoToEntity(trancaDto);
-            Tranca trancaNova = service.save(tranca);
-            return ResponseEntity.ok().body(trancaNova);
-        }catch (InvalidActionException e){
-            return ResponseEntity.status(422).body(new Erro("422", e.getMessage()));
-        }
+    public ResponseEntity<Tranca> postTranca(@RequestBody TrancaDto trancaDto){
+        Tranca tranca = converter.dtoToEntity(trancaDto);
+        Tranca trancaNova = service.save(tranca);
+        return ResponseEntity.ok().body(trancaNova);
     }
 
     @GetMapping("/tranca/{idTranca}")
-    public ResponseEntity<?> getTrancaById(@PathVariable Integer idTranca){
-        try {
-            Tranca tranca = service.getById(idTranca);
-            return ResponseEntity.ok().body(tranca);
-        }catch (NotFoundException e){
-            return ResponseEntity.status(404).body(new Erro("404", e.getMessage()));
-        }
+    public ResponseEntity<Tranca> getTrancaById(@PathVariable Integer idTranca){
+        Tranca tranca = service.getById(idTranca);
+        return ResponseEntity.ok().body(tranca);
     }
 
     @PutMapping("/tranca/{idTranca}")
-    public ResponseEntity<?> putTranca(@PathVariable Integer idTranca, @RequestBody TrancaDto trancaDto){
-        try {
-            Tranca novaTranca = converter.dtoToEntity(trancaDto);
-            Tranca trancaAtualizada = service.updateTranca(idTranca, novaTranca);
-            return ResponseEntity.ok().body(trancaAtualizada);
-        }catch (NotFoundException e){
-            return ResponseEntity.status(404).body(new Erro("404", e.getMessage()));
-        }catch (InvalidActionException e){
-            return ResponseEntity.status(422).body(new Erro("422", e.getMessage()));
-        }
+    public ResponseEntity<Tranca> putTranca(@PathVariable Integer idTranca, @RequestBody TrancaDto trancaDto){
+        Tranca novaTranca = converter.dtoToEntity(trancaDto);
+        Tranca trancaAtualizada = service.updateTranca(idTranca, novaTranca);
+        return ResponseEntity.ok().body(trancaAtualizada);
     }
 
     @DeleteMapping("/tranca/{idTranca}")
-    public ResponseEntity<?> deleteTranca(@PathVariable Integer idTranca) {
-        try {
-            service.deleteTranca(idTranca);
-            return ResponseEntity.ok().build();
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(404).body(new Erro("404", e.getMessage()));
-        }
+    public ResponseEntity<Void> deleteTranca(@PathVariable Integer idTranca) {
+        service.deleteTranca(idTranca);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/tranca/{idTranca}/bicicleta")
@@ -91,15 +73,15 @@ public class TrancaController {
     }
 
     @PostMapping("/tranca/{idTranca}/trancar")
-    public ResponseEntity<TrancaDto> statusTrancar(@PathVariable Integer idTranca, @RequestBody(required = false) Integer idBicicleta){
+    public ResponseEntity<Tranca> statusTrancar(@PathVariable Integer idTranca, @RequestBody(required = false) Integer idBicicleta){
         Tranca tranca = service.trancar(idTranca, idBicicleta);
-        return ResponseEntity.ok().body(converter.entityToDto(tranca));
+        return ResponseEntity.ok().body(tranca);
     }
 
     @PostMapping("/tranca/{idTranca}/destrancar")
-    public ResponseEntity<TrancaDto> statusDestrancar(@PathVariable Integer idTranca, @RequestBody(required = false) Integer idBicicleta){
+    public ResponseEntity<Tranca> statusDestrancar(@PathVariable Integer idTranca, @RequestBody(required = false) Integer idBicicleta){
         Tranca tranca = service.destrancar(idTranca, idBicicleta);
-        return ResponseEntity.ok().body(converter.entityToDto(tranca));
+        return ResponseEntity.ok().body(tranca);
     }
 
     @PostMapping("/tranca/{idTranca}/status/{acao}")
