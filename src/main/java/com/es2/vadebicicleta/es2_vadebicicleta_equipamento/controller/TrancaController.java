@@ -64,12 +64,8 @@ public class TrancaController {
 
     @GetMapping("/tranca/{idTranca}/bicicleta")
     public ResponseEntity<Bicicleta> getBicicletaByTranca(@PathVariable Integer idTranca){
-        Bicicleta bicicleta = service.getBicicletaByTranca(idTranca);
-
-        if(bicicleta != null){
-            return ResponseEntity.ok().body(bicicleta);
-        }
-        return null;
+        Bicicleta bicicleta = service.getBicicletaByTrancaId(idTranca);
+        return ResponseEntity.ok().body(bicicleta);
     }
 
     @PostMapping("/tranca/{idTranca}/trancar")
