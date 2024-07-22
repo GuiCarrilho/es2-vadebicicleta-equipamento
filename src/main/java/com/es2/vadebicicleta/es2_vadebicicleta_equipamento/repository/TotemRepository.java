@@ -29,6 +29,7 @@ public class TotemRepository {
             return totem;
         }
         Integer idTotem = id.idTotemGenerator();
+        totem.setId(idTotem);
         totens.put(idTotem, totem);
         return totem;
     }
@@ -41,11 +42,12 @@ public class TotemRepository {
         return Optional.ofNullable(totens.get(id));
     }
 
-    public Totem deleteById(Integer idTotem){
+    public boolean deleteById(Integer idTotem){
         if(findById(idTotem).isPresent()){
-            return totens.remove(idTotem);
+            totens.remove(idTotem);
+            return true;
         }
-        return null;
+        return false;
     }
 
     public void addTrancasByTotemId(Integer idTotem, List<Tranca> trancas){

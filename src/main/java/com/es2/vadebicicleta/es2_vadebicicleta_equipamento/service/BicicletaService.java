@@ -23,7 +23,7 @@ public class BicicletaService {
 
 
     public Bicicleta save(Bicicleta bicicleta) {
-        if(validateBicicleta(bicicleta)){
+        if(!validateBicicleta(bicicleta)){
             throw new InvalidActionException(HttpStatus.UNPROCESSABLE_ENTITY.toString(), "Dados da bicicleta inválidos");
         }
         return repository.save(bicicleta);
