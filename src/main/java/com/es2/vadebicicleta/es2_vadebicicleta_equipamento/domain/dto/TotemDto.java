@@ -9,8 +9,11 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class TotemDto {
 
+    @NotNull
     private String localizacao;
+    @NotNull
     private String descricao;
 }
