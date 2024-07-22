@@ -56,8 +56,4 @@ public class TrancaRepository {
     public void removeBicicletaByTrancaId(Integer idTranca, Bicicleta bicicleta){
         bicicletaByTrancaId.remove(idTranca, bicicleta);
     }
-
-    public Bicicleta findBicicletaByTrancaId(Integer idTranca){
-        return bicicletaByTrancaId.get(idTranca);
-    }
 }
