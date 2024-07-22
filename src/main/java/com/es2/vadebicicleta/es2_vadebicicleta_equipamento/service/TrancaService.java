@@ -55,8 +55,13 @@ public class TrancaService {
     }
 
     public Tranca updateTranca(Integer idTranca, Tranca novaTranca) {
-
         Tranca trancaAtualizada = getById(idTranca);
+        if(trancaAtualizada.getId() == null){
+            throw new NotFoundException("Tranca não existe");
+        }
+        if(!validateTranca(trancaAtualizada)){
+            throw new InvalidActionException("Dados da tranca inválidos");
+        }
 
         trancaAtualizada.setNumero(novaTranca.getNumero());
         trancaAtualizada.setModelo(novaTranca.getModelo());
