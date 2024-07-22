@@ -8,6 +8,12 @@ import static org.mockito.Mockito.*;
 import java.util.Arrays;
 import java.util.List;
 
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller.BicicletaController;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller.BicicletaConverter;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.BicicletaDto;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.BicicletaService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

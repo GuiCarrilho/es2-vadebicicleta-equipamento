@@ -5,10 +5,15 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.InvalidActionException;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.BicicletaRepository;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.BicicletaService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,12 +26,6 @@ public class BicicletaServiceTest {
 
     @Mock
     private BicicletaRepository bicicletaRepository;
-
-    @Mock
-    private TrancaRepository trancaRepository;
-
-    @Mock
-    private TotemRepository totemRepository;
 
     @InjectMocks
     private BicicletaService bicicletaService;
@@ -64,7 +63,7 @@ public class BicicletaServiceTest {
     @Test
     void getAllBicicletas_Success() {
         // Configura o repositório para retornar uma lista contendo a bicicleta
-        List<Bicicleta> bicicletas = Arrays.asList(bicicleta);
+        List<Bicicleta> bicicletas = Collections.singletonList(bicicleta);
         when(bicicletaRepository.findAll()).thenReturn(bicicletas);
         
         // Chama o método getAll do serviço

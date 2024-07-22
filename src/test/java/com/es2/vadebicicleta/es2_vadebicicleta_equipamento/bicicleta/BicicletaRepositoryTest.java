@@ -1,11 +1,13 @@
 package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.bicicleta;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
 import java.util.Optional;
 
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.BicicletaRepository;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.IdGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
