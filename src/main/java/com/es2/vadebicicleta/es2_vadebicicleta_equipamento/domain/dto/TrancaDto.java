@@ -12,14 +12,9 @@ import lombok.Setter;
 @Data
 public class TrancaDto {
 
-    @NotNull
     private Integer numero;
-    @NotNull
     private String localizacao;
-    @NotNull
     private String anoDeFabricacao;
-    @NotNull
     private String modelo;
-    @NotNull
     private String status;
 }
