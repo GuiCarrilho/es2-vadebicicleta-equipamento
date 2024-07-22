@@ -60,22 +60,4 @@ public class TrancaRepository {
     public Bicicleta findBicicletaByTrancaId(Integer idTranca){
         return bicicletaByTrancaId.get(idTranca);
     }
-
-    public Tranca postStatus(Integer idTranca, StatusTrancaEnum acao){
-        Tranca tranca = findById(idTranca).orElseThrow(
-                () -> new NotFoundException("Tranca não encontrada", HttpStatus.NOT_FOUND.toString()));
-
-        switch (acao){
-            case DESTRANCAR:
-                tranca.setStatus("DESTRANCAR");
-                break;
-            case TRANCAR:
-                tranca.setStatus("TRANCAR");
-                break;
-            default:
-                throw new NotFoundException("Status não escolhido", HttpStatus.NOT_FOUND.toString());
-        }
-        save(tranca);
-        return tranca;
-    }
 }
