@@ -28,29 +28,29 @@ public class TrancaController {
     }
 
     @GetMapping("/tranca")
-    public ResponseEntity<List<Tranca>> getTrancas(){
+    public ResponseEntity<List<Tranca>> getTrancas() {
         List<Tranca> trancas = service.getAll();
-        if(trancas == null){
+        if (trancas == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().body(trancas);
     }
 
     @PostMapping("/tranca")
-    public ResponseEntity<Tranca> postTranca(@RequestBody TrancaDto trancaDto){
+    public ResponseEntity<Tranca> postTranca(@RequestBody TrancaDto trancaDto) {
         Tranca tranca = converter.dtoToEntity(trancaDto);
         Tranca trancaNova = service.save(tranca);
         return ResponseEntity.ok().body(trancaNova);
     }
 
     @GetMapping("/tranca/{idTranca}")
-    public ResponseEntity<Tranca> getTrancaById(@PathVariable Integer idTranca){
+    public ResponseEntity<Tranca> getTrancaById(@PathVariable Integer idTranca) {
         Tranca tranca = service.getById(idTranca);
         return ResponseEntity.ok().body(tranca);
     }
 
     @PutMapping("/tranca/{idTranca}")
-    public ResponseEntity<Tranca> putTranca(@PathVariable Integer idTranca, @RequestBody TrancaDto trancaDto){
+    public ResponseEntity<Tranca> putTranca(@PathVariable Integer idTranca, @RequestBody TrancaDto trancaDto) {
         Tranca novaTranca = converter.dtoToEntity(trancaDto);
         Tranca trancaAtualizada = service.updateTranca(idTranca, novaTranca);
         return ResponseEntity.ok().body(trancaAtualizada);
@@ -63,27 +63,40 @@ public class TrancaController {
     }
 
     @GetMapping("/tranca/{idTranca}/bicicleta")
-    public ResponseEntity<Bicicleta> getBicicletaByTranca(@PathVariable Integer idTranca){
+    public ResponseEntity<Bicicleta> getBicicletaByTranca(@PathVariable Integer idTranca) {
         Bicicleta bicicleta = service.getBicicletaByTrancaId(idTranca);
         return ResponseEntity.ok().body(bicicleta);
     }
 
     @PostMapping("/tranca/{idTranca}/trancar")
-    public ResponseEntity<Tranca> statusTrancar(@PathVariable Integer idTranca, @RequestBody(required = false) Integer idBicicleta){
+    public ResponseEntity<Tranca> statusTrancar(@PathVariable Integer idTranca, @RequestBody(required = false) Integer idBicicleta) {
         Tranca tranca = service.trancar(idTranca, idBicicleta);
         return ResponseEntity.ok().body(tranca);
     }
 
     @PostMapping("/tranca/{idTranca}/destrancar")
-    public ResponseEntity<Tranca> statusDestrancar(@PathVariable Integer idTranca, @RequestBody(required = false) Integer idBicicleta){
+    public ResponseEntity<Tranca> statusDestrancar(@PathVariable Integer idTranca, @RequestBody(required = false) Integer idBicicleta) {
         Tranca tranca = service.destrancar(idTranca, idBicicleta);
         return ResponseEntity.ok().body(tranca);
     }
 
     @PostMapping("/tranca/{idTranca}/status/{acao}")
-    public ResponseEntity<Tranca> postStatus(@PathVariable Integer idTranca, @PathVariable StatusTrancaEnum acao){
+    public ResponseEntity<Tranca> postStatus(@PathVariable Integer idTranca, @PathVariable StatusTrancaEnum acao) {
         Tranca trancaNovoStatus = service.postStatus(idTranca, acao);
 
         return ResponseEntity.ok().body(trancaNovoStatus);
     }
+
+    @PostMapping("tranca/incluirNaRede")
+    public ResponseEntity<Void> incluirNaRede(@RequestBody Integer idTotem, @RequestBody Integer idTranca, @RequestBody Integer idFuncionario) {
+        service.incluirTrancaNaRedeTotem(idTotem, idTranca, idFuncionario);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/tranca/retirarNaRede")
+    public ResponseEntity<Void> incluirNaRede(@RequestBody Integer idTotem, @RequestBody Integer idTranca, @RequestBody Integer idFuncionario, @RequestBody String statusAcaoReparador) {
+        service.retirarTrancaNaRedeTotem(idTotem, idTranca, idFuncionario, statusAcaoReparador);
+        return ResponseEntity.ok().build();
+    }
 }
+
