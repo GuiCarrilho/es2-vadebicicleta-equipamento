@@ -94,6 +94,7 @@ public class TrancaService {
             bicicleta.setStatus("DISPONIVEL");
             bicicletaService.save(bicicleta);
             repository.addBicicletaByTrancaId(idTranca, bicicleta);
+            tranca.setStatus(idBicicleta);
             return tranca;
         }
         return tranca;
@@ -114,6 +115,7 @@ public class TrancaService {
             bicicleta.setStatus("EM_USO");
             bicicletaService.save(bicicleta);
             repository.removeBicicletaByTrancaId(idTranca, bicicleta);
+            tranca.setStatus(null);
             return tranca;
         }
         return tranca;
