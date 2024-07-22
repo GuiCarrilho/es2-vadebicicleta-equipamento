@@ -31,8 +31,18 @@ public class TrancaService {
         this.totemRepository = totemRepository;
     }
 
-    public Tranca save(Tranca tranca) {
+     public Tranca save(Tranca bicicleta) {
+        if(!validateBicicleta(tranca)){
+            throw new InvalidActionException("Dados da tranca inválidos");
+        }
         return repository.save(tranca);
+    }
+
+    private boolean validateBicicleta(Tranca bicicleta){
+        if(bicicleta.getLocalizacao() == null || bicicleta.getNumero() == null || bicicleta.getModelo() == null || bicicleta.getAnoDeFabricacao() == null || bicicleta.getStatus() == null){
+            return false;
+        }
+        return true;
     }
 
     public List<Tranca> getAll() {
