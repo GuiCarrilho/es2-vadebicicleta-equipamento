@@ -37,37 +37,23 @@ public class TotemController {
     }
 
     @PostMapping("/totem")
-    public ResponseEntity<?> postTotem(@RequestBody TotemDto totemDto){
-        try {
-            Totem totem = converter.dtoToEntity(totemDto);
-            Totem novoTotem = service.save(totem);
-            return ResponseEntity.ok().body(novoTotem);
-        }catch (InvalidActionException e){
-            return ResponseEntity.status(422).body(new Erro("422", e.getMessage()));
-        }
+    public ResponseEntity<Totem> postTotem(@RequestBody TotemDto totemDto){
+        Totem totem = converter.dtoToEntity(totemDto);
+        Totem novoTotem = service.save(totem);
+        return ResponseEntity.ok().body(novoTotem);
     }
 
     @PutMapping("/totem/{idTotem}")
-    public ResponseEntity<?> putTotem(@PathVariable Integer idTotem, @RequestBody TotemDto totemDto){
-        try {
-            Totem novoTotem = converter.dtoToEntity(totemDto);
-            Totem totemAtualizado = service.updateTotem(idTotem, novoTotem);
-            return ResponseEntity.ok().body(totemAtualizado);
-        }catch (NotFoundException e){
-            return ResponseEntity.status(404).body(new Erro("404", e.getMessage()));
-        }catch (InvalidActionException e){
-            return ResponseEntity.status(422).body(new Erro("422", e.getMessage()));
-        }
+    public ResponseEntity<Totem> putTotem(@PathVariable Integer idTotem, @RequestBody TotemDto totemDto){
+        Totem novoTotem = converter.dtoToEntity(totemDto);
+        Totem totemAtualizado = service.updateTotem(idTotem, novoTotem);
+        return ResponseEntity.ok().body(totemAtualizado);
     }
 
     @DeleteMapping("/totem/{idTotem}")
-    public ResponseEntity<?> deleteTotem(@PathVariable Integer idTotem){
-        try {
-            service.deleteTotem(idTotem);
-            return ResponseEntity.notFound().build();
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(404).body(new Erro("404", e.getMessage()));
-        }
+    public ResponseEntity<Void> deleteTotem(@PathVariable Integer idTotem){
+        service.deleteTotem(idTotem);
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/totem/{idTotem}/trancas")
