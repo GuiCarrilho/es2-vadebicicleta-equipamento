@@ -13,14 +13,9 @@ import lombok.Setter;
 public class Bicicleta {
 
     private Integer id = null;
-    @NotNull
     private String marca;
-    @NotNull
     private String modelo;
-    @NotNull
     private String ano;
-    @NotNull
     private Integer numero;
-    @NotNull
     private String status;
 }
