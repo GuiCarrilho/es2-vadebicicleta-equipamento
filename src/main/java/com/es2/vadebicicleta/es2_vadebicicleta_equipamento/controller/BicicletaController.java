@@ -36,37 +36,23 @@ public class BicicletaController {
     }
 
     @PostMapping("/bicicleta")
-    public ResponseEntity<?> postBicicleta(@RequestBody BicicletaDto bicicletaDto) {
-        try {
-            Bicicleta bicicleta = converter.dtoToEntity(bicicletaDto);
-            Bicicleta novaBicicleta = service.save(bicicleta);
-            return ResponseEntity.ok().body(novaBicicleta);
-        } catch (InvalidActionException e){
-            return ResponseEntity.status(422).body(new Erro("422", e.getMessage()));
-        }
+    public ResponseEntity<Bicicleta> postBicicleta(@RequestBody BicicletaDto bicicletaDto) {
+        Bicicleta bicicleta = converter.dtoToEntity(bicicletaDto);
+        Bicicleta novaBicicleta = service.save(bicicleta);
+        return ResponseEntity.ok().body(novaBicicleta);
     }
 
     @GetMapping("/bicicleta/{idBicicleta}")
-    public ResponseEntity<?> getBicicletaById(@PathVariable Integer idBicicleta) {
-        try {
-            Bicicleta bicicleta = service.getById(idBicicleta);
-            return ResponseEntity.ok().body(bicicleta);
-        }catch (NotFoundException e){
-            return ResponseEntity.status(404).body(new Erro("404", e.getMessage()));
-        }
+    public ResponseEntity<Bicicleta> getBicicletaById(@PathVariable Integer idBicicleta) {
+        Bicicleta bicicleta = service.getById(idBicicleta);
+        return ResponseEntity.ok().body(bicicleta);
     }
 
     @PutMapping("/bicicleta/{idBicicleta}")
-    public ResponseEntity<?> putBicicleta(@PathVariable Integer idBicicleta, @RequestBody BicicletaDto bicicletaDto) {
-        try {
-            Bicicleta novaBicicleta = converter.dtoToEntity(bicicletaDto);
-            Bicicleta bicicletaAtualizada = service.updateBicicleta(idBicicleta, novaBicicleta);
-            return ResponseEntity.ok().body(bicicletaAtualizada);
-        }catch (NotFoundException e){
-            return ResponseEntity.status(404).body(new Erro("404", e.getMessage()));
-        }catch (InvalidActionException e){
-            return ResponseEntity.status(422).body(new Erro("422", e.getMessage()));
-        }
+    public ResponseEntity<Bicicleta> putBicicleta(@PathVariable Integer idBicicleta, @RequestBody BicicletaDto bicicletaDto) {
+        Bicicleta novaBicicleta = converter.dtoToEntity(bicicletaDto);
+        Bicicleta bicicletaAtualizada = service.updateBicicleta(idBicicleta, novaBicicleta);
+        return ResponseEntity.ok().body(bicicletaAtualizada);
     }
 
     @DeleteMapping("/bicicleta/{idBicicleta}")
