@@ -2,9 +2,6 @@ package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller;
 
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusBicicletaEnum;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.BicicletaDto;
-import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.Erro;
-import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.InvalidActionException;
-import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.BicicletaService;
 import org.springframework.http.ResponseEntity;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
@@ -67,5 +64,3 @@ public class BicicletaController {
         return ResponseEntity.ok().body(bicicletaNovoStatus);
     }
 }
-
-
