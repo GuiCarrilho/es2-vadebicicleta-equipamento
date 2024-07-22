@@ -5,10 +5,7 @@ import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Totem;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class TotemRepository {
@@ -63,7 +60,7 @@ public class TotemRepository {
             trancas.add(tranca);
     }
 
-    public boolean removeTrancasByTotemId(Integer idTotem, Tranca tranca){
+    public boolean removeTrancaByTotemId(Integer idTotem, Tranca tranca){
         List<Tranca> trancas = trancasByTotemId.get(idTotem);
         if(trancas == null){
             return false;
@@ -75,12 +72,43 @@ public class TotemRepository {
         return true;
     }
 
-    public void addBicicletasByTotemId(Integer idTotem, List<Bicicleta> bicicletas){
-        bicicletasByTotemId.put(idTotem, bicicletas);
+    public void addBicicletasByTotemId(Integer idTotem, Bicicleta bicicleta){
+        List<Bicicleta> bicicletas = bicicletasByTotemId.get(idTotem);
+        if(bicicletas == null){
+            bicicletasByTotemId.put(idTotem, new ArrayList<Bicicleta>());
+            bicicletas = new ArrayList<>();
+            bicicletasByTotemId.put(idTotem, bicicletas);
+            bicicletas.add(bicicleta);
+        }
+        else
+            bicicletas.add(bicicleta);
+    }
+
+    public boolean removeBicicletaByTotemId(Integer idTotem, Bicicleta bicicleta){
+        List<Bicicleta> bicicletas = bicicletasByTotemId.get(idTotem);
+        if(bicicletas == null){
+            return false;
+        }
+        bicicletas.remove(bicicleta);
+        if(bicicletas.isEmpty()){
+            bicicletasByTotemId.remove(idTotem);
+        }
+        return true;
     }
 
     public List<Tranca> findTrancasByTotemId(Integer idTotem){
         return trancasByTotemId.get(idTotem);
+    }
+
+    public Integer findTotemByTranca(Tranca trancaBuscada){
+        for(Map.Entry<Integer, List<Tranca>> entry: trancasByTotemId.entrySet()){
+            Integer idTotem = entry.getKey();
+            List<Tranca> trancas = entry.getValue();
+            if(trancas.contains(trancaBuscada)){
+                return idTotem;
+            }
+        }
+        return null;
     }
 
     public List<Bicicleta> findBicicletasByTotemId(Integer idTotem){

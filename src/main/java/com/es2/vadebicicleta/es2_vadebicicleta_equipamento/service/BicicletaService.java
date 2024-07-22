@@ -2,22 +2,30 @@ package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service;
 
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusBicicletaEnum;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.InvalidActionException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.BicicletaRepository;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.TotemRepository;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.TrancaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class BicicletaService {
 
     private final BicicletaRepository repository;
+    private final TrancaRepository trancaRepository;
+    private final TotemRepository totemRepository;
 
     @Autowired
-    public BicicletaService(BicicletaRepository repository) {
+    public BicicletaService(BicicletaRepository repository, TrancaRepository trancaRepository, TotemRepository totemRepository) {
         this.repository = repository;
+        this.trancaRepository = trancaRepository;
+        this.totemRepository = totemRepository;
     }
 
 
@@ -70,7 +78,7 @@ public class BicicletaService {
 
     public Bicicleta postStatus(Integer idBicicleta, StatusBicicletaEnum acao){
         Bicicleta bicicleta = repository.findById(idBicicleta).orElseThrow(
-                () -> new NotFoundException("Bicicleta não encontrada");
+                () -> new NotFoundException("Bicicleta não encontrada"));
 
         switch (acao){
             case DISPONIVEL:
@@ -96,6 +104,56 @@ public class BicicletaService {
         }
         repository.save(bicicleta);
         return bicicleta;
+    }
+
+    public void incluirBicicletaNaRedeTotem(Integer idTranca, Integer idBicicleta, Integer idFuncionario){
+        Tranca tranca = trancaRepository.findById(idTranca).orElseThrow(
+                () -> new InvalidActionException("Tranca não encontrada"));
+        if(!Objects.equals(tranca.getBicicleta(), idBicicleta)){
+            throw new InvalidActionException("Id da bicicleta na classe Tranca não corresponde ao parâmetro");
+        }
+        if(idFuncionario == null){
+            throw new InvalidActionException("Funcionário não existe");
+        }
+        if(Objects.equals(tranca.getStatus(), "TRANCAR")){
+            Integer idTotem = totemRepository.findTotemByTranca(tranca);
+            if(idTotem == null){
+                throw new InvalidActionException("Tranca não está relacionada com nenhum totem");
+            }
+            Bicicleta bicicleta = getById(idBicicleta);
+            if(Objects.equals(bicicleta.getStatus(), "NOVA") || Objects.equals(bicicleta.getStatus(), "DISPONIVEL")){
+                totemRepository.addBicicletasByTotemId(idTotem, bicicleta);
+            }
+            else throw new InvalidActionException("Status de bicicleta inválido");
+        }
+        else throw new InvalidActionException("Status da tranca inválido");
+    }
+
+    public void retirarBicicletaDaRedeTotem(Integer idTranca, Integer idBicicleta, Integer idFuncionario, String statusAcaoReparador){
+        Tranca tranca = trancaRepository.findById(idTranca).orElseThrow(
+                () -> new InvalidActionException("Tranca não encontrada"));
+        if(!Objects.equals(tranca.getBicicleta(), idBicicleta)){
+            throw new InvalidActionException("Id da bicicleta na classe Tranca não corresponde ao parâmetro");
+        }
+        if(idFuncionario == null){
+            throw new InvalidActionException("Funcionário não existe");
+        }
+        if(Objects.equals(tranca.getStatus(), "TRANCAR")){
+            Integer idTotem = totemRepository.findTotemByTranca(tranca);
+            if(idTotem == null){
+                throw new InvalidActionException("Tranca não está relacionada com nenhum totem");
+            }
+            Bicicleta bicicleta = getById(idBicicleta);
+            if(Objects.equals(statusAcaoReparador, "APOSENTADA") || Objects.equals(statusAcaoReparador, "EM_RAPARO")){
+                bicicleta.setStatus(statusAcaoReparador);
+                boolean removido = totemRepository.removeBicicletaByTotemId(idTotem, bicicleta);
+                if(!removido){
+                    throw new InvalidActionException("Bicicleta não está associada ao totem");
+                }
+            }
+            else throw new InvalidActionException("Status de bicicleta inválido");
+        }
+        else throw new InvalidActionException("Status da tranca inválido");
     }
 }
 

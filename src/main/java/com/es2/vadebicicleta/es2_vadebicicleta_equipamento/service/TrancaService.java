@@ -160,7 +160,7 @@ public class TrancaService {
         else throw new InvalidActionException("Status da tranca inválido");
     }
 
-    public void retirarTrancaNaRedeTotem(Integer idTotem, Integer idTranca, Integer idFuncionario, String statusAcaoReparador){
+    public void retirarTrancaDaRedeTotem(Integer idTotem, Integer idTranca, Integer idFuncionario, String statusAcaoReparador){
         Totem totem = totemRepository.findById(idTotem).orElseThrow(
                 () -> new InvalidActionException("Totem não encontrado"));
         Tranca tranca = repository.findById(idTranca).orElseThrow(
@@ -168,8 +168,9 @@ public class TrancaService {
         if(idFuncionario == null){
             throw new InvalidActionException("Funcionário não existe");
         }
-        if(Objects.equals(tranca.getStatus(), "APOSENTADA") || Objects.equals(tranca.getStatus(), "EM_REPARO")){
-            boolean removido = totemRepository.removeTrancasByTotemId(idTotem, tranca);
+        if(Objects.equals(statusAcaoReparador, "APOSENTADA") || Objects.equals(statusAcaoReparador, "EM_REPARO")){
+            tranca.setStatus(statusAcaoReparador);
+            boolean removido = totemRepository.removeTrancaByTotemId(idTotem, tranca);
             if(!removido){
                 throw new InvalidActionException("Tranca não está associada ao totem");
             }
