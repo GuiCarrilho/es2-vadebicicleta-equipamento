@@ -46,34 +46,4 @@ public class BicicletaRepository {
         }
         return false;
     }
-
-    public Bicicleta postStatus(Integer idBicicleta, StatusBicicletaEnum acao){
-        Bicicleta bicicleta = findById(idBicicleta).orElseThrow(
-                () -> new NotFoundException("Bicicleta não encontrada", HttpStatus.NOT_FOUND.toString()));
-
-        switch (acao){
-            case DISPONIVEL:
-                bicicleta.setStatus("DISPONIVEL");
-                break;
-            case EM_USO:
-                bicicleta.setStatus("EM_USO");
-                break;
-            case NOVA:
-                bicicleta.setStatus("NOVA");
-                break;
-            case APOSENTADA:
-                bicicleta.setStatus("APOSENTADA");
-                break;
-            case REPARO_SOLICITADO:
-                bicicleta.setStatus("REPARAO_SOLICITADO");
-                break;
-            case EM_REPARO:
-                bicicleta.setStatus("EM_REPARO");
-                break;
-            default:
-                throw new NotFoundException("Status não escolhido", HttpStatus.NOT_FOUND.toString());
-        }
-        save(bicicleta);
-        return bicicleta;
-    }
 }
