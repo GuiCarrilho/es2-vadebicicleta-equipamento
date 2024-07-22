@@ -6,6 +6,8 @@ import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.Erro;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.InvalidActionException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.BicicletaService;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +38,7 @@ public class BicicletaController {
     }
 
     @PostMapping("/bicicleta")
-    public ResponseEntity<Object> postBicicleta(@RequestBody BicicletaDto bicicletaDto) {
+    public ResponseEntity<?> postBicicleta(@RequestBody BicicletaDto bicicletaDto) {
         try {
             Bicicleta bicicleta = converter.dtoToEntity(bicicletaDto);
             Bicicleta novaBicicleta = service.save(bicicleta);
@@ -47,7 +49,7 @@ public class BicicletaController {
     }
 
     @GetMapping("/bicicleta/{idBicicleta}")
-    public ResponseEntity<Object> getBicicletaById(@PathVariable Integer idBicicleta) {
+    public ResponseEntity<?> getBicicletaById(@PathVariable Integer idBicicleta) {
         try {
             Bicicleta bicicleta = service.getById(idBicicleta);
             return ResponseEntity.ok().body(bicicleta);
@@ -57,7 +59,7 @@ public class BicicletaController {
     }
 
     @PutMapping("/bicicleta/{idBicicleta}")
-    public ResponseEntity<Object> putBicicleta(@PathVariable Integer idBicicleta, @RequestBody BicicletaDto bicicletaDto) {
+    public ResponseEntity<?> putBicicleta(@PathVariable Integer idBicicleta, @RequestBody BicicletaDto bicicletaDto) {
         try {
             Bicicleta novaBicicleta = converter.dtoToEntity(bicicletaDto);
             Bicicleta bicicletaAtualizada = service.updateBicicleta(idBicicleta, novaBicicleta);
@@ -70,7 +72,7 @@ public class BicicletaController {
     }
 
     @DeleteMapping("/bicicleta/{idBicicleta}")
-    public ResponseEntity<Object> deleteBicicleta(@PathVariable Integer idBicicleta) {
+    public ResponseEntity<?> deleteBicicleta(@PathVariable Integer idBicicleta) {
         try {
             service.deleteBicicleta(idBicicleta);
             return ResponseEntity.notFound().build();
