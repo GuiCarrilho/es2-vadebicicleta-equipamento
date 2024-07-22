@@ -16,7 +16,7 @@ public class TrancaRepository {
 
     private static HashMap<Integer, Tranca> trancas = new HashMap<>();
 
-    private IdGenerator id;
+    private final IdGenerator id;
 
     public TrancaRepository(IdGenerator id){
         this.id = id;
