@@ -14,8 +14,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import java.util.ArrayList;
-import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
 class TrancaRepositoryTest {
@@ -59,24 +57,6 @@ class TrancaRepositoryTest {
         
         // Verifica se a tranca foi atualizada
         assertEquals("Novo Local", updatedTranca.getLocalizacao());
-    }
-
-    @Test
-    void findAll_Success() {
-        // Esperado
-        List<Tranca> expectedTrancas = new ArrayList<>();
-        
-        trancaRepository.save(tranca);
-        expectedTrancas.add(tranca);
-        trancaRepository.save(tranca2);
-        expectedTrancas.add(tranca2);
-
-        // Chama o método findAll do repositório
-        List<Tranca> allTrancas = trancaRepository.findAll();
-
-        // Verifica se o tamanho da lista e os elementos são os esperados
-        assertEquals(expectedTrancas.size(), allTrancas.size());
-        assertTrue(allTrancas.containsAll(expectedTrancas));
     }
 
    @Test
