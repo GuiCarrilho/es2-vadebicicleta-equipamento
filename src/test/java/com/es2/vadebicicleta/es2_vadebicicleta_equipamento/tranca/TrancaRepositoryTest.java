@@ -57,18 +57,19 @@ class TrancaRepositoryTest {
         assertEquals("Novo Local", updatedTranca.getLocalizacao());
     }
 
-    @Test
-    void findById_Found() {
-        // Mock do comportamento do método findById do repositório
-        trancaRepository.save(tranca);
-        
-        // Chama o método findById do repositório
-        Optional<Tranca> foundTranca = trancaRepository.findById(1);
-        
-        // Verifica se a tranca foi encontrada
-        assertTrue(foundTranca.isPresent());
-        assertEquals(tranca.getId(), foundTranca.get().getId());
-    }
+   @Test
+void findById_Found() {
+    // Salva a tranca e recupera o ID gerado
+    Tranca savedTranca = trancaRepository.save(tranca);
+    int generatedId = savedTranca.getId();
+    
+    // Chama o método findById do repositório
+    Optional<Tranca> foundTranca = trancaRepository.findById(generatedId);
+    
+    // Verifica se a tranca foi encontrada
+    assertTrue(foundTranca.isPresent());
+    assertEquals(tranca.getId(), foundTranca.get().getId());
+}
 
     @Test
     void findById_NotFound() {
