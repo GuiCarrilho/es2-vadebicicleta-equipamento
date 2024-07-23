@@ -51,7 +51,7 @@ class TotemServiceTest {
         assertEquals(totem.getId(), savedTotem.getId());
     }
 
-     @Test
+    @Test
     void saveTotem_InvalidData_ThrowsInvalidActionException() {
         // Configura dados inválidos na totem
         totem.setDescricao(null);
