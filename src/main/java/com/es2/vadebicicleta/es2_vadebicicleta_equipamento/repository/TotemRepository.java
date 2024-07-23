@@ -51,7 +51,7 @@ public class TotemRepository {
     public void addTrancasByTotemId(Integer idTotem, Tranca tranca){
         List<Tranca> trancas = trancasByTotemId.get(idTotem);
         if(trancas == null){
-            trancasByTotemId.put(idTotem, new ArrayList<Tranca>());
+            trancasByTotemId.put(idTotem, new ArrayList<>());
             trancas = new ArrayList<>();
             trancasByTotemId.put(idTotem, trancas);
             trancas.add(tranca);
@@ -75,7 +75,7 @@ public class TotemRepository {
     public void addBicicletasByTotemId(Integer idTotem, Bicicleta bicicleta){
         List<Bicicleta> bicicletas = bicicletasByTotemId.get(idTotem);
         if(bicicletas == null){
-            bicicletasByTotemId.put(idTotem, new ArrayList<Bicicleta>());
+            bicicletasByTotemId.put(idTotem, new ArrayList<>());
             bicicletas = new ArrayList<>();
             bicicletasByTotemId.put(idTotem, bicicletas);
             bicicletas.add(bicicleta);
