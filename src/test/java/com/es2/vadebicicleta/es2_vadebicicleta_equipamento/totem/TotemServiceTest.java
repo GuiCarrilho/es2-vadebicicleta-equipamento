@@ -129,13 +129,13 @@ class TotemServiceTest {
     @Test
     void updateTotem_InvalidData_ThrowsInvalidActionException() {
         // Configura um totem existente
-        Totem totem = new Totem(1, "Méier", "Local");
+        Totem totemExistente = new Totem(1, "Méier", "Local");
 
         // Configura um novo totem com dados inválidos
         Totem novoTotem = new Totem(1, "Méier", null);
         
         // Mock do comportamento do método findById do repositório
-        when(totemRepository.findById(anyInt())).thenReturn(Optional.of(totem));
+        when(totemRepository.findById(anyInt())).thenReturn(Optional.of(totemExistente));
         
         // Verifica se a exceção InvalidActionException é lançada
         assertThrows(InvalidActionException.class, () -> totemService.updateTotem(1, novoTotem));
