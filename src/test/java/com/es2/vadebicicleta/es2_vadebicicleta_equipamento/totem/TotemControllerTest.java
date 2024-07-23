@@ -37,6 +37,7 @@ class TotemControllerTest {
 
     private Totem totem;
     private TotemDto totemDto;
+    private int nada;
 
     @BeforeEach
     void setUp() {
