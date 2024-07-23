@@ -24,7 +24,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
 @ExtendWith(MockitoExtension.class)
-class BicicletaControllerTest {
+class TrancaControllerTest {
 
     @Mock
     private TrancaService service;
