@@ -5,8 +5,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
-import java.util.List;
-
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller.TotemController;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller.TotemConverter;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Totem;
@@ -32,6 +30,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
 import java.util.List;
+import java.lang.String;
 
 @ExtendWith(MockitoExtension.class)
 public class TotemControllerTest {
