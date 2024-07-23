@@ -31,8 +31,11 @@ public class BicicletaRepository {
         bicicletas.put(idBicicleta, bicicleta);
         return bicicleta;
     }
-    public List<Bicicleta> findAll(){
-        return (List<Bicicleta>) bicicletas.values();
+    
+    public List<Bicicleta> getAll(){
+        List<Bicicleta> allBicicletas = new ArrayList<>();
+        allBicicletas.addAll(bicicletas.values());
+        return allBicicletas;
     }
 
     public Optional<Bicicleta> findById(Integer id){
