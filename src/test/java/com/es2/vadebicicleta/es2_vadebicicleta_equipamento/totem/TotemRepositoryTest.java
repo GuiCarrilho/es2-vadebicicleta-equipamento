@@ -34,8 +34,6 @@ class TotemRepositoryTest {
 
     @Test
     void saveTotem_NewTotem() {
-        // Mock do comportamento do gerador de ID
-        when(idGenerator.idTotemGenerator()).thenReturn(1);
         
         // Chama o método save do repositório
         Totem savedTotem = totemRepository.save(totem);
