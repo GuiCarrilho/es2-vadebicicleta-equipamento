@@ -21,14 +21,11 @@ public class TotemRepository {
         this.id = id;
     }
 
-    public Totem save(Totem totem) {
-        // Se o ID da totem não for nulo e já estiver presente, substitui o existente
-        if (totem.getId() != null && totens.containsKey(totem.getId())) {
+   public Totem save(Totem totem){
+        if (findById(totem.getId()).isPresent()) {
             totens.replace(totem.getId(), totem);
             return totem;
         }
-
-        // Gera um novo ID para a totem
         Integer idTotem = id.idTotemGenerator();
         totem.setId(idTotem);
         totens.put(idTotem, totem);
