@@ -38,7 +38,7 @@ class TotemRepositoryTest {
         when(idGenerator.idTotemGenerator()).thenReturn(1);
         
         // Chama o método save do repositório
-        Totem savedTotem = totemaRepository.save(totem);
+        Totem savedTotem = totemRepository.save(totem);
         
         // Verifica se a bicicleta foi salva corretamente com o ID gerado
         assertNotNull(savedTotem.getId());
