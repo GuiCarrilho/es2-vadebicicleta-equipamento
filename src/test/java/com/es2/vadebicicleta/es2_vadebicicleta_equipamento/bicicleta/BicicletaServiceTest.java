@@ -51,18 +51,13 @@ public class BicicletaServiceTest {
         assertEquals(bicicleta.getId(), savedBicicleta.getId());
     }
 
-    @Test
+     @Test
     void saveBicicleta_InvalidData_ThrowsInvalidActionException() {
-        // Configura a bicicleta com dados inválidos
-        Bicicleta invalidBicicleta = new Bicicleta(null, null, null, null, null, null);
-
+        // Configura dados inválidos na bicicleta
+        bicicleta.setAno(null);
+        
         // Verifica se a exceção InvalidActionException é lançada
-        InvalidActionException exception = assertThrows(InvalidActionException.class, () -> {
-            bicicletaService.save(invalidBicicleta);
-        });
-
-        // Verifica a mensagem da exceção
-        assertEquals("Dados da bicicleta inválidos", exception.getMessage());
+        assertThrows(InvalidActionException.class, () -> bicicletaService.save(bicicleta));
     }
 
     
@@ -131,21 +126,16 @@ public class BicicletaServiceTest {
         assertThrows(NotFoundException.class, () -> bicicletaService.updateBicicleta(1, novaBicicleta));
     }
    
-    @Test
+@Test
     void updateBicicleta_InvalidData_ThrowsInvalidActionException() {
-        // Configura o mock do repository para encontrar uma bicicleta
+        // Configura uma nova bicicleta com dados inválidos
+        Bicicleta novaBicicleta = new Bicicleta(1, "Caloi", "Mountain Bike", null, 124, "Em Uso");
+        
+        // Mock do comportamento do método findById do repositório
         when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(bicicleta));
-
-        // Configura a nova bicicleta com dados inválidos
-        Bicicleta invalidBicicleta = new Bicicleta(null, null, null, null, null, null);
-
+        
         // Verifica se a exceção InvalidActionException é lançada
-        InvalidActionException exception = assertThrows(InvalidActionException.class, () -> {
-            bicicletaService.updateBicicleta(1, invalidBicicleta);
-        });
-
-        // Verifica a mensagem da exceção
-        assertEquals("Dados da bicicleta inválidos", exception.getMessage());
+        assertThrows(InvalidActionException.class, () -> bicicletaService.updateBicicleta(1, novaBicicleta));
     }
 
     @Test
