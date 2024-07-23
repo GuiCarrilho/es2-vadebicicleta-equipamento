@@ -54,7 +54,7 @@ class TotemServiceTest {
      @Test
     void saveTotem_InvalidData_ThrowsInvalidActionException() {
         // Configura dados inválidos na totem
-        totem.setAno(null);
+        totem.setDescricao(null);
         
         // Verifica se a exceção InvalidActionException é lançada
         assertThrows(InvalidActionException.class, () -> totemService.save(totem));
@@ -111,7 +111,7 @@ class TotemServiceTest {
         
         // Verifica se a totem retornada não é nula e se os dados foram atualizados
         assertNotNull(updatedTotem);
-        assertEquals(novoTotem.getAno(), updatedTotem.getAno());
+        assertEquals(novoTotem.getDescricao(), updatedTotem.getDescricao());
     }
 
     @Test
