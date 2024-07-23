@@ -25,7 +25,6 @@ class TotemRepositoryTest {
     private TotemRepository totemRepository;
 
     private Totem totem;
-    private Totem totem2;
 
     @BeforeEach
     void setUp() {
