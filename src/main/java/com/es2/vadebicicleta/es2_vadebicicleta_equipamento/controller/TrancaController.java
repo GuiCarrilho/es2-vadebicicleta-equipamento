@@ -27,9 +27,6 @@ public class TrancaController {
     @GetMapping("/tranca")
     public ResponseEntity<List<Tranca>> getTrancas() {
         List<Tranca> trancas = service.getAll();
-        if (trancas == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok().body(trancas);
     }
 
