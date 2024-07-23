@@ -42,7 +42,7 @@ class TrancaRepositoryTest {
         
         // Verifica se a tranca foi salva corretamente com o ID gerado
         assertNotNull(savedTranca.getId());
-        assertEquals(tranca.getMarca(), savedTranca.getMarca());
+        assertEquals(tranca.getNumero(), savedTranca.getNumero());
     }
 
     @Test
