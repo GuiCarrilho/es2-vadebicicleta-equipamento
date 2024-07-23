@@ -54,23 +54,5 @@ public class BicicletaController {
         service.deleteBicicleta(idBicicleta);
         return ResponseEntity.ok().build();
     }
-
-    @PostMapping("/bicicleta/{idBicicleta}/status/{acao}")
-    public ResponseEntity<Bicicleta> postStatus(@PathVariable Integer idBicicleta, @PathVariable StatusBicicletaEnum acao) {
-        Bicicleta bicicletaNovoStatus = service.postStatus(idBicicleta, acao);
-        return ResponseEntity.ok().body(bicicletaNovoStatus);
-    }
-
-    @PostMapping("bicicleta/incluirNaRede")
-    public ResponseEntity<Void> incluirNaRede(@RequestBody Integer idTranca, @RequestBody Integer idBicicleta, @RequestBody Integer idFuncionario){
-        service.incluirBicicletaNaRedeTotem(idTranca, idBicicleta, idFuncionario);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/bicicleta/retirarDaRede")
-    public ResponseEntity<Void> retirarDaRede(@RequestBody Integer idTranca, @RequestBody Integer idBicicleta, @RequestBody Integer idFuncionario, @RequestBody String statusAcaoReparador){
-        service.retirarBicicletaDaRedeTotem(idTranca, idBicicleta, idFuncionario, statusAcaoReparador);
-        return ResponseEntity.ok().build();
-    }
 }
 
