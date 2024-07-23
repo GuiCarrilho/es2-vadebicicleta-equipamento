@@ -64,10 +64,12 @@ class TotemRepositoryTest {
 
     @Test
     void findAll_Success() {
+        totemRepository.save(totem);
         // Esperado
         List<Totem> expectedTotens = new ArrayList<>();
         
         expectedTotens.add(totem);
+        totemRepository.save(totem2);
         expectedTotens.add(totem2);
 
         // Chama o método findAll do repositório
