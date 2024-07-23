@@ -65,8 +65,6 @@ class TrancaRepositoryTest {
     void findAll_Success() {
         // Esperado
         List<Tranca> expectedTrancas = new ArrayList<>();
-        trancaRepository.save(tranca);
-        trancaRepository.save(tranca2);
         
         expectedTrancas.add(tranca);
         expectedTrancas.add(tranca2);
