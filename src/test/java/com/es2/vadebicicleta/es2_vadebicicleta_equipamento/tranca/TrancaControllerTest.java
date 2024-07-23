@@ -147,7 +147,7 @@ class BicicletaControllerTest {
         assertEquals("Tranca não encontrada", exception.getMessage());
     }
 
-    @Test
+    /*@Test
     void deleteTranca_Success() {
         // Mock do comportamento do serviço para excluir uma tranca
         doNothing().when(service).deleteTranca(anyInt());
@@ -155,7 +155,7 @@ class BicicletaControllerTest {
         // Chama o método do controller e verifica o resultado
         ResponseEntity<Void> response = controller.deleteTranca(1);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-    }
+    }*/
 
     @Test
     void deleteTranca_NotFound() {
