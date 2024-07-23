@@ -28,7 +28,7 @@ public class TotemService {
     }
 
     public Totem save(Totem totem) {
-        if(!validateTotem(totem)){
+        if(validateTotem(totem)){
             throw new InvalidActionException("Dados do totem inválidos");
         }
         return repository.save(totem);
@@ -48,7 +48,7 @@ public class TotemService {
         if(totemAtualizado.getId() == null) {
             throw new NotFoundException("Totem não existe");
         }
-        if(!validateTotem(totemAtualizado)){
+        if(validateTotem(totemAtualizado)){
             throw new InvalidActionException("Dados do totem inválidos");
         }
 
