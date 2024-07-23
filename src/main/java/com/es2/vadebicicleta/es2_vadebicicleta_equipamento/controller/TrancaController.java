@@ -1,7 +1,5 @@
 package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller;
 
-import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
-import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusTrancaEnum;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.TrancaDto;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.TrancaService;
