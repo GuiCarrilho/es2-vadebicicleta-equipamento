@@ -52,7 +52,7 @@ class TotemRepositoryTest {
         totemRepository.save(totem); // Salva a totem inicialmente
         
         // Atualiza a totem
-        totem.setMarca("Nova Marca");
+        totem.setLocalizacao("Novo Local");
         Totem updatedTotem = totemRepository.save(totem);
         
         // Verifica se a totem foi atualizada
