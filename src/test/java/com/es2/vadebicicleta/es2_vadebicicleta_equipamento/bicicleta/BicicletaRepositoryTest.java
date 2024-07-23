@@ -70,6 +70,9 @@ class BicicletaRepositoryTest {
     void findAll_Success() {
         // Esperado
         List<Bicicleta> expectedBicicletas = new ArrayList<>();
+        bicicletaRepository.save(bicicleta);
+        bicicletaRepository.save(bicicleta2);
+        
         expectedBicicletas.add(bicicleta);
         expectedBicicletas.add(bicicleta2);
 
