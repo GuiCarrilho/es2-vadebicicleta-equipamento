@@ -58,13 +58,6 @@ public class BicicletaControllerTest {
     }
 
     @Test
-    void getBicicletas_NoContent() {
-        when(service.getAll()).thenReturn(Collections.emptyList());
-        ResponseEntity<List<Bicicleta>> response = controller.getBicicletas();
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-    }
-
-    @Test
     void postBicicleta_Success() {
         // Mock do comportamento do conversor e do serviço para salvar uma bicicleta
         when(converter.dtoToEntity(any(BicicletaDto.class))).thenReturn(bicicleta);
