@@ -158,7 +158,7 @@ public class TrancaService {
         return tranca;
     }
 
-    /*public void incluirTrancaNaRedeTotem(Integer idTotem, Integer idTranca, Integer idFuncionario){
+    public void incluirTrancaNaRedeTotem(Integer idTotem, Integer idTranca, Integer idFuncionario){
         Totem totem = totemRepository.findById(idTotem).orElseThrow(
                 () -> new InvalidActionException("Totem não encontrado"));
         Tranca tranca = repository.findById(idTranca).orElseThrow(
@@ -167,7 +167,7 @@ public class TrancaService {
             throw new InvalidActionException("Funcionário não existe");
         }
         if(Objects.equals(tranca.getStatus(), "NOVA") || Objects.equals(tranca.getStatus(), "DESTRANCAR")){
-            totemRepository.addTrancasByTotemId(idTotem, tranca);
+            totemRepository.addTrancasByTotemId(totem.getId(), tranca);
         }
         else throw new InvalidActionException("Status da tranca inválido");
     }
@@ -182,13 +182,13 @@ public class TrancaService {
         }
         if(Objects.equals(statusAcaoReparador, "APOSENTADA") || Objects.equals(statusAcaoReparador, "EM_REPARO")){
             tranca.setStatus(statusAcaoReparador);
-            boolean removido = totemRepository.removeTrancaByTotemId(idTotem, tranca);
+            boolean removido = totemRepository.removeTrancaByTotemId(totem.getId(), tranca);
             if(!removido){
                 throw new InvalidActionException("Tranca não está associada ao totem");
             }
         }
         else throw new InvalidActionException("Status da tranca inválido");
-    }*/
+    }
 }
 
 
