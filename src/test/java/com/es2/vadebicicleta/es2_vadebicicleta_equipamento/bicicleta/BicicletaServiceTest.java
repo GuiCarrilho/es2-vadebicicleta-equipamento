@@ -58,7 +58,7 @@ public class BicicletaServiceTest {
 
         // Verifica se a exceção InvalidActionException é lançada
         InvalidActionException exception = assertThrows(InvalidActionException.class, () -> {
-            service.save(invalidBicicleta);
+            bicicletaService.save(invalidBicicleta);
         });
 
         // Verifica a mensagem da exceção
@@ -129,7 +129,7 @@ public class BicicletaServiceTest {
 
         // Verifica se a exceção InvalidActionException é lançada
         InvalidActionException exception = assertThrows(InvalidActionException.class, () -> {
-            service.updateBicicleta(1, invalidBicicleta);
+            biccicletaService.updateBicicleta(1, invalidBicicleta);
         });
 
         // Verifica a mensagem da exceção
