@@ -22,33 +22,33 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class TotemServiceTest {
+class TotemRepositoryTest {
 
     @Mock
-    private TotemRepository totemRepository;
+    private IdGenerator idGenerator;
 
     @InjectMocks
-    private TotemService totemService;
+    private TotemRepository totemRepository;
 
     private Totem totem;
 
     @BeforeEach
     void setUp() {
-        // Configura um objeto Totem para ser usado em todos os testes
-        totem = new Totem(1, "Urca", "em frente a Unirio");
+        // Configura um objeto Bicicleta para ser usado em todos os testes
+        totem = new Totem(1, "Urca", "na Unirio");
     }
 
     @Test
-    void saveTotem_Success() {
-        // Mock do comportamento do método save do repositório
-        when(totemRepository.save(any(Totem.class))).thenReturn(totem);
+    void saveTotem_NewTotem() {
+        // Mock do comportamento do gerador de ID
+        when(idGenerator.idTotemGenerator()).thenReturn(1);
         
-        // Chama o método save do serviço
-        Totem savedTotem = totemService.save(totem);
+        // Chama o método save do repositório
+        Totem savedTotem = totemRepository.save(totem);
         
-        // Verifica se a totem retornada não é nula e se o ID está presente
-        assertNotNull(savedTotem);
-        assertEquals(totem.getId(), savedTotem.getId());
+        // Verifica se a bicicleta foi salva corretamente com o ID gerado
+        assertNotNull(savedTotem.getId());
+        assertEquals(totem.getDescricao(), savedTotem.getDescricao());
     }
 
     @Test
