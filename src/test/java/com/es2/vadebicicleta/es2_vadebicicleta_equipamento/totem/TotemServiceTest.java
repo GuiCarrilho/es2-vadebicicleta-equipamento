@@ -24,11 +24,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class TotemServiceTest {
 
-    @Mock
-    private IdGenerator idGenerator;
+     @Mock
+    private TotemRepository totemRepository;
 
     @InjectMocks
-    private TotemRepository totemRepository;
+    private TotemService totemService;
 
     private Totem totem;
 
