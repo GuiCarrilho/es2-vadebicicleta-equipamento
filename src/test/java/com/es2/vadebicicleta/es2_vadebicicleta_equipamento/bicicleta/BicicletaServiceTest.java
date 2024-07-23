@@ -53,7 +53,7 @@ public class BicicletaServiceTest {
 
     @Test
     void saveBicicleta_InvalidData_ThrowsInvalidActionException() {
-        when(repository.save(any(Bicicleta.class))).thenReturn(bicicleta);
+        when(bicicletaRepository.save(any(Bicicleta.class))).thenReturn(bicicleta);
         // Configura dados inválidos na bicicleta
         bicicleta.setAno(null);
         
