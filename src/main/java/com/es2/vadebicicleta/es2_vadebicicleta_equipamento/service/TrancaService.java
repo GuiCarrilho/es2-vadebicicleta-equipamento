@@ -39,10 +39,7 @@ public class TrancaService {
     }
 
     private boolean validateTranca(Tranca tranca){
-        if(tranca.getLocalizacao() == null || tranca.getNumero() == null || tranca.getModelo() == null || tranca.getAnoDeFabricacao() == null || tranca.getStatus() == null){
-            return false;
-        }
-        return true;
+        return tranca.getLocalizacao() == null || tranca.getNumero() == null || tranca.getModelo() == null || tranca.getAnoDeFabricacao() == null || tranca.getStatus() == null
     }
 
     public List<Tranca> getAll() {
