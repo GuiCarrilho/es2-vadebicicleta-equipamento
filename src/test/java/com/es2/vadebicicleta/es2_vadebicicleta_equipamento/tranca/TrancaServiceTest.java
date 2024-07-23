@@ -44,7 +44,7 @@ class TrancaServiceTest {
         when(trancaRepository.save(any(Tranca.class))).thenReturn(tranca);
         
         // Chama o método save do serviço
-        Tranca savedBicicleta = trancaService.save(tranca);
+        Tranca savedTranca = trancaService.save(tranca);
         
         // Verifica se a tranca retornada não é nula e se o ID está presente
         assertNotNull(savedTranca);
@@ -99,28 +99,28 @@ class TrancaServiceTest {
     @Test
     void updateTranca_Success() {
         // Configura uma nova tranca para atualizar
-        Tranca novaTranca = new Tranca(1, "Caloi", "Mountain Bike", "2023", 124, "Em Uso");
+        Tranca novaTranca = new Tranca(1, 0, 123, "Unirio", "2019", "Montanha", "Trancar");
         
         // Mock do comportamento do método findById do repositório
         when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
         // Mock do comportamento do método save do repositório
-        when(trancaRepository.save(any(Tranca.class))).thenReturn(novaBicicleta);
+        when(trancaRepository.save(any(Tranca.class))).thenReturn(novaTranca);
         
-        // Chama o método updateBicicleta do serviço
-        Tranca updatedBicicleta = trancaService.updateBicicleta(1, novaBicicleta);
+        // Chama o método updateTranca do serviço
+        Tranca updatedTranca = trancaService.updateTranca(1, novaTranca);
         
         // Verifica se a tranca retornada não é nula e se os dados foram atualizados
-        assertNotNull(updatedBicicleta);
-        assertEquals(novaBicicleta.getAno(), updatedBicicleta.getAno());
+        assertNotNull(updatedTranca);
+        assertEquals(novaTranca.getModelo(), updatedTranca.getModelo());
     }
 
     @Test
-    void updateBicicleta_NotFound_ThrowsNotFoundException() {
+    void updateTranca_NotFound_ThrowsNotFoundException() {
         // Configura o repositório para retornar um Optional vazio
         when(trancaRepository.findById(anyInt())).thenReturn(Optional.empty());
         
         // Configura uma nova tranca para atualizar
-        Tranca novaBicicleta = new Tranca(1, 0, 123, "Unirio", "2019", "Montanha", "Trancar");
+        Tranca novaTranca = new Tranca(1, 0, 123, "Unirio", "2019", "Montanha", "Trancar");
         
         // Verifica se a exceção NotFoundException é lançada
         assertThrows(NotFoundException.class, () -> trancaService.updateTranca(1, novaTranca));
