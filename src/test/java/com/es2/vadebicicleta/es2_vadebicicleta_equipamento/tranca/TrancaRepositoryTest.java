@@ -34,14 +34,13 @@ class TrancaRepositoryTest {
 
     @Test
     void saveTranca_NewTranca() {
-        // Mock do comportamento do gerador de ID
-        when(idGenerator.idBicicletaGenerator()).thenReturn(1);
         
         // Chama o método save do repositório
         Tranca savedTranca = trancaRepository.save(tranca);
         
         // Verifica se a tranca foi salva corretamente com o ID gerado
         assertNotNull(savedTranca.getId());
+        assertEquals(trana.getId(), 1);
         assertEquals(tranca.getNumero(), savedTranca.getNumero());
     }
 
@@ -83,13 +82,19 @@ class TrancaRepositoryTest {
 
     @Test
     void deleteById_Success() {
-        // Mock do comportamento do método deleteById
-        trancaRepository.save(tranca); // Salva a tranca inicialmente
-        
+        // Configura o mock do IdGenerator para fornecer um ID
+        when(idGenerator.idTrancaGenerator()).thenReturn(1);
+
+        // Salva a totem inicialmente
+        trancaRepository.save(tranca);
+
+        // Verifica se a totem está presente antes de deletar
+        assertTrue(trancaRepository.findById(1).isPresent());
+
         // Chama o método deleteById do repositório
         boolean result = trancaRepository.deleteById(1);
-        
-        // Verifica se a tranca foi removida com sucesso
+
+        // Verifica se a totem foi removida com sucesso
         assertTrue(result);
         assertFalse(trancaRepository.findById(1).isPresent());
     }
