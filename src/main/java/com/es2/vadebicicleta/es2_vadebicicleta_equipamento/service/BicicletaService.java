@@ -6,8 +6,6 @@ import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.InvalidActionException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.BicicletaRepository;
-import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.TotemRepository;
-import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.TrancaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
