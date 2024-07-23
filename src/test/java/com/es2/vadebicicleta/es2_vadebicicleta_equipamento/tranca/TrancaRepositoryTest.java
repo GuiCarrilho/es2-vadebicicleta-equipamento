@@ -25,7 +25,6 @@ class TrancaRepositoryTest {
     private TrancaRepository trancaRepository;
 
     private Tranca tranca;
-    private Tranca tranca2;
 
     @BeforeEach
     void setUp() {
