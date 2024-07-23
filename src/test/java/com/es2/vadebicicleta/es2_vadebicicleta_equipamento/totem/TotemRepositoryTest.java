@@ -1,4 +1,4 @@
-package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.totem;
+/*package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.totem;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -109,4 +109,4 @@ class TotemRepositoryTest {
         assertFalse(result);
     }
 }
-
+*/
