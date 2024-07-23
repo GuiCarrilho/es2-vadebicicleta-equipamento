@@ -41,8 +41,8 @@ class BicicletaControllerTest {
     @BeforeEach
     void setUp() {
         // Configura um objeto Bicicleta para ser usado em todos os testes
-        bicicleta = new Bicicleta(1, "Caloi", "Mountain Bike", "2022", 123, "Disponível");
-        bicicletaDto = new BicicletaDto("Caloi", "Mountain Bike", "2022", 123, "Disponível");
+        bicicleta = new Bicicleta(1, "MarcaX", "Montanha", "2022", 123, "Disponível");
+        bicicletaDto = new BicicletaDto("MarcaX", "Montanha", "2022", 123, "Disponível");
     }
 
     @Test
