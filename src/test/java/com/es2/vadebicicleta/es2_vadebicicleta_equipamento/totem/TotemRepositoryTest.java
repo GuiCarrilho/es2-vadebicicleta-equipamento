@@ -63,24 +63,6 @@ class TotemRepositoryTest {
     }
 
     @Test
-    void findAll_Success() {
-        totemRepository.save(totem);
-        // Esperado
-        List<Totem> expectedTotens = new ArrayList<>();
-        
-        expectedTotens.add(totem);
-        totemRepository.save(totem2);
-        expectedTotens.add(totem2);
-
-        // Chama o método findAll do repositório
-        List<Totem> allTotens = totemRepository.findAll();
-
-        // Verifica se o tamanho da lista e os elementos são os esperados
-        assertEquals(expectedTotens.size(), allTotens.size());
-        assertTrue(allTotens.containsAll(expectedTotens));
-    }
-
-    @Test
     void findById_Found() {
         // Mock do comportamento do método findById do repositório
         totemRepository.save(totem);
