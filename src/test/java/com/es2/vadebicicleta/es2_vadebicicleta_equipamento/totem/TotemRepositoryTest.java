@@ -42,7 +42,7 @@ class TotemRepositoryTest {
         
         // Verifica se a bicicleta foi salva corretamente com o ID gerado
         assertNotNull(savedTotem.getId());
-        assertEquals(totem.getLocalizacao(), savedTotem.getlocalizacao());
+        assertEquals(totem.getLocalizacao(), savedTotem.getLocalizacao());
     }
 
     @Test
