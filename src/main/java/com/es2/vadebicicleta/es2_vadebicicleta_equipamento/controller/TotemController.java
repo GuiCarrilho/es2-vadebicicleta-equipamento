@@ -27,9 +27,6 @@ public class TotemController {
     @GetMapping("/totem")
     public ResponseEntity<List<Totem>> getTotens(){
         List<Totem> totens = service.getAll();
-        if(totens == null){
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(totens);
     }
 
