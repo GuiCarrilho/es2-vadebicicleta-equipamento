@@ -39,16 +39,16 @@ class TotemRepositoryTest {
     }
 
    @Test
-    void saveBicicleta_Success() {
+    void saveTotem_Success() {
         // Mock do comportamento do método save do repositório
-        when(bicicletaRepository.save(any(Bicicleta.class))).thenReturn(bicicleta);
+        when(totemRepository.save(any(Totem.class))).thenReturn(totem);
         
         // Chama o método save do serviço
-        Bicicleta savedBicicleta = bicicletaService.save(bicicleta);
+        Totem savedTotem = totemService.save(totem);
         
-        // Verifica se a bicicleta retornada não é nula e se o ID está presente
-        assertNotNull(savedBicicleta);
-        assertEquals(bicicleta.getId(), savedBicicleta.getId());
+        // Verifica se o totem retornado não é nulo e se o ID está presente
+        assertNotNull(savedTotem);
+        assertEquals(totem.getId(), savedTotem.getId());
     }
 
     @Test
