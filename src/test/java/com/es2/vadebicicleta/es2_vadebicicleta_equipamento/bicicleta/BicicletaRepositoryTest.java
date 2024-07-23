@@ -30,6 +30,8 @@ class BicicletaRepositoryTest {
 
     private Bicicleta bicicleta;
 
+    private Bicicleta bicicleta2;
+
     @BeforeEach
     void setUp() {
         // Configura um objeto Bicicleta para ser usado em todos os testes
