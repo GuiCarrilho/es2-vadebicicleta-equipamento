@@ -74,8 +74,10 @@ public class TrancaService {
         return repository.save(trancaAtualizada);
     }
 
-    public Tranca deleteTranca(Integer idTranca) {
-        return repository.deleteById(idTranca);
+    public void deleteTotem(Integer idTranca){
+        if(!repository.deleteById(idTranca)){
+            throw new NotFoundException(trancaErro);
+        }
     }
 }
 
