@@ -40,10 +40,11 @@ public class TrancaRepository {
         return Optional.ofNullable(trancas.get(id));
     }
 
-    public Tranca deleteById(Integer idTranca){
+    public boolean deleteById(Integer idTranca){
         if(findById(idTranca).isPresent()){
-            return trancas.remove(idTranca);
+            trancas.remove(idTranca);
+            return true;
         }
-        return null;
+        return false;
     }
 }
