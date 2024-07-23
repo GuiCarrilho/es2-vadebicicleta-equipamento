@@ -48,7 +48,7 @@ public class TotemService {
         if(totemAtualizado.getId() == null) {
             throw new NotFoundException("Totem não existe");
         }
-        if(validateTotem(totemAtualizado)){
+        if(validateTotem(novoTotem)){
             throw new InvalidActionException("Dados do totem inválidos");
         }
 
