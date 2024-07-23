@@ -15,6 +15,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new Erro("422", mensagem));
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Erro> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        String mensagem = "Dados Inválidos";
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new Erro("422", mensagem));
+    }
+
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Erro> handleNotFoundException(NotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Erro("404", ex.getMessage()));
