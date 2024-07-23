@@ -53,16 +53,18 @@ public class BicicletaServiceTest {
 
     @Test
     void saveBicicleta_InvalidData_ThrowsInvalidActionException() {
-        // Define o comportamento do mock repository para evitar interações reais com o banco de dados
-        when(bicicletaRepository.save(any(Bicicleta.class))).thenReturn(null);
+        // Configura a bicicleta com dados inválidos
+        Bicicleta invalidBicicleta = new Bicicleta(null, null, null, null, null, null);
 
-        Bicicleta bicicletaInvalida = new Bicicleta(null, null, null, null, null, null);
-
-        // Verifica se a exceção é lançada quando a bicicleta é inválida
-        assertThrows(InvalidActionException.class, () -> {
-            bicicletaService.save(bicicletaInvalida);
+        // Verifica se a exceção InvalidActionException é lançada
+        InvalidActionException exception = assertThrows(InvalidActionException.class, () -> {
+            service.save(invalidBicicleta);
         });
+
+        // Verifica a mensagem da exceção
+        assertEquals("Dados da bicicleta inválidos", exception.getMessage());
     }
+
     
     @Test
     void getAllBicicletas_Success() {
@@ -118,16 +120,22 @@ public class BicicletaServiceTest {
     }
 
     @Test
-    void updateBicicleta_NotFound_ThrowsNotFoundException() {
-        // Configura o repositório para retornar um Optional vazio
-        when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.empty());
-        
-        // Configura uma nova bicicleta para atualizar
-        Bicicleta novaBicicleta = new Bicicleta(1, "Caloi", "Mountain Bike", "2023", 124, "Em Uso");
-        
-        // Verifica se a exceção NotFoundException é lançada
-        assertThrows(NotFoundException.class, () -> bicicletaService.updateBicicleta(1, novaBicicleta));
+    void updateBicicleta_InvalidData_ThrowsInvalidActionException() {
+        // Configura o mock do repository para encontrar uma bicicleta
+        when(repository.findById(anyInt())).thenReturn(Optional.of(bicicleta));
+
+        // Configura a nova bicicleta com dados inválidos
+        Bicicleta invalidBicicleta = new Bicicleta(null, null, null, null, null, null);
+
+        // Verifica se a exceção InvalidActionException é lançada
+        InvalidActionException exception = assertThrows(InvalidActionException.class, () -> {
+            service.updateBicicleta(1, invalidBicicleta);
+        });
+
+        // Verifica a mensagem da exceção
+        assertEquals("Dados da bicicleta inválidos", exception.getMessage());
     }
+   
 
     @Test
     void updateBicicleta_InvalidData_ThrowsInvalidActionException() {
