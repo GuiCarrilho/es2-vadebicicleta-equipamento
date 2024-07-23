@@ -64,7 +64,7 @@ class TrancaRepositoryTest {
         trancaRepository.save(tranca);
         
         // Chama o método findById do repositório
-        Optional<Tranca> foundTranca = trancaRepository.findById(tranca.getId());
+        Optional<Tranca> foundTranca = trancaRepository.findById(1);
         
         // Verifica se a tranca foi encontrada
         assertTrue(foundTranca.isPresent());
