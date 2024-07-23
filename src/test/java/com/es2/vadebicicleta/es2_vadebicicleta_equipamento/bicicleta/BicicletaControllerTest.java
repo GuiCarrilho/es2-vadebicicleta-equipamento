@@ -59,10 +59,7 @@ public class BicicletaControllerTest {
 
     @Test
     void getBicicletas_NoContent() {
-        // Mock do comportamento do serviço para retornar uma lista vazia
-        when(service.getAll()).thenReturn(List.of());
-        
-        // Chama o método do controller e verifica o resultado
+        when(service.getAll()).thenReturn(Collections.emptyList());
         ResponseEntity<List<Bicicleta>> response = controller.getBicicletas();
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
