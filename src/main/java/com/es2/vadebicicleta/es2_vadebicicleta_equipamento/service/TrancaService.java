@@ -23,10 +23,7 @@ public class TrancaService {
     private final TrancaRepository repository;
     private final BicicletaService bicicletaService;
     private final TotemRepository totemRepository;
-    private String bicicletaErro = "Bicicleta não encontrada";
     private String trancaErro = "Tranca não encontrada";
-    private String destrancarMens = "DESTRANCAR";
-    private String trancarMens = "TRANCAR";
 
     @Autowired
     public TrancaService(TrancaRepository repository, BicicletaService bicicletaService, TotemRepository totemRepository) {
