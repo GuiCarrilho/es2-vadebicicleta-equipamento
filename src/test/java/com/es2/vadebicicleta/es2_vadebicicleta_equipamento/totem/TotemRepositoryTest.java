@@ -14,6 +14,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import java.util.ArrayList;
+import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
 class TotemRepositoryTest {
@@ -25,11 +27,13 @@ class TotemRepositoryTest {
     private TotemRepository totemRepository;
 
     private Totem totem;
+    private Totem totem2;
 
     @BeforeEach
     void setUp() {
         // Configura um objeto Totem para ser usado em todos os testes
         totem = new Totem(1, "Urca", "em frente a Unirio");
+        totem2 = new Totem(2, "Méier", "no Leão";
     }
 
     @Test
@@ -56,6 +60,24 @@ class TotemRepositoryTest {
         
         // Verifica se a totem foi atualizada
         assertEquals("Novo Local", updatedTotem.getLocalizacao());
+    }
+
+    @Test
+    void findAll_Success() {
+        // Esperado
+        ListTotem> expectedTotens = new ArrayList<>();
+        totemRepository.save(totem);
+        totemRepository.save(totem2);
+        
+        expectedBicicletas.add(totem);
+        expectedBicicletas.add(totem2);
+
+        // Chama o método findAll do repositório
+        List<Totem> allTotens = totemRepository.findAll();
+
+        // Verifica se o tamanho da lista e os elementos são os esperados
+        assertEquals(expectedTotens.size(), allTotens.size());
+        assertTrue(allTotens.containsAll(expectedTotens));
     }
 
     @Test
