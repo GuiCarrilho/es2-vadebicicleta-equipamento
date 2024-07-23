@@ -30,17 +30,14 @@ public class BicicletaService {
 
 
     public Bicicleta save(Bicicleta bicicleta) {
-        if(!validateBicicleta(bicicleta)){
+        if(validateBicicleta(bicicleta)){
             throw new InvalidActionException("Dados da bicicleta inválidos");
         }
         return repository.save(bicicleta);
     }
 
     private boolean validateBicicleta(Bicicleta bicicleta){
-        if(bicicleta.getAno() == null || bicicleta.getNumero() == null || bicicleta.getModelo() == null || bicicleta.getMarca() == null || bicicleta.getStatus() == null){
-            return false;
-        }
-        return true;
+        return bicicleta.getAno() == null || bicicleta.getNumero() == null || bicicleta.getModelo() == null || bicicleta.getMarca() == null || bicicleta.getStatus() == null;
     }
 
     public List<Bicicleta> getAll() {
@@ -57,7 +54,7 @@ public class BicicletaService {
         if(bicicletaAtualizada.getId() == null){
             throw new NotFoundException("Bicicleta não existe");
         }
-        if(!validateBicicleta(bicicletaAtualizada)){
+        if(validateBicicleta(bicicletaNova)){
             throw new InvalidActionException("Dados da bicicleta inválidos");
         }
             bicicletaAtualizada.setAno(bicicletaNova.getAno());

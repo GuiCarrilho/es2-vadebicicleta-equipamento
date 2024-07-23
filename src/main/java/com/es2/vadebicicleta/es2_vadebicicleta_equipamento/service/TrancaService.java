@@ -23,6 +23,10 @@ public class TrancaService {
     private final TrancaRepository repository;
     private final BicicletaService bicicletaService;
     private final TotemRepository totemRepository;
+    private String bicicletaErro = "Bicicleta não encontrada";
+    private String trancaErro = "Tranca não encontrada";
+    private String destrancarMens = "DESTRANCAR";
+    private String trancarMens = "TRANCAR";
 
     @Autowired
     public TrancaService(TrancaRepository repository, BicicletaService bicicletaService, TotemRepository totemRepository) {
@@ -32,17 +36,14 @@ public class TrancaService {
     }
 
      public Tranca save(Tranca tranca) {
-        if(!validateTranca(tranca)){
+        if(validateTranca(tranca)){
             throw new InvalidActionException("Dados da tranca inválidos");
         }
         return repository.save(tranca);
     }
 
     private boolean validateTranca(Tranca tranca){
-        if(tranca.getLocalizacao() == null || tranca.getNumero() == null || tranca.getModelo() == null || tranca.getAnoDeFabricacao() == null || tranca.getStatus() == null){
-            return false;
-        }
-        return true;
+        return tranca.getLocalizacao() == null || tranca.getNumero() == null || tranca.getModelo() == null || tranca.getAnoDeFabricacao() == null || tranca.getStatus() == null;
     }
 
     public List<Tranca> getAll() {
@@ -51,15 +52,15 @@ public class TrancaService {
 
     public Tranca getById(Integer id) {
         return repository.findById(id).orElseThrow(
-                () -> new NotFoundException("Tranca não existe"));
+                () -> new NotFoundException(trancaErro));
     }
 
     public Tranca updateTranca(Integer idTranca, Tranca novaTranca) {
         Tranca trancaAtualizada = getById(idTranca);
         if(trancaAtualizada.getId() == null){
-            throw new NotFoundException("Tranca não existe");
+            throw new NotFoundException(trancaErro);
         }
-        if(!validateTranca(trancaAtualizada)){
+        if(validateTranca(trancaAtualizada)){
             throw new InvalidActionException("Dados da tranca inválidos");
         }
 
@@ -82,22 +83,21 @@ public class TrancaService {
                 () -> new InvalidActionException("Id da tranca inválido"));
         Integer idBicicleta = tranca.getBicicleta();
         if(idBicicleta == null){
-            throw new NotFoundException("Bicicleta não encontrada");
+            throw new NotFoundException(bicicletaErro);
         }
-        Bicicleta bicicleta = bicicletaService.getById(idBicicleta);
-        return bicicleta;
+        return bicicletaService.getById(idBicicleta);
     }
 
     public Tranca postStatus(Integer idTranca, StatusTrancaEnum acao){
         Tranca tranca = repository.findById(idTranca).orElseThrow(
-                () -> new NotFoundException("Tranca não encontrada"));
+                () -> new NotFoundException(trancaErro));
 
         switch (acao){
             case DESTRANCAR:
-                tranca.setStatus("DESTRANCAR");
+                tranca.setStatus(destrancarMens);
                 break;
             case TRANCAR:
-                tranca.setStatus("TRANCAR");
+                tranca.setStatus(trancarMens);
                 break;
             case APOSENTADA:
                 tranca.setStatus("APOSENTADA");
@@ -118,17 +118,17 @@ public class TrancaService {
     public Tranca trancar(Integer idTranca, Integer idBicicleta) {
         Tranca tranca = getById(idTranca);
         if (tranca == null) {
-            throw new NotFoundException("Tranca não encontrada");
+            throw new NotFoundException(trancaErro);
         }
-        if (Objects.equals(tranca.getStatus(), "TRANCAR")) {
+        if (Objects.equals(tranca.getStatus(), trancarMens)) {
             throw new NotFoundException("Dados inválidos ou tranca já se encontra trancada");
         }
-        tranca.setStatus("TRANCAR");
+        tranca.setStatus(trancarMens);
         repository.save(tranca);
         if (idBicicleta != null) {
             Bicicleta bicicleta = bicicletaService.getById(idBicicleta);
             if (bicicleta == null) {
-                throw new NotFoundException("Bicicleta não encontrada");
+                throw new NotFoundException(bicicletaErro);
             }
             bicicleta.setStatus("DISPONIVEL");
             bicicletaService.save(bicicleta);
@@ -141,17 +141,17 @@ public class TrancaService {
     public Tranca destrancar(Integer idTranca, Integer idBicicleta) {
         Tranca tranca = getById(idTranca);
         if (tranca == null) {
-            throw new NotFoundException("Tranca não encontrada");
+            throw new NotFoundException(trancaErro);
         }
-        if (Objects.equals(tranca.getStatus(), "DESTRANCAR")) {
+        if (Objects.equals(tranca.getStatus(), destrancarMens)) {
             throw new NotFoundException("Dados inválidos ou tranca já se encontra destrancada");
         }
-        tranca.setStatus("DESTRANCAR");
+        tranca.setStatus(destrancarMens);
         repository.save(tranca);
         if (idBicicleta != null) {
             Bicicleta bicicleta = bicicletaService.getById(idBicicleta);
             if (bicicleta == null) {
-                throw new NotFoundException("Bicicleta não encontrada");
+                throw new NotFoundException(bicicletaErro);
             }
             bicicleta.setStatus("EM_USO");
             bicicletaService.save(bicicleta);
@@ -165,12 +165,12 @@ public class TrancaService {
         Totem totem = totemRepository.findById(idTotem).orElseThrow(
                 () -> new InvalidActionException("Totem não encontrado"));
         Tranca tranca = repository.findById(idTranca).orElseThrow(
-                () -> new InvalidActionException("Tranca não encontrada"));
+                () -> new InvalidActionException(trancaErro));
         if(idFuncionario == null){
             throw new InvalidActionException("Funcionário não existe");
         }
-        if(Objects.equals(tranca.getStatus(), "NOVA") || Objects.equals(tranca.getStatus(), "DESTRANCAR")){
-            totemRepository.addTrancasByTotemId(idTotem, tranca);
+        if(Objects.equals(tranca.getStatus(), "NOVA") || Objects.equals(tranca.getStatus(), destrancarMens)){
+            totemRepository.addTrancasByTotemId(totem.getId(), tranca);
         }
         else throw new InvalidActionException("Status da tranca inválido");
     }
@@ -179,13 +179,13 @@ public class TrancaService {
         Totem totem = totemRepository.findById(idTotem).orElseThrow(
                 () -> new InvalidActionException("Totem não encontrado"));
         Tranca tranca = repository.findById(idTranca).orElseThrow(
-                () -> new InvalidActionException("Tranca não encontrada"));
+                () -> new InvalidActionException(trancaErro));
         if(idFuncionario == null){
             throw new InvalidActionException("Funcionário não existe");
         }
         if(Objects.equals(statusAcaoReparador, "APOSENTADA") || Objects.equals(statusAcaoReparador, "EM_REPARO")){
             tranca.setStatus(statusAcaoReparador);
-            boolean removido = totemRepository.removeTrancaByTotemId(idTotem, tranca);
+            boolean removido = totemRepository.removeTrancaByTotemId(totem.getId(), tranca);
             if(!removido){
                 throw new InvalidActionException("Tranca não está associada ao totem");
             }

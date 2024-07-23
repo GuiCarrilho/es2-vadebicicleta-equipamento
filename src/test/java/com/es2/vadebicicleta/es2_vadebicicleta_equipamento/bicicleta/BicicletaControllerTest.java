@@ -5,7 +5,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller.BicicletaController;
@@ -14,6 +13,8 @@ import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.BicicletaDto;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.BicicletaService;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.InvalidActionException;
+import org.springframework.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,116 +24,151 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
 @ExtendWith(MockitoExtension.class)
-public class BicicletaControllerTest {
+class BicicletaControllerTest {
 
     @Mock
-    private BicicletaService bicicletaService;
+    private BicicletaService service;
 
     @Mock
-    private BicicletaConverter bicicletaConverter;
+    private BicicletaConverter converter;
 
     @InjectMocks
-    private BicicletaController bicicletaController;
+    private BicicletaController controller;
 
     private Bicicleta bicicleta;
     private BicicletaDto bicicletaDto;
 
     @BeforeEach
     void setUp() {
-        // Configura um objeto Bicicleta e um DTO para ser usado em todos os testes
+        // Configura um objeto Bicicleta para ser usado em todos os testes
         bicicleta = new Bicicleta(1, "Caloi", "Mountain Bike", "2022", 123, "Disponível");
         bicicletaDto = new BicicletaDto("Caloi", "Mountain Bike", "2022", 123, "Disponível");
     }
 
     @Test
     void getBicicletas_Success() {
-        // Mock do comportamento do método getAll do serviço
-        when(bicicletaService.getAll()).thenReturn(Arrays.asList(bicicleta));
+        // Mock do comportamento do serviço para retornar uma lista de bicicletas
+        when(service.getAll()).thenReturn(List.of(bicicleta));
         
-        // Chama o endpoint para obter todas as bicicletas
-        ResponseEntity<List<Bicicleta>> response = bicicletaController.getBicicletas();
-        
-        // Verifica se o status é 200 OK e o corpo contém a bicicleta
-        assertEquals(200, response.getStatusCodeValue());
-        assertTrue(response.getBody().contains(bicicleta));
-    }
-
-    @Test
-    void getBicicletas_NoContent() {
-        // Mock do comportamento do método getAll do serviço
-        when(bicicletaService.getAll()).thenReturn(null);
-        
-        // Chama o endpoint para obter todas as bicicletas
-        ResponseEntity<List<Bicicleta>> response = bicicletaController.getBicicletas();
-        
-        // Verifica se o status é 404 Not Found
-        assertEquals(404, response.getStatusCodeValue());
+        // Chama o método do controller e verifica o resultado
+        ResponseEntity<List<Bicicleta>> response = controller.getBicicletas();
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(1, response.getBody().size());
     }
 
     @Test
     void postBicicleta_Success() {
-        // Mock do comportamento do método dtoToEntity do conversor
-        when(bicicletaConverter.dtoToEntity(any(BicicletaDto.class))).thenReturn(bicicleta);
-        // Mock do comportamento do método save do serviço
-        when(bicicletaService.save(any(Bicicleta.class))).thenReturn(bicicleta);
+        // Mock do comportamento do conversor e do serviço para salvar uma bicicleta
+        when(converter.dtoToEntity(any(BicicletaDto.class))).thenReturn(bicicleta);
+        when(service.save(any(Bicicleta.class))).thenReturn(bicicleta);
         
-        // Chama o endpoint para criar uma nova bicicleta
-        ResponseEntity<Bicicleta> response = bicicletaController.postBicicleta(bicicletaDto);
-        
-        // Verifica se o status é 200 OK e o corpo contém a bicicleta criada
-        assertEquals(200, response.getStatusCodeValue());
+        // Chama o método do controller e verifica o resultado
+        ResponseEntity<Bicicleta> response = controller.postBicicleta(bicicletaDto);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(bicicleta, response.getBody());
     }
 
     @Test
+    void postBicicleta_InvalidData_ThrowsInvalidActionException() {
+        // Mock do comportamento do conversor para retornar uma bicicleta inválida
+        when(converter.dtoToEntity(any(BicicletaDto.class))).thenReturn(bicicleta);
+        // Mock do comportamento do serviço para lançar a exceção InvalidActionException
+        when(service.save(any(Bicicleta.class))).thenThrow(new InvalidActionException("Dados da bicicleta inválidos"));
+
+        // Verifica se a exceção InvalidActionException é lançada
+        InvalidActionException exception = assertThrows(InvalidActionException.class, () -> {
+            controller.postBicicleta(bicicletaDto);
+        });
+
+        // Verifica a mensagem da exceção
+        assertEquals("Dados da bicicleta inválidos", exception.getMessage());
+    }
+
+    @Test
     void getBicicletaById_Success() {
-        // Mock do comportamento do método getById do serviço
-        when(bicicletaService.getById(anyInt())).thenReturn(bicicleta);
+        // Mock do comportamento do serviço para retornar uma bicicleta
+        when(service.getById(anyInt())).thenReturn(bicicleta);
         
-        // Chama o endpoint para obter uma bicicleta pelo ID
-        ResponseEntity<Bicicleta> response = bicicletaController.getBicicletaById(1);
-        
-        // Verifica se o status é 200 OK e o corpo contém a bicicleta
-        assertEquals(200, response.getStatusCodeValue());
+        // Chama o método do controller e verifica o resultado
+        ResponseEntity<Bicicleta> response = controller.getBicicletaById(1);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(bicicleta, response.getBody());
     }
 
     @Test
     void getBicicletaById_NotFound() {
-        // Mock do comportamento do método getById do serviço
-        when(bicicletaService.getById(anyInt())).thenThrow(NotFoundException.class);
+        // Mock do comportamento do serviço para lançar a exceção NotFoundException
+        when(service.getById(anyInt())).thenThrow(new NotFoundException("Bicicleta não existe"));
         
-        // Chama o endpoint para obter uma bicicleta pelo ID
-        ResponseEntity<Bicicleta> response = bicicletaController.getBicicletaById(1);
-        
-        // Verifica se o status é 404 Not Found
-        assertEquals(404, response.getStatusCodeValue());
+        // Verifica se a exceção NotFoundException é lançada
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+            controller.getBicicletaById(1);
+        });
+
+        // Verifica a mensagem da exceção
+        assertEquals("Bicicleta não existe", exception.getMessage());
     }
 
     @Test
     void putBicicleta_Success() {
-        // Mock do comportamento do método dtoToEntity do conversor
-        when(bicicletaConverter.dtoToEntity(any(BicicletaDto.class))).thenReturn(bicicleta);
-        // Mock do comportamento do método updateBicicleta do serviço
-        when(bicicletaService.updateBicicleta(anyInt(), any(Bicicleta.class))).thenReturn(bicicleta);
+        // Mock do comportamento do conversor e do serviço para atualizar uma bicicleta
+        when(converter.dtoToEntity(any(BicicletaDto.class))).thenReturn(bicicleta);
+        when(service.updateBicicleta(anyInt(), any(Bicicleta.class))).thenReturn(bicicleta);
         
-        // Chama o endpoint para atualizar uma bicicleta
-        ResponseEntity<Bicicleta> response = bicicletaController.putBicicleta(1, bicicletaDto);
-        
-        // Verifica se o status é 200 OK e o corpo contém a bicicleta atualizada
-        assertEquals(200, response.getStatusCodeValue());
+        // Chama o método do controller e verifica o resultado
+        ResponseEntity<Bicicleta> response = controller.putBicicleta(1, bicicletaDto);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(bicicleta, response.getBody());
     }
 
     @Test
+    void putBicicleta_InvalidData_ThrowsInvalidActionException() {
+        // Mock do comportamento do conversor para retornar uma bicicleta inválida
+        when(converter.dtoToEntity(any(BicicletaDto.class))).thenReturn(bicicleta);
+        // Mock do comportamento do serviço para lançar a exceção InvalidActionException
+        when(service.updateBicicleta(anyInt(), any(Bicicleta.class))).thenThrow(new InvalidActionException("Dados da bicicleta inválidos"));
+
+        // Verifica se a exceção InvalidActionException é lançada
+        InvalidActionException exception = assertThrows(InvalidActionException.class, () -> {
+            controller.putBicicleta(1, bicicletaDto);
+        });
+
+        // Verifica a mensagem da exceção
+        assertEquals("Dados da bicicleta inválidos", exception.getMessage());
+    }
+
+    @Test
+    void putBicicleta_NotFound() {
+        when(converter.dtoToEntity(any(BicicletaDto.class))).thenReturn(bicicleta);
+        when(service.updateBicicleta(anyInt(), any(Bicicleta.class))).thenThrow(new NotFoundException("Bicicleta não encontrada"));
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+            controller.putBicicleta(1, bicicletaDto);
+        });
+        assertEquals("Bicicleta não encontrada", exception.getMessage());
+    }
+
+    @Test
     void deleteBicicleta_Success() {
-        // Mock do comportamento do método deleteBicicleta do serviço
-        doNothing().when(bicicletaService).deleteBicicleta(anyInt());
+        // Mock do comportamento do serviço para excluir uma bicicleta
+        doNothing().when(service).deleteBicicleta(anyInt());
         
-        // Chama o endpoint para excluir uma bicicleta
-        ResponseEntity<Void> response = bicicletaController.deleteBicicleta(1);
+        // Chama o método do controller e verifica o resultado
+        ResponseEntity<Void> response = controller.deleteBicicleta(1);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    void deleteBicicleta_NotFound() {
+        // Mock do comportamento do serviço para lançar a exceção NotFoundException
+        doThrow(new NotFoundException("Bicicleta não encontrada")).when(service).deleteBicicleta(anyInt());
         
-        // Verifica se o status é 200 OK
-        assertEquals(200, response.getStatusCodeValue());
+        // Verifica se a exceção NotFoundException é lançada
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+            controller.deleteBicicleta(1);
+        });
+
+        // Verifica a mensagem da exceção
+        assertEquals("Bicicleta não encontrada", exception.getMessage());
     }
 }
+

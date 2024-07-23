@@ -4,9 +4,6 @@ import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Totem;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.TotemDto;
-import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.Erro;
-import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.InvalidActionException;
-import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.TotemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +27,6 @@ public class TotemController {
     @GetMapping("/totem")
     public ResponseEntity<List<Totem>> getTotens(){
         List<Totem> totens = service.getAll();
-        if(totens == null){
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(totens);
     }
 
@@ -53,7 +47,7 @@ public class TotemController {
     @DeleteMapping("/totem/{idTotem}")
     public ResponseEntity<Void> deleteTotem(@PathVariable Integer idTotem){
         service.deleteTotem(idTotem);
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/totem/{idTotem}/trancas")

@@ -28,17 +28,14 @@ public class TotemService {
     }
 
     public Totem save(Totem totem) {
-        if(!validateTotem(totem)){
+        if(validateTotem(totem)){
             throw new InvalidActionException("Dados do totem inválidos");
         }
         return repository.save(totem);
     }
 
     private boolean validateTotem(Totem totem){
-        if(totem.getDescricao() == null || totem.getLocalizacao() == null){
-            return false;
-        }
-        return true;
+        return totem.getDescricao() == null || totem.getLocalizacao() == null;
     }
 
     public Totem getById(Integer id){
@@ -51,7 +48,7 @@ public class TotemService {
         if(totemAtualizado.getId() == null) {
             throw new NotFoundException("Totem não existe");
         }
-        if(!validateTotem(totemAtualizado)){
+        if(validateTotem(novoTotem)){
             throw new InvalidActionException("Dados do totem inválidos");
         }
 

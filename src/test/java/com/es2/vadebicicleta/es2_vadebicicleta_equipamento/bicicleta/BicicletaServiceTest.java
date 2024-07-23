@@ -22,7 +22,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class BicicletaServiceTest {
+class BicicletaServiceTest {
 
     @Mock
     private BicicletaRepository bicicletaRepository;
@@ -51,7 +51,7 @@ public class BicicletaServiceTest {
         assertEquals(bicicleta.getId(), savedBicicleta.getId());
     }
 
-    @Test
+     @Test
     void saveBicicleta_InvalidData_ThrowsInvalidActionException() {
         // Configura dados inválidos na bicicleta
         bicicleta.setAno(null);
@@ -60,6 +60,7 @@ public class BicicletaServiceTest {
         assertThrows(InvalidActionException.class, () -> bicicletaService.save(bicicleta));
     }
 
+    
     @Test
     void getAllBicicletas_Success() {
         // Configura o repositório para retornar uma lista contendo a bicicleta
@@ -124,8 +125,8 @@ public class BicicletaServiceTest {
         // Verifica se a exceção NotFoundException é lançada
         assertThrows(NotFoundException.class, () -> bicicletaService.updateBicicleta(1, novaBicicleta));
     }
-
-    @Test
+   
+@Test
     void updateBicicleta_InvalidData_ThrowsInvalidActionException() {
         // Configura uma nova bicicleta com dados inválidos
         Bicicleta novaBicicleta = new Bicicleta(1, "Caloi", "Mountain Bike", null, 124, "Em Uso");
