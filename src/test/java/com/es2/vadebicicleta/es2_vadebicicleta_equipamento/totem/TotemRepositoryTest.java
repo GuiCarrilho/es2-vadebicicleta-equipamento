@@ -42,7 +42,7 @@ class TotemRepositoryTest {
         
         // Verifica se a totem foi salva corretamente com o ID gerado
         assertNotNull(savedTotem.getId());
-        assertEquals(totem.getDescricao(), savedTotem.getDescricao());
+        assertEquals(totem.getLocalizacao(), savedTotem.getLocalizacao());
     }
 
     @Test
@@ -81,14 +81,20 @@ class TotemRepositoryTest {
         assertFalse(foundTotem.isPresent());
     }
 
-    @Test
+   @Test
     void deleteById_Success() {
-        // Mock do comportamento do método deleteById
-        totemRepository.save(totem); // Salva a totem inicialmente
-        
+        // Configura o mock do IdGenerator para fornecer um ID
+        when(idGenerator.idTotemGenerator()).thenReturn(1);
+
+        // Salva a totem inicialmente
+        totemRepository.save(totem);
+
+        // Verifica se a totem está presente antes de deletar
+        assertTrue(totemRepository.findById(1).isPresent());
+
         // Chama o método deleteById do repositório
         boolean result = totemRepository.deleteById(1);
-        
+
         // Verifica se a totem foi removida com sucesso
         assertTrue(result);
         assertFalse(totemRepository.findById(1).isPresent());
