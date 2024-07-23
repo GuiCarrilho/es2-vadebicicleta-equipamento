@@ -36,7 +36,7 @@ public class TrancaService {
     }
 
      public Tranca save(Tranca tranca) {
-        if(!validateTranca(tranca)){
+        if(validateTranca(tranca)){
             throw new InvalidActionException("Dados da tranca inválidos");
         }
         return repository.save(tranca);
@@ -60,7 +60,7 @@ public class TrancaService {
         if(trancaAtualizada.getId() == null){
             throw new NotFoundException(trancaErro);
         }
-        if(!validateTranca(trancaAtualizada)){
+        if(validateTranca(trancaAtualizada)){
             throw new InvalidActionException("Dados da tranca inválidos");
         }
 
