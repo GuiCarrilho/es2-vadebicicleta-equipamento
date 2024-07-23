@@ -56,7 +56,7 @@ class TotemRepositoryTest {
         Totem updatedTotem = totemRepository.save(totem);
         
         // Verifica se a totem foi atualizada
-        assertEquals("Novo Local", updatedTotem.geLocalizacao());
+        assertEquals("Novo Local", updatedTotem.getLocalizacao());
     }
 
     @Test
