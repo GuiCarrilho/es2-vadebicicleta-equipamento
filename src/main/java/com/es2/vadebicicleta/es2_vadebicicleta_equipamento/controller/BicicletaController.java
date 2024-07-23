@@ -24,8 +24,7 @@ public class BicicletaController {
 
     @GetMapping("/bicicleta")
     public ResponseEntity<List<Bicicleta>> getBicicletas() {
-        List<Bicicleta> bicicletas = service.getAll();
-        return ResponseEntity.ok().body(bicicletas);
+        return ResponseEntity.ok().body(service.getAll());
     }
 
     @PostMapping("/bicicleta")
