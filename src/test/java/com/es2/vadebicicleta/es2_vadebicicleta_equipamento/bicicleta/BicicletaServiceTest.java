@@ -35,7 +35,7 @@ class BicicletaServiceTest {
     @BeforeEach
     void setUp() {
         // Configura um objeto Bicicleta para ser usado em todos os testes
-        bicicleta = new Bicicleta(1, "Caloi", "Mountain Bike", "2022", 123, "Disponível");
+        bicicleta = new Bicicleta(1, "MarcaX", "Montanha", "2022", 123, "Disponível");
     }
 
     @Test
@@ -99,7 +99,7 @@ class BicicletaServiceTest {
     @Test
     void updateBicicleta_Success() {
         // Configura uma nova bicicleta para atualizar
-        Bicicleta novaBicicleta = new Bicicleta(1, "Caloi", "Mountain Bike", "2023", 124, "Em Uso");
+        Bicicleta novaBicicleta = new Bicicleta(1, "MarcaX", "Montanha", "2023", 124, "Em Uso");
         
         // Mock do comportamento do método findById do repositório
         when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(bicicleta));
@@ -129,7 +129,7 @@ class BicicletaServiceTest {
 @Test
     void updateBicicleta_InvalidData_ThrowsInvalidActionException() {
         // Configura uma nova bicicleta com dados inválidos
-        Bicicleta novaBicicleta = new Bicicleta(1, "Caloi", "Mountain Bike", null, 124, "Em Uso");
+        Bicicleta novaBicicleta = new Bicicleta(1, "MarcaX", "Montanha", null, 124, "Em Uso");
         
         // Mock do comportamento do método findById do repositório
         when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(bicicleta));
