@@ -30,7 +30,7 @@ class TotemControllerTest {
     private TotemService service;
 
     @Mock
-    private TotemaConverter converter;
+    private TotemConverter converter;
 
     @InjectMocks
     private TotemController controller;
