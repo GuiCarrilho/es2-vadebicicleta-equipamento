@@ -11,7 +11,7 @@
 	<groupId>com.es2.vadebicicleta</groupId>
 	<artifactId>es2-vadebicicleta-equipamento</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>es2-vadebicicleta-aluguel</name>
+	<name>es2-vadebicicleta-equipamento</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>
