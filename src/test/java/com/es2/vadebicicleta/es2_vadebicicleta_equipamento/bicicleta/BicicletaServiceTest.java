@@ -134,14 +134,14 @@ public class BicicletaServiceTest {
     @Test
     void updateBicicleta_InvalidData_ThrowsInvalidActionException() {
         // Configura o mock do repository para encontrar uma bicicleta
-        when(repository.findById(anyInt())).thenReturn(Optional.of(bicicleta));
+        when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(bicicleta));
 
         // Configura a nova bicicleta com dados inválidos
         Bicicleta invalidBicicleta = new Bicicleta(null, null, null, null, null, null);
 
         // Verifica se a exceção InvalidActionException é lançada
         InvalidActionException exception = assertThrows(InvalidActionException.class, () -> {
-            service.updateBicicleta(1, invalidBicicleta);
+            bicicletaService.updateBicicleta(1, invalidBicicleta);
         });
 
         // Verifica a mensagem da exceção
