@@ -1,8 +1,6 @@
 package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller;
 
-import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Totem;
-import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.TotemDto;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.TotemService;
 import org.springframework.beans.factory.annotation.Autowired;
