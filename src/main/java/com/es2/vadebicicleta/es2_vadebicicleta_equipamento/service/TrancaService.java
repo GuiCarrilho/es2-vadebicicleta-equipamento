@@ -158,7 +158,7 @@ public class TrancaService {
         return tranca;
     }
 
-    public void incluirTrancaNaRedeTotem(Integer idTotem, Integer idTranca, Integer idFuncionario){
+    /*public void incluirTrancaNaRedeTotem(Integer idTotem, Integer idTranca, Integer idFuncionario){
         Totem totem = totemRepository.findById(idTotem).orElseThrow(
                 () -> new InvalidActionException("Totem não encontrado"));
         Tranca tranca = repository.findById(idTranca).orElseThrow(
@@ -188,7 +188,7 @@ public class TrancaService {
             }
         }
         else throw new InvalidActionException("Status da tranca inválido");
-    }
+    }*/
 }
 
 
