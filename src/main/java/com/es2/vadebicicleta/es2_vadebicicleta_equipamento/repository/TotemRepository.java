@@ -29,7 +29,7 @@ public class TotemRepository {
         }
 
         // Gera um novo ID para a totem
-        Integer idTotem = idGenerator.idTotemGenerator();
+        Integer idTotem = id.idTotemGenerator();
         totem.setId(idTotem);
         totens.put(idTotem, totem);
         return totem;
