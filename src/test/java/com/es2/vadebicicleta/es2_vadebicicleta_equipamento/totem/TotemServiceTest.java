@@ -125,7 +125,7 @@ class TotemServiceTest {
         // Verifica se a exceção NotFoundException é lançada
         assertThrows(NotFoundException.class, () -> totemService.updateTotem(1, novoTotem));
     }
-   
+    
     @Test
     void updateTotem_InvalidData_ThrowsInvalidActionException() {
         // Configura uma novo totem com dados inválidos
