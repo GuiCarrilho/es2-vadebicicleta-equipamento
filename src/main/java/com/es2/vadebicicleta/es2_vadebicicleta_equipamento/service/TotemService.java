@@ -35,10 +35,7 @@ public class TotemService {
     }
 
     private boolean validateTotem(Totem totem){
-        if(totem.getDescricao() == null || totem.getLocalizacao() == null){
-            return false;
-        }
-        return true;
+        return totem.getDescricao() == null || totem.getLocalizacao() == null
     }
 
     public Totem getById(Integer id){
