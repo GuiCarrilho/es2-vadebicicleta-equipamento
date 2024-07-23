@@ -10,7 +10,7 @@ import lombok.*;
 public class Tranca {
 
     private Integer id = null;
-    private Integer bicicleta = null;
+    private Integer bicicleta = 0;
     private Integer numero;
     private String localizacao;
     private String anoDeFabricacao;
