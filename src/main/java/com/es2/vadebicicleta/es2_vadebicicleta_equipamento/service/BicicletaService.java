@@ -30,7 +30,7 @@ public class BicicletaService {
 
 
     public Bicicleta save(Bicicleta bicicleta) {
-        if(!validateBicicleta(bicicleta)){
+        if(validateBicicleta(bicicleta)){
             throw new InvalidActionException("Dados da bicicleta inválidos");
         }
         return repository.save(bicicleta);
@@ -54,7 +54,7 @@ public class BicicletaService {
         if(bicicletaAtualizada.getId() == null){
             throw new NotFoundException("Bicicleta não existe");
         }
-        if(!validateBicicleta(bicicletaNova)){
+        if(validateBicicleta(bicicletaNova)){
             throw new InvalidActionException("Dados da bicicleta inválidos");
         }
             bicicletaAtualizada.setAno(bicicletaNova.getAno());
