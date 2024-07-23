@@ -38,17 +38,17 @@ class TotemRepositoryTest {
         totem = new Totem(1, "Urca", "na Unirio");
     }
 
-    @Test
-    void saveTotem_NovoTotem() {
-        // Mock do comportamento do gerador de ID
-        when(idGenerator.idTotemGenerator()).thenReturn(1);
+   @Test
+    void saveBicicleta_Success() {
+        // Mock do comportamento do método save do repositório
+        when(bicicletaRepository.save(any(Bicicleta.class))).thenReturn(bicicleta);
         
-        // Chama o método save do repositório
-        Totem savedTotem = totemRepository.save(totem);
+        // Chama o método save do serviço
+        Bicicleta savedBicicleta = bicicletaService.save(bicicleta);
         
-        // Verifica se a bicicleta foi salva corretamente com o ID gerado
-        assertNotNull(savedTotem.getId());
-        assertEquals(totem.getDescricao(), savedTotem.getDescricao());
+        // Verifica se a bicicleta retornada não é nula e se o ID está presente
+        assertNotNull(savedBicicleta);
+        assertEquals(bicicleta.getId(), savedBicicleta.getId());
     }
 
     @Test
