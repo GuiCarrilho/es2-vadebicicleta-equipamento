@@ -53,14 +53,15 @@ public class BicicletaServiceTest {
 
     @Test
     void saveBicicleta_InvalidData_ThrowsInvalidActionException() {
-        when(bicicletaRepository.save(any(Bicicleta.class))).thenReturn(bicicleta);
-        // Configura dados inválidos na bicicleta
-        bicicleta.setAno(null);
-        
-        // Verifica se a exceção InvalidActionException é lançada
-        assertThrows(InvalidActionException.class, () -> bicicletaService.save(bicicleta));
-    }
+        // Define o comportamento do mock repository para evitar interações reais com o banco de dados
+        when(repository.save(any(Bicicleta.class))).thenReturn(null);
 
+        // Verifica se a exceção é lançada quando a bicicleta é inválida
+        assertThrows(InvalidActionException.class, () -> {
+            service.save(bicicletaInvalida);
+        });
+    }
+    
     @Test
     void getAllBicicletas_Success() {
         // Configura o repositório para retornar uma lista contendo a bicicleta
