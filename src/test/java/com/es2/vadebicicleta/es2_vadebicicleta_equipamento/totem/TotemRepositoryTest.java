@@ -65,7 +65,7 @@ class TotemRepositoryTest {
     @Test
     void findAll_Success() {
         // Esperado
-        ListTotem> expectedTotens = new ArrayList<>();
+        List<Totem> expectedTotens = new ArrayList<>();
         totemRepository.save(totem);
         totemRepository.save(totem2);
         
