@@ -30,6 +30,7 @@ class BicicletaRepositoryTest {
     void setUp() {
         // Configura um objeto Bicicleta para ser usado em todos os testes
         bicicleta = new Bicicleta(1, "Caloi", "Mountain Bike", "2022", 123, "Disponível");
+        bicicleta2 = new Bicicleta(2, "Oggi", "Road Bike", "2021", 456, "Em uso");
     }
 
     @Test
@@ -57,6 +58,21 @@ class BicicletaRepositoryTest {
         
         // Verifica se a bicicleta foi atualizada
         assertEquals("Nova Marca", updatedBicicleta.getMarca());
+    }
+
+   @Test
+    void findAll_Success() {
+        // Esperado
+        List<Bicicleta> expectedBicicletas = new ArrayList<>();
+        expectedBicicletas.add(bicicleta);
+        expectedBicicletas.add(bicicleta2);
+
+        // Chama o método findAll do repositório
+        List<Bicicleta> allBicicletas = bicicletaRepository.findAll();
+
+        // Verifica se o tamanho da lista e os elementos são os esperados
+        assertEquals(expectedBicicletas.size(), allBicicletas.size());
+        assertTrue(allBicicletas.containsAll(expectedBicicletas));
     }
 
     @Test
