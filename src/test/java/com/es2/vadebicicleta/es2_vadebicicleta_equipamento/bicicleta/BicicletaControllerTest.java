@@ -138,6 +138,16 @@ class BicicletaControllerTest {
     }
 
     @Test
+    void putBicicleta_NotFound() {
+        when(converter.dtoToEntity(any(BicicletaDto.class))).thenReturn(bicicleta);
+        when(service.updateBicicleta(anyInt(), any(Bicicleta.class))).thenThrow(new NotFoundException("Bicicleta não encontrada"));
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+            controller.putBicicleta(1, bicicletaDto);
+        });
+        assertEquals("Bicicleta não encontrada", exception.getMessage());
+    }
+
+    @Test
     void deleteBicicleta_Success() {
         // Mock do comportamento do serviço para excluir uma bicicleta
         doNothing().when(service).deleteBicicleta(anyInt());
