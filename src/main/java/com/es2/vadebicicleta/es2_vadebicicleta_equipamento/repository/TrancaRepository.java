@@ -28,6 +28,7 @@ public class TrancaRepository {
             return tranca;
         }
         Integer idTranca = id.idTrancaGenerator();
+        tranca.setId(idTranca);
         trancas.put(idTranca, tranca);
         return tranca;
     }
