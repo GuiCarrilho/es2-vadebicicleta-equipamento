@@ -23,9 +23,8 @@ public class TotemController {
     }
 
     @GetMapping("/totem")
-    public ResponseEntity<List<Totem>> getTotens(){
-        List<Totem> totens = service.getAll();
-        return ResponseEntity.ok(totens);
+    public ResponseEntity<List<Totem>> getTotens() {
+        return ResponseEntity.ok().body(service.getAll());
     }
 
     @PostMapping("/totem")
