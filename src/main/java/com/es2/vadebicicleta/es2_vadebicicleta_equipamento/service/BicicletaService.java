@@ -37,10 +37,7 @@ public class BicicletaService {
     }
 
     private boolean validateBicicleta(Bicicleta bicicleta){
-        if(bicicleta.getAno() == null || bicicleta.getNumero() == null || bicicleta.getModelo() == null || bicicleta.getMarca() == null || bicicleta.getStatus() == null){
-            return false;
-        }
-        return true;
+        return bicicleta.getAno() == null || bicicleta.getNumero() == null || bicicleta.getModelo() == null || bicicleta.getMarca() == null || bicicleta.getStatus() == null;
     }
 
     public List<Bicicleta> getAll() {
