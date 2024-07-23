@@ -16,14 +16,10 @@ import java.util.Objects;
 public class BicicletaService {
 
     private final BicicletaRepository repository;
-    private final TrancaRepository trancaRepository;
-    private final TotemRepository totemRepository;
 
     @Autowired
-    public BicicletaService(BicicletaRepository repository, TrancaRepository trancaRepository, TotemRepository totemRepository) {
+    public BicicletaService(BicicletaRepository repository) {
         this.repository = repository;
-        this.trancaRepository = trancaRepository;
-        this.totemRepository = totemRepository;
     }
 
 
