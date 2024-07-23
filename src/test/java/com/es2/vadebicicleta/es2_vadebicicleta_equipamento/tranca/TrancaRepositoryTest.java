@@ -66,7 +66,9 @@ class TrancaRepositoryTest {
         // Esperado
         List<Tranca> expectedTrancas = new ArrayList<>();
         
+        trancaRepository.save(tranca);
         expectedTrancas.add(tranca);
+        trancaRepository.save(tranca2);
         expectedTrancas.add(tranca2);
 
         // Chama o método findAll do repositório
