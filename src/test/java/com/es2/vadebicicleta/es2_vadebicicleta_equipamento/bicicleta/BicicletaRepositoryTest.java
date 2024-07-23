@@ -35,8 +35,8 @@ class BicicletaRepositoryTest {
     @BeforeEach
     void setUp() {
         // Configura um objeto Bicicleta para ser usado em todos os testes
-        bicicleta = new Bicicleta(1, "Caloi", "Mountain Bike", "2022", 123, "Disponível");
-        bicicleta2 = new Bicicleta(2, "Oggi", "Road Bike", "2021", 456, "Em uso");
+        bicicleta = new Bicicleta(1, "MarcaX", "Moontanha", "2022", 123, "Disponível");
+        bicicleta2 = new Bicicleta(2, "MarcaY", "Corrida", "2021", 456, "Em uso");
     }
 
     @Test
