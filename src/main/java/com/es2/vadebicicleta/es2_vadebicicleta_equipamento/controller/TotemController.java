@@ -47,7 +47,7 @@ public class TotemController {
     @DeleteMapping("/totem/{idTotem}")
     public ResponseEntity<Void> deleteTotem(@PathVariable Integer idTotem){
         service.deleteTotem(idTotem);
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/totem/{idTotem}/trancas")
