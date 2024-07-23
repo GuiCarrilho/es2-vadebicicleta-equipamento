@@ -126,7 +126,7 @@ class TotemServiceTest {
         assertThrows(NotFoundException.class, () -> totemService.updateTotem(1, novoTotem));
     }
    
-@Test
+    @Test
     void updateTotem_InvalidData_ThrowsInvalidActionException() {
         // Configura uma novo totem com dados inválidos
         Totem novoTotem = new Totem(1, "Méier", null);
