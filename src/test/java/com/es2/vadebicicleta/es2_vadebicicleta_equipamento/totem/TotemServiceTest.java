@@ -128,7 +128,10 @@ class TotemServiceTest {
     
     @Test
     void updateTotem_InvalidData_ThrowsInvalidActionException() {
-        // Configura uma novo totem com dados inválidos
+        // Configura um totem existente
+        Totem totem = new Totem(1, "Méier", "Local");
+
+        // Configura um novo totem com dados inválidos
         Totem novoTotem = new Totem(1, "Méier", null);
         
         // Mock do comportamento do método findById do repositório
