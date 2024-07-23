@@ -34,7 +34,9 @@ public class TrancaRepository {
     }
 
     public List<Tranca> findAll(){
-        return (List<Tranca>) trancas.values();
+        List<Tranca> allTrancas = new ArrayList<>();
+        allTrancas.addAll(trancas.values());
+        return allTrancas;
     }
 
     public Optional<Tranca> findById(Integer id){
