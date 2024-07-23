@@ -32,7 +32,7 @@ public class BicicletaRepository {
         return bicicleta;
     }
     
-    public List<Bicicleta> getAll(){
+    public List<Bicicleta> findAll(){
         List<Bicicleta> allBicicletas = new ArrayList<>();
         allBicicletas.addAll(bicicletas.values());
         return allBicicletas;
