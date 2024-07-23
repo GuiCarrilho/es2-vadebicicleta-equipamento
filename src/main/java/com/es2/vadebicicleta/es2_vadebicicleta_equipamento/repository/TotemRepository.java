@@ -12,9 +12,6 @@ public class TotemRepository {
 
     private static final HashMap<Integer, Totem> totens = new HashMap<>();
 
-    private static final HashMap<Integer, List<Tranca>> trancasByTotemId = new HashMap<>();
-
-    private static final HashMap<Integer, List<Bicicleta>> bicicletasByTotemId = new HashMap<>();
     private final IdGenerator id;
 
     public TotemRepository(IdGenerator id){
