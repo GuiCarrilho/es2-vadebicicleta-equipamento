@@ -84,7 +84,7 @@ public class TrancaController {
         return ResponseEntity.ok().body(trancaNovoStatus);
     }
 
-    @PostMapping("tranca/incluirNaRede")
+    /*@PostMapping("tranca/incluirNaRede")
     public ResponseEntity<Void> incluirNaRede(@RequestBody Integer idTotem, @RequestBody Integer idTranca, @RequestBody Integer idFuncionario) {
         service.incluirTrancaNaRedeTotem(idTotem, idTranca, idFuncionario);
         return ResponseEntity.ok().build();
@@ -94,6 +94,6 @@ public class TrancaController {
     public ResponseEntity<Void> incluirDaRede(@RequestBody Integer idTotem, @RequestBody Integer idTranca, @RequestBody Integer idFuncionario, @RequestBody String statusAcaoReparador) {
         service.retirarTrancaDaRedeTotem(idTotem, idTranca, idFuncionario, statusAcaoReparador);
         return ResponseEntity.ok().build();
-    }
+    }*/
 }
 
