@@ -24,8 +24,7 @@ public class TrancaController {
 
     @GetMapping("/tranca")
     public ResponseEntity<List<Tranca>> getTrancas() {
-        List<Tranca> trancas = service.getAll();
-        return ResponseEntity.ok().body(trancas);
+        return ResponseEntity.ok().body(service.getAll());
     }
 
     @PostMapping("/tranca")
