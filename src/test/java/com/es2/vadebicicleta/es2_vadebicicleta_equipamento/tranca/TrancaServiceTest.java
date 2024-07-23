@@ -54,7 +54,7 @@ class TrancaServiceTest {
      @Test
     void saveTranca_InvalidData_ThrowsInvalidActionException() {
         // Configura dados inválidos na tranca
-        tranca.setAno(null);
+        tranca.setLocalizacao(null);
         
         // Verifica se a exceção InvalidActionException é lançada
         assertThrows(InvalidActionException.class, () -> trancaService.save(tranca));
