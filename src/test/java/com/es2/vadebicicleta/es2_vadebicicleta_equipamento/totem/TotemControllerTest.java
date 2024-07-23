@@ -113,6 +113,16 @@ class TotemControllerTest {
     }
 
     @Test
+    void putTotem_NotFound() {
+        when(converter.dtoToEntity(any(TotemDto.class))).thenReturn(totem);
+        when(service.updateTotem(anyInt(), any(Totem.class))).thenThrow(new NotFoundException("Totem não encontrado"));
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+            controller.putTotem(1, totemDto);
+        });
+        assertEquals("Totem não encontrado", exception.getMessage());
+    }
+
+    @Test
     void deleteTotem_Success() {
         // Mock do comportamento do serviço para excluir uma totem
         doNothing().when(service).deleteTotem(anyInt());
