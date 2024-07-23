@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Erro> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-        String mensagem = "Dados Inválidos";
+        String mensagem = "Invalid request parameters: " + ex.getMessage();
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new Erro("422", mensagem));
     }
 
