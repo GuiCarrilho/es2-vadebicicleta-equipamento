@@ -39,7 +39,7 @@ class TotemRepositoryTest {
     }
 
     @Test
-    void saveTotem_NewTotem() {
+    void saveTotem_NovoTotem() {
         // Mock do comportamento do gerador de ID
         when(idGenerator.idTotemGenerator()).thenReturn(1);
         
