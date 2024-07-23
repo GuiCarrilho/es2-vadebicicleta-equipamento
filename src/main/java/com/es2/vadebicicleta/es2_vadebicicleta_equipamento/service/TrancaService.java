@@ -21,15 +21,11 @@ import java.util.Objects;
 public class TrancaService {
 
     private final TrancaRepository repository;
-    private final BicicletaService bicicletaService;
-    private final TotemRepository totemRepository;
     private String trancaErro = "Tranca não encontrada";
 
     @Autowired
-    public TrancaService(TrancaRepository repository, BicicletaService bicicletaService, TotemRepository totemRepository) {
+    public TrancaService(TrancaRepository repository) {
         this.repository = repository;
-        this.bicicletaService = bicicletaService;
-        this.totemRepository = totemRepository;
     }
 
      public Tranca save(Tranca tranca) {
