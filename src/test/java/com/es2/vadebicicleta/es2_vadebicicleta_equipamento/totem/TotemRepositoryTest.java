@@ -42,7 +42,7 @@ class TotemRepositoryTest {
         // Chama o método save do repositório
         Totem savedTotem = totemRepository.save(totem);
         
-        // Verifica se a bicicleta foi salva corretamente com o ID gerado
+        // Verifica se o totem foi salvo corretamente com o ID gerado
         assertNotNull(savedTotem.getId());
         assertEquals(1, savedTotem.getId());
         assertEquals(totem.getLocalizacao(), savedTotem.getLocalizacao());
@@ -69,8 +69,8 @@ class TotemRepositoryTest {
         totemRepository.save(totem);
         totemRepository.save(totem2);
         
-        expectedBicicletas.add(totem);
-        expectedBicicletas.add(totem2);
+        expectedTotens.add(totem);
+        expectedTotens.add(totem2);
 
         // Chama o método findAll do repositório
         List<Totem> allTotens = totemRepository.findAll();
