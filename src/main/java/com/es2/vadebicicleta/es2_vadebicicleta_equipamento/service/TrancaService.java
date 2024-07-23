@@ -60,7 +60,7 @@ public class TrancaService {
         if(trancaAtualizada.getId() == null){
             throw new NotFoundException(trancaErro);
         }
-        if(validateTranca(trancaAtualizada)){
+        if(validateTranca(novaTranca)){
             throw new InvalidActionException("Dados da tranca inválidos");
         }
 
