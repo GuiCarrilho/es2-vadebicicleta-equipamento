@@ -49,24 +49,4 @@ public class TotemController {
         service.deleteTotem(idTotem);
         return ResponseEntity.ok().build();
     }
-
-    @GetMapping("/totem/{idTotem}/trancas")
-    public ResponseEntity<List<Tranca>> getTrancasByTotemId(@PathVariable Integer idTotem){
-        List<Tranca> trancas = service.getTrancasByTotem(idTotem);
-
-        if(!trancas.isEmpty()){
-            return ResponseEntity.ok().body(trancas);
-        }
-        return null;
-    }
-
-    @GetMapping("/totem/{idTotem}/bicicletas")
-    public ResponseEntity<List<Bicicleta>> getBicicletasByTotem(@PathVariable Integer idTotem){
-        List<Bicicleta> bicicletas = service.getBicicletasByTotem(idTotem);
-
-        if(!bicicletas.isEmpty()){
-            return ResponseEntity.ok().body(bicicletas);
-        }
-        return null;
-    }
 }
