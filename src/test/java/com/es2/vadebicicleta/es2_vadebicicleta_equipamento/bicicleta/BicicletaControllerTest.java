@@ -100,11 +100,11 @@ public class BicicletaControllerTest {
     @Test
     void getBicicletaById_NotFound() {
         // Mock do comportamento do método getById para lançar a exceção NotFoundException
-        when(service.getById(anyInt())).thenThrow(new NotFoundException("Bicicleta não existe"));
+        when(bicicletaService.getById(anyInt())).thenThrow(new NotFoundException("Bicicleta não existe"));
         
         // Verifica se a exceção NotFoundException é lançada e se a resposta tem o status HTTP 404
         NotFoundException exception = assertThrows(NotFoundException.class, () -> {
-            controller.getBicicletaById(1);
+            bicicletaController.getBicicletaById(1);
         });
         
         // Verifica a mensagem da exceção
