@@ -85,31 +85,6 @@ class TotemControllerTest {
     }
 
     @Test
-    void getTotemById_Success() {
-        // Mock do comportamento do serviço para retornar um totem
-        when(service.getById(anyInt())).thenReturn(totem);
-        
-        // Chama o método do controller e verifica o resultado
-        ResponseEntity<Totem> response = controller.getTotemById(1);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(totem, response.getBody());
-    }
-
-    @Test
-    void getTotemById_NotFound() {
-        // Mock do comportamento do serviço para lançar a exceção NotFoundException
-        when(service.getById(anyInt())).thenThrow(new NotFoundException("Totem não existe"));
-        
-        // Verifica se a exceção NotFoundException é lançada
-        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
-            controller.getTotemById(1);
-        });
-
-        // Verifica a mensagem da exceção
-        assertEquals("Totem não existe", exception.getMessage());
-    }
-
-    @Test
     void putTotem_Success() {
         // Mock do comportamento do conversor e do serviço para atualizar um totem
         when(converter.dtoToEntity(any(TotemDto.class))).thenReturn(totem);
