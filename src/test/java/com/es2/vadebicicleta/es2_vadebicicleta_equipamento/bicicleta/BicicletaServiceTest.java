@@ -56,7 +56,7 @@ public class BicicletaServiceTest {
         // Define o comportamento do mock repository para evitar interações reais com o banco de dados
         when(bicicletaRepository.save(any(Bicicleta.class))).thenReturn(null);
 
-        Bicicleta invalidBicicleta = new Bicicleta(null, null, null, null, null, null);
+        Bicicleta bicicletaInvalida = new Bicicleta(null, null, null, null, null, null);
 
         // Verifica se a exceção é lançada quando a bicicleta é inválida
         assertThrows(InvalidActionException.class, () -> {
