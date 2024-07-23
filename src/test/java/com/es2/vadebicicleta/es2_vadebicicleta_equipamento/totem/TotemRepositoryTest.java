@@ -33,7 +33,7 @@ class TotemRepositoryTest {
     void setUp() {
         // Configura um objeto Totem para ser usado em todos os testes
         totem = new Totem(1, "Urca", "em frente a Unirio");
-        totem2 = new Totem(2, "Méier", "no Leão";
+        totem2 = new Totem(2, "Méier", "no Leão");
     }
 
     @Test
