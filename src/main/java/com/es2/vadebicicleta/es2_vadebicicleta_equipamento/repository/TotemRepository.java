@@ -30,7 +30,9 @@ public class TotemRepository {
     }
 
     public List<Totem> findAll(){
-        return (List<Totem>) totens.values();
+        List<Totem> allTotens = new ArrayList<>();
+        allTotens.addAll(totens.values());
+        return allTotens;
     }
 
     public Optional<Totem> findById(Integer id){
