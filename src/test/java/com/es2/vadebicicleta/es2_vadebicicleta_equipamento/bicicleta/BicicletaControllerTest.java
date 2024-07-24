@@ -61,20 +61,18 @@ class BicicletaControllerTest {
     @Test
     void postBicicleta_Success() {
         // Converte o DTO para entidade diretamente
-        Bicicleta bicicletaConverted = converter.dtoToEntity(bicicletaDto);
+        Bicicleta bicicletaNova = converter.dtoToEntity(bicicletaDto);
         // Mock do comportamento do serviço para salvar uma bicicleta
-        when(service.save(any(Bicicleta.class))).thenReturn(bicicletaConverted);
+        when(service.save(any(Bicicleta.class))).thenReturn(bicicletaNova);
         
         // Chama o método do controller e verifica o resultado
         ResponseEntity<Bicicleta> response = controller.postBicicleta(bicicletaDto);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(bicicletaConverted, response.getBody());
+        assertEquals(bicicletaNova, response.getBody());
     }
 
     @Test
     void postBicicleta_InvalidData_ThrowsInvalidActionException() {
-        // Converte o DTO para entidade diretamente
-        Bicicleta bicicletaConverted = converter.dtoToEntity(bicicletaDto);
         // Mock do comportamento do serviço para lançar a exceção InvalidActionException
         when(service.save(any(Bicicleta.class))).thenThrow(new InvalidActionException("Dados da bicicleta inválidos"));
 
@@ -115,20 +113,18 @@ class BicicletaControllerTest {
     @Test
     void putBicicleta_Success() {
         // Converte o DTO para entidade diretamente
-        Bicicleta bicicletaConverted = converter.dtoToEntity(bicicletaDto);
+        Bicicleta bicicletaAtualizada = converter.dtoToEntity(bicicletaDto);
         // Mock do comportamento do serviço para atualizar uma bicicleta
-        when(service.updateBicicleta(anyInt(), any(Bicicleta.class))).thenReturn(bicicleta);
+        when(service.updateBicicleta(anyInt(), any(Bicicleta.class))).thenReturn(bicicletaAtualizada);
         
         // Chama o método do controller e verifica o resultado
         ResponseEntity<Bicicleta> response = controller.putBicicleta(1, bicicletaDto);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(bicicleta, response.getBody());
+        assertEquals(bicicletaAtualizada, response.getBody());
     }
 
     @Test
     void putBicicleta_InvalidData_ThrowsInvalidActionException() {
-        // Converte o DTO para entidade diretamente
-        Bicicleta bicicletaConverted = converter.dtoToEntity(bicicletaDto);
         // Mock do comportamento do serviço para lançar a exceção InvalidActionException
         when(service.updateBicicleta(anyInt(), any(Bicicleta.class))).thenThrow(new InvalidActionException("Dados da bicicleta inválidos"));
 
@@ -143,8 +139,6 @@ class BicicletaControllerTest {
 
     @Test
     void putBicicleta_NotFound() {
-        // Converte o DTO para entidade diretamente
-        Bicicleta bicicletaConverted = converter.dtoToEntity(bicicletaDto);
         // Mock do comportamento do serviço para lançar a exceção NotFoundException
         when(service.updateBicicleta(anyInt(), any(Bicicleta.class))).thenThrow(new NotFoundException("Bicicleta não encontrada"));
         

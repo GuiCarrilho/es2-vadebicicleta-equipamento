@@ -29,11 +29,10 @@ class TotemControllerTest {
     @Mock
     private TotemService service;
 
-    @Mock
-    private TotemConverter converter;
-
     @InjectMocks
     private TotemController controller;
+
+    private TotemConverter converter;
 
     private Totem totem;
     private TotemDto totemDto;
@@ -43,6 +42,9 @@ class TotemControllerTest {
         // Configura um objeto Totem para ser usado em todos os testes
         totem = new Totem(1, "Urca", "em frente a Unirio");
         totemDto = new TotemDto("Urca", "em frente a Unirio");
+        converter = new TotemConverter(); // Inicializa o conversor diretamente
+
+        controller = new TotemController(service, converter);
     }
 
     @Test
@@ -58,20 +60,19 @@ class TotemControllerTest {
 
     @Test
     void postTotem_Success() {
-        // Mock do comportamento do conversor e do serviço para salvar uma totem
-        when(converter.dtoToEntity(any(TotemDto.class))).thenReturn(totem);
-        when(service.save(any(Totem.class))).thenReturn(totem);
+        // Converte o DTO para entidade diretamente
+        Totem totemNova = converter.dtoToEntity(totemDto);
+        // Mock do comportamento do serviço para salvar um totem
+        when(service.save(any(Totem.class))).thenReturn(totemNova);
         
         // Chama o método do controller e verifica o resultado
         ResponseEntity<Totem> response = controller.postTotem(totemDto);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(totem, response.getBody());
+        assertEquals(totemNova, response.getBody());
     }
 
     @Test
     void postTotem_InvalidData_ThrowsInvalidActionException() {
-        // Mock do comportamento do conversor para retornar uma totem inválida
-        when(converter.dtoToEntity(any(TotemDto.class))).thenReturn(totem);
         // Mock do comportamento do serviço para lançar a exceção InvalidActionException
         when(service.save(any(Totem.class))).thenThrow(new InvalidActionException("Dados do totem inválidos"));
 
@@ -86,20 +87,19 @@ class TotemControllerTest {
 
     @Test
     void putTotem_Success() {
-        // Mock do comportamento do conversor e do serviço para atualizar uma totem
-        when(converter.dtoToEntity(any(TotemDto.class))).thenReturn(totem);
-        when(service.updateTotem(anyInt(), any(Totem.class))).thenReturn(totem);
+        // Converte o DTO para entidade diretamente
+        Totem totemAtualizada = converter.dtoToEntity(totemDto);
+        // Mock do comportamento do serviço para atualizar um totem
+        when(service.updateTotem(anyInt(), any(Totem.class))).thenReturn(totemAtualizada);
         
         // Chama o método do controller e verifica o resultado
         ResponseEntity<Totem> response = controller.putTotem(1, totemDto);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(totem, response.getBody());
+        assertEquals(totemAtualizada, response.getBody());
     }
 
     @Test
     void putTotem_InvalidData_ThrowsInvalidActionException() {
-        // Mock do comportamento do conversor para retornar uma totem inválida
-        when(converter.dtoToEntity(any(TotemDto.class))).thenReturn(totem);
         // Mock do comportamento do serviço para lançar a exceção InvalidActionException
         when(service.updateTotem(anyInt(), any(Totem.class))).thenThrow(new InvalidActionException("Dados do totem inválidos"));
 
@@ -114,17 +114,21 @@ class TotemControllerTest {
 
     @Test
     void putTotem_NotFound() {
-        when(converter.dtoToEntity(any(TotemDto.class))).thenReturn(totem);
-        when(service.updateTotem(anyInt(), any(Totem.class))).thenThrow(new NotFoundException("Totem não encontrado"));
+        // Mock do comportamento do serviço para lançar a exceção NotFoundException
+        when(service.updateTotem(anyInt(), any(Totem.class))).thenThrow(new NotFoundException("Totem não encontrada"));
+        
+        // Verifica se a exceção NotFoundException é lançada
         NotFoundException exception = assertThrows(NotFoundException.class, () -> {
             controller.putTotem(1, totemDto);
         });
-        assertEquals("Totem não encontrado", exception.getMessage());
+
+        // Verifica a mensagem da exceção
+        assertEquals("Totem não encontrada", exception.getMessage());
     }
 
     @Test
     void deleteTotem_Success() {
-        // Mock do comportamento do serviço para excluir uma totem
+        // Mock do comportamento do serviço para excluir um totem
         doNothing().when(service).deleteTotem(anyInt());
         
         // Chama o método do controller e verifica o resultado
@@ -135,7 +139,7 @@ class TotemControllerTest {
     @Test
     void deleteTotem_NotFound() {
         // Mock do comportamento do serviço para lançar a exceção NotFoundException
-        doThrow(new NotFoundException("Totem não encontrado")).when(service).deleteTotem(anyInt());
+        doThrow(new NotFoundException("Totem não encontrada")).when(service).deleteTotem(anyInt());
         
         // Verifica se a exceção NotFoundException é lançada
         NotFoundException exception = assertThrows(NotFoundException.class, () -> {
@@ -143,7 +147,7 @@ class TotemControllerTest {
         });
 
         // Verifica a mensagem da exceção
-        assertEquals("Totem não encontrado", exception.getMessage());
+        assertEquals("Totem não encontrada", exception.getMessage());
     }
 }
 
