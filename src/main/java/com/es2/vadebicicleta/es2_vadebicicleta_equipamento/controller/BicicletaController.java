@@ -22,6 +22,10 @@ public class BicicletaController {
         this.converter = converter;
     }
 
+    public void setConverter(BicicletaConverter converter) {
+        this.converter = converter;
+    }
+
     @GetMapping("/bicicleta")
     public ResponseEntity<List<Bicicleta>> getBicicletas() {
         return ResponseEntity.ok().body(service.getAll());
