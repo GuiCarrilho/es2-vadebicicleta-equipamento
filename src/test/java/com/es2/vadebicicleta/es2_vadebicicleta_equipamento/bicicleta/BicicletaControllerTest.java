@@ -63,12 +63,12 @@ class BicicletaControllerTest {
         // Converte o DTO para entidade diretamente
         Bicicleta bicicletaConverted = converter.dtoToEntity(bicicletaDto);
         // Mock do comportamento do serviço para salvar uma bicicleta
-        when(service.save(any(Bicicleta.class))).thenReturn(bicicleta);
+        when(service.save(any(Bicicleta.class))).thenReturn(bicicletaConverted);
         
         // Chama o método do controller e verifica o resultado
         ResponseEntity<Bicicleta> response = controller.postBicicleta(bicicletaDto);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(bicicleta, response.getBody());
+        assertEquals(bicicletaConverted, response.getBody());
     }
 
     @Test
