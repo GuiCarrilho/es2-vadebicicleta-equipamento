@@ -3,8 +3,11 @@ package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.tranca;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Totem;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.TrancaRepository;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.IdGenerator;
@@ -57,8 +60,24 @@ class TrancaRepositoryTest {
         assertEquals("Novo Local", updatedTranca.getLocalizacao());
     }
 
+    @Test
+    void findAll_Success() {
+        // Esperado
+        List<Tranca> trancasExperadas = new ArrayList<>();
+        trancaRepository.save(tranca);
+    
+        trancasExperadas.add(tranca);
+
+        // Chama o método findAll do repositório
+        List<Tranca> allTrancas = trancaRepository.findAll();
+
+        // Verifica se o tamanho da lista e os elementos são os esperados
+        assertEquals(trancasExperadas.size(), allTrancas.size());
+        assertTrue(allTrancas.containsAll(trancasExperadas));
+    }
+
    @Test
-void findById_Found() {
+   void findById_Found() {
     // Salva a tranca e recupera o ID gerado
     Tranca savedTranca = trancaRepository.save(tranca);
     int generatedId = savedTranca.getId();

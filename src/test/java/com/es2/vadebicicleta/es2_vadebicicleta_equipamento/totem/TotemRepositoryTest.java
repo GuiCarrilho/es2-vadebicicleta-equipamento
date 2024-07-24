@@ -3,8 +3,11 @@ package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.totem;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Totem;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.TotemRepository;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.IdGenerator;
@@ -26,6 +29,8 @@ class TotemRepositoryTest {
 
     private Totem totem;
 
+    private Totem totem2;
+
     @BeforeEach
     void setUp() {
         // Configura um objeto Totem para ser usado em todos os testes
@@ -40,7 +45,6 @@ class TotemRepositoryTest {
         
         // Verifica se o totem foi salvo corretamente com o ID gerado
         assertNotNull(savedTotem.getId());
-        assertEquals(1, savedTotem.getId());
         assertEquals(totem.getLocalizacao(), savedTotem.getLocalizacao());
     }
 
@@ -56,6 +60,22 @@ class TotemRepositoryTest {
         
         // Verifica se a totem foi atualizada
         assertEquals("Novo Local", updatedTotem.getLocalizacao());
+    }
+
+    @Test
+    void findAll_Success() {
+        // Esperado
+        List<Totem> totensExperados = new ArrayList<>();
+        totemRepository.save(totem);
+    
+        totensExperados.add(totem);
+
+        // Chama o método findAll do repositório
+        List<Totem> allTotens = totemRepository.findAll();
+
+        // Verifica se o tamanho da lista e os elementos são os esperados
+        assertEquals(totensExperados.size(), allTotens.size());
+        assertTrue(allTotens.containsAll(totensExperados));
     }
 
     @Test

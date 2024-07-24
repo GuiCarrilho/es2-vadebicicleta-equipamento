@@ -2,8 +2,6 @@ package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.bicicleta;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
 
@@ -36,7 +34,6 @@ class BicicletaRepositoryTest {
     void setUp() {
         // Configura um objeto Bicicleta para ser usado em todos os testes
         bicicleta = new Bicicleta(1, "MarcaX", "Moontanha", "2022", 123, "Disponível");
-        bicicleta2 = new Bicicleta(2, "MarcaY", "Corrida", "2021", 456, "Em uso");
     }
 
     @Test
@@ -82,7 +79,7 @@ class BicicletaRepositoryTest {
         // Verifica se o tamanho da lista e os elementos são os esperados
         assertEquals(expectedBicicletas.size(), allBicicletas.size());
         assertTrue(allBicicletas.containsAll(expectedBicicletas));
-    }
+    } 
 
     @Test
     void findById_Found() {

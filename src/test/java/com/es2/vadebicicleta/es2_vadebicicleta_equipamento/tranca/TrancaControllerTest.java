@@ -7,12 +7,9 @@ import static org.mockito.Mockito.*;
 
 import java.util.List;
 
-import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller.TotemConverter;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller.TrancaController;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller.TrancaConverter;
-import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Totem;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
-import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.TotemDto;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.TrancaDto;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.TrancaService;

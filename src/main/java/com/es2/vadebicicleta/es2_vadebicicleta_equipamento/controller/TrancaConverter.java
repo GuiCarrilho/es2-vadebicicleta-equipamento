@@ -1,5 +1,4 @@
 package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller;
-
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.TrancaDto;
 import org.springframework.stereotype.Component;
