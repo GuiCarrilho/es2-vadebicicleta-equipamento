@@ -29,10 +29,10 @@ class BicicletaControllerTest {
     @Mock
     private BicicletaService service;
 
-    private BicicletaConverter converter;
-
     @InjectMocks
     private BicicletaController controller;
+
+    private BicicletaConverter converter;
 
     private Bicicleta bicicleta;
     private BicicletaDto bicicletaDto;
@@ -42,6 +42,9 @@ class BicicletaControllerTest {
         // Configura um objeto Bicicleta para ser usado em todos os testes
         bicicleta = new Bicicleta(1, "MarcaX", "Montanha", "2022", 123, "Disponível");
         bicicletaDto = new BicicletaDto("MarcaX", "Montanha", "2022", 123, "Disponível");
+        converter = new BicicletaConverter(); // Inicializa o conversor diretamente
+
+        controller = new BicicletaController(service, converter);
     }
 
     @Test
@@ -57,8 +60,9 @@ class BicicletaControllerTest {
 
     @Test
     void postBicicleta_Success() {
-        // Mock do comportamento do conversor e do serviço para salvar uma bicicleta
-        converter.dtoToEntity(any(BicicletaDto.class)).thenReturn(bicicleta);
+        // Converte o DTO para entidade diretamente
+        Bicicleta bicicletaConverted = converter.dtoToEntity(bicicletaDto);
+        // Mock do comportamento do serviço para salvar uma bicicleta
         when(service.save(any(Bicicleta.class))).thenReturn(bicicleta);
         
         // Chama o método do controller e verifica o resultado
@@ -69,8 +73,8 @@ class BicicletaControllerTest {
 
     @Test
     void postBicicleta_InvalidData_ThrowsInvalidActionException() {
-        // Mock do comportamento do conversor para retornar uma bicicleta inválida
-        converter.dtoToEntity(any(BicicletaDto.class)).thenReturn(bicicleta);
+        // Converte o DTO para entidade diretamente
+        Bicicleta bicicletaConverted = converter.dtoToEntity(bicicletaDto);
         // Mock do comportamento do serviço para lançar a exceção InvalidActionException
         when(service.save(any(Bicicleta.class))).thenThrow(new InvalidActionException("Dados da bicicleta inválidos"));
 
@@ -110,8 +114,9 @@ class BicicletaControllerTest {
 
     @Test
     void putBicicleta_Success() {
-        // Mock do comportamento do conversor e do serviço para atualizar uma bicicleta
-        converter.dtoToEntity(any(BicicletaDto.class)).thenReturn(bicicleta);
+        // Converte o DTO para entidade diretamente
+        Bicicleta bicicletaConverted = converter.dtoToEntity(bicicletaDto);
+        // Mock do comportamento do serviço para atualizar uma bicicleta
         when(service.updateBicicleta(anyInt(), any(Bicicleta.class))).thenReturn(bicicleta);
         
         // Chama o método do controller e verifica o resultado
@@ -122,8 +127,8 @@ class BicicletaControllerTest {
 
     @Test
     void putBicicleta_InvalidData_ThrowsInvalidActionException() {
-        // Mock do comportamento do conversor para retornar uma bicicleta inválida
-        converter.dtoToEntity(any(BicicletaDto.class)).thenReturn(bicicleta);
+        // Converte o DTO para entidade diretamente
+        Bicicleta bicicletaConverted = converter.dtoToEntity(bicicletaDto);
         // Mock do comportamento do serviço para lançar a exceção InvalidActionException
         when(service.updateBicicleta(anyInt(), any(Bicicleta.class))).thenThrow(new InvalidActionException("Dados da bicicleta inválidos"));
 
@@ -138,11 +143,17 @@ class BicicletaControllerTest {
 
     @Test
     void putBicicleta_NotFound() {
-        converter.dtoToEntity(any(BicicletaDto.class)).thenReturn(bicicleta);
+        // Converte o DTO para entidade diretamente
+        Bicicleta bicicletaConverted = converter.dtoToEntity(bicicletaDto);
+        // Mock do comportamento do serviço para lançar a exceção NotFoundException
         when(service.updateBicicleta(anyInt(), any(Bicicleta.class))).thenThrow(new NotFoundException("Bicicleta não encontrada"));
+        
+        // Verifica se a exceção NotFoundException é lançada
         NotFoundException exception = assertThrows(NotFoundException.class, () -> {
             controller.putBicicleta(1, bicicletaDto);
         });
+
+        // Verifica a mensagem da exceção
         assertEquals("Bicicleta não encontrada", exception.getMessage());
     }
 
@@ -170,4 +181,5 @@ class BicicletaControllerTest {
         assertEquals("Bicicleta não encontrada", exception.getMessage());
     }
 }
+
 
