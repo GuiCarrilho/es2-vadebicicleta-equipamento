@@ -61,14 +61,14 @@ class TotemControllerTest {
     @Test
     void postTotem_Success() {
         // Converte o DTO para entidade diretamente
-        Totem totemNova = converter.dtoToEntity(totemDto);
+        Totem totemNovo = converter.dtoToEntity(totemDto);
         // Mock do comportamento do serviço para salvar um totem
-        when(service.save(any(Totem.class))).thenReturn(totemNova);
+        when(service.save(any(Totem.class))).thenReturn(totemNovo);
         
         // Chama o método do controller e verifica o resultado
         ResponseEntity<Totem> response = controller.postTotem(totemDto);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(totemNova, response.getBody());
+        assertEquals(totemNovo, response.getBody());
     }
 
     @Test
@@ -88,14 +88,14 @@ class TotemControllerTest {
     @Test
     void putTotem_Success() {
         // Converte o DTO para entidade diretamente
-        Totem totemAtualizada = converter.dtoToEntity(totemDto);
+        Totem totemAtualizado = converter.dtoToEntity(totemDto);
         // Mock do comportamento do serviço para atualizar um totem
-        when(service.updateTotem(anyInt(), any(Totem.class))).thenReturn(totemAtualizada);
+        when(service.updateTotem(anyInt(), any(Totem.class))).thenReturn(totemAtualizado);
         
         // Chama o método do controller e verifica o resultado
         ResponseEntity<Totem> response = controller.putTotem(1, totemDto);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(totemAtualizada, response.getBody());
+        assertEquals(totemAtualizado, response.getBody());
     }
 
     @Test

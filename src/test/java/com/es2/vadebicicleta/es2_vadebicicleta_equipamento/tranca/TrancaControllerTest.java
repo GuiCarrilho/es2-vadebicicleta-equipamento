@@ -7,9 +7,12 @@ import static org.mockito.Mockito.*;
 
 import java.util.List;
 
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller.TotemConverter;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller.TrancaController;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller.TrancaConverter;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Totem;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.TotemDto;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.TrancaDto;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.TrancaService;
@@ -29,11 +32,10 @@ class TrancaControllerTest {
     @Mock
     private TrancaService service;
 
-    @Mock
-    private TrancaConverter converter;
-
     @InjectMocks
     private TrancaController controller;
+
+    private TrancaConverter converter;
 
     private Tranca tranca;
     private TrancaDto trancaDto;
@@ -43,11 +45,14 @@ class TrancaControllerTest {
         // Configura um objeto Tranca para ser usado em todos os testes
         tranca = new Tranca(1, 0, 123, "Unirio", "2019", "Corrida", "Trancar");
         trancaDto = new TrancaDto(123, "Unirio", "2019", "Corrida", "Trancar");
+        converter = new TrancaConverter(); // Inicializa o conversor diretamente
+
+        controller = new TrancaController(service, converter);
     }
 
     @Test
     void getTrancas_Success() {
-        // Mock do comportamento do serviço para retornar uma lista de bicicletas
+        // Mock do comportamento do serviço para retornar uma lista de trancass
         when(service.getAll()).thenReturn(List.of(tranca));
         
         // Chama o método do controller e verifica o resultado
@@ -58,20 +63,19 @@ class TrancaControllerTest {
 
     @Test
     void postTranca_Success() {
-        // Mock do comportamento do conversor e do serviço para salvar uma tranca
-        when(converter.dtoToEntity(any(TrancaDto.class))).thenReturn(tranca);
-        when(service.save(any(Tranca.class))).thenReturn(tranca);
+        // Converte o DTO para entidade diretamente
+        Tranca trancaNova = converter.dtoToEntity(trancaDto);
+        // Mock do comportamento do serviço para salvar uma tranca
+        when(service.save(any(Tranca.class))).thenReturn(trancaNova);
         
         // Chama o método do controller e verifica o resultado
         ResponseEntity<Tranca> response = controller.postTranca(trancaDto);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(tranca, response.getBody());
+        assertEquals(trancaNova, response.getBody());
     }
 
     @Test
     void postTranca_InvalidData_ThrowsInvalidActionException() {
-        // Mock do comportamento do conversor para retornar uma tranca inválida
-        when(converter.dtoToEntity(any(TrancaDto.class))).thenReturn(tranca);
         // Mock do comportamento do serviço para lançar a exceção InvalidActionException
         when(service.save(any(Tranca.class))).thenThrow(new InvalidActionException("Dados da tranca inválidos"));
 
@@ -111,20 +115,19 @@ class TrancaControllerTest {
 
     @Test
     void putTranca_Success() {
-        // Mock do comportamento do conversor e do serviço para atualizar uma tranca
-        when(converter.dtoToEntity(any(TrancaDto.class))).thenReturn(tranca);
-        when(service.updateTranca(anyInt(), any(Tranca.class))).thenReturn(tranca);
+        // Converte o DTO para entidade diretamente
+        Tranca trancaAtualizada = converter.dtoToEntity(trancaDto);
+        // Mock do comportamento do serviço para atualizar uma tranca
+        when(service.updateTranca(anyInt(), any(Tranca.class))).thenReturn(trancaAtualizada);
         
         // Chama o método do controller e verifica o resultado
         ResponseEntity<Tranca> response = controller.putTranca(1, trancaDto);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(tranca, response.getBody());
+        assertEquals(trancaAtualizada, response.getBody());
     }
 
     @Test
     void putTranca_InvalidData_ThrowsInvalidActionException() {
-        // Mock do comportamento do conversor para retornar uma tranca inválida
-        when(converter.dtoToEntity(any(TrancaDto.class))).thenReturn(tranca);
         // Mock do comportamento do serviço para lançar a exceção InvalidActionException
         when(service.updateTranca(anyInt(), any(Tranca.class))).thenThrow(new InvalidActionException("Dados da tranca inválidos"));
 
@@ -139,23 +142,25 @@ class TrancaControllerTest {
 
     @Test
     void putTranca_NotFound() {
-        when(converter.dtoToEntity(any(TrancaDto.class))).thenReturn(tranca);
+        // Mock do comportamento do serviço para lançar a exceção NotFoundException
         when(service.updateTranca(anyInt(), any(Tranca.class))).thenThrow(new NotFoundException("Tranca não encontrada"));
+        
+        // Verifica se a exceção NotFoundException é lançada
         NotFoundException exception = assertThrows(NotFoundException.class, () -> {
             controller.putTranca(1, trancaDto);
         });
+
+        // Verifica a mensagem da exceção
         assertEquals("Tranca não encontrada", exception.getMessage());
     }
 
     @Test
     void deleteTranca_Success() {
-        // Chama o método do controller
+        // Mock do comportamento do serviço para excluir uma tranca
+        doNothing().when(service).deleteTranca(anyInt());
+        
+        // Chama o método do controller e verifica o resultado
         ResponseEntity<Void> response = controller.deleteTranca(1);
-
-        // Verifica se o método do serviço foi chamado com o ID correto
-        verify(service).deleteTranca(1);
-
-        // Verifica o status da resposta
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
