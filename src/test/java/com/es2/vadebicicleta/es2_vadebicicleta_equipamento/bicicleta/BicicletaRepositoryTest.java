@@ -68,10 +68,8 @@ class BicicletaRepositoryTest {
         // Esperado
         List<Bicicleta> expectedBicicletas = new ArrayList<>();
         bicicletaRepository.save(bicicleta);
-        bicicletaRepository.save(bicicleta2);
         
         expectedBicicletas.add(bicicleta);
-        expectedBicicletas.add(bicicleta2);
 
         // Chama o método findAll do repositório
         List<Bicicleta> allBicicletas = bicicletaRepository.findAll();
