@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Totem;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.TotemRepository;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.IdGenerator;
@@ -28,8 +27,6 @@ class TotemRepositoryTest {
     private TotemRepository totemRepository;
 
     private Totem totem;
-
-    private Totem totem2;
 
     @BeforeEach
     void setUp() {
