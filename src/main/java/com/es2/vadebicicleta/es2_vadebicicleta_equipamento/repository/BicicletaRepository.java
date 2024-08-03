@@ -16,7 +16,7 @@ import java.util.Optional;
 @Repository
 public class BicicletaRepository {
 
-    private static HashMap<Integer, Bicicleta> bicicletas = new HashMap<>();
+    private static final HashMap<Integer, Bicicleta> bicicletas = new HashMap<>();
     private final IdGenerator id;
 
     public BicicletaRepository(IdGenerator id){
@@ -35,9 +35,7 @@ public class BicicletaRepository {
     }
     
     public List<Bicicleta> findAll(){
-        List<Bicicleta> allBicicletas = new ArrayList<>();
-        allBicicletas.addAll(bicicletas.values());
-        return allBicicletas;
+        return new ArrayList<>(bicicletas.values());
     }
 
     public Optional<Bicicleta> findById(Integer id){

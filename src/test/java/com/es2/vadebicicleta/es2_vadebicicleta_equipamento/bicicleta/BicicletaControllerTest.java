@@ -29,10 +29,11 @@ class BicicletaControllerTest {
     @Mock
     private BicicletaService service;
 
+    @Mock
+    private BicicletaConverter converter;
+
     @InjectMocks
     private BicicletaController controller;
-
-    private BicicletaConverter converter;
 
     private Bicicleta bicicleta;
     private BicicletaDto bicicletaDto;
@@ -42,16 +43,13 @@ class BicicletaControllerTest {
         // Configura um objeto Bicicleta para ser usado em todos os testes
         bicicleta = new Bicicleta(1, "MarcaX", "Montanha", "2022", 123, "Disponível");
         bicicletaDto = new BicicletaDto("MarcaX", "Montanha", "2022", 123, "Disponível");
-        converter = new BicicletaConverter(); // Inicializa o conversor diretamente
-
-        controller = new BicicletaController(service, converter);
     }
 
     @Test
-    void getBicicletas_Success() {
-        // Mock do comportamento do serviço para retornar uma lista de bicicletas
+    void geticicletas_Success() {
+        // Mock do comportamento do serviço para retornar uma lista de totens
         when(service.getAll()).thenReturn(List.of(bicicleta));
-        
+
         // Chama o método do controller e verifica o resultado
         ResponseEntity<List<Bicicleta>> response = controller.getBicicletas();
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -60,19 +58,20 @@ class BicicletaControllerTest {
 
     @Test
     void postBicicleta_Success() {
-        // Converte o DTO para entidade diretamente
-        Bicicleta bicicletaNova = converter.dtoToEntity(bicicletaDto);
-        // Mock do comportamento do serviço para salvar uma bicicleta
-        when(service.save(any(Bicicleta.class))).thenReturn(bicicletaNova);
+        // Mock do comportamento do conversor e do serviço para salvar uma bicicleta
+        when(converter.dtoToEntity(any(BicicletaDto.class))).thenReturn(bicicleta);
+        when(service.save(any(Bicicleta.class))).thenReturn(bicicleta);
         
         // Chama o método do controller e verifica o resultado
         ResponseEntity<Bicicleta> response = controller.postBicicleta(bicicletaDto);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(bicicletaNova, response.getBody());
+        assertEquals(bicicleta, response.getBody());
     }
 
     @Test
     void postBicicleta_InvalidData_ThrowsInvalidActionException() {
+        // Mock do comportamento do conversor para retornar uma bicicleta inválida
+        when(converter.dtoToEntity(any(BicicletaDto.class))).thenReturn(bicicleta);
         // Mock do comportamento do serviço para lançar a exceção InvalidActionException
         when(service.save(any(Bicicleta.class))).thenThrow(new InvalidActionException("Dados da bicicleta inválidos"));
 
@@ -112,19 +111,20 @@ class BicicletaControllerTest {
 
     @Test
     void putBicicleta_Success() {
-        // Converte o DTO para entidade diretamente
-        Bicicleta bicicletaAtualizada = converter.dtoToEntity(bicicletaDto);
-        // Mock do comportamento do serviço para atualizar uma bicicleta
-        when(service.updateBicicleta(anyInt(), any(Bicicleta.class))).thenReturn(bicicletaAtualizada);
+        // Mock do comportamento do conversor e do serviço para atualizar uma bicicleta
+        when(converter.dtoToEntity(any(BicicletaDto.class))).thenReturn(bicicleta);
+        when(service.updateBicicleta(anyInt(), any(Bicicleta.class))).thenReturn(bicicleta);
         
         // Chama o método do controller e verifica o resultado
         ResponseEntity<Bicicleta> response = controller.putBicicleta(1, bicicletaDto);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(bicicletaAtualizada, response.getBody());
+        assertEquals(bicicleta, response.getBody());
     }
 
     @Test
     void putBicicleta_InvalidData_ThrowsInvalidActionException() {
+        // Mock do comportamento do conversor para retornar uma bicicleta inválida
+        when(converter.dtoToEntity(any(BicicletaDto.class))).thenReturn(bicicleta);
         // Mock do comportamento do serviço para lançar a exceção InvalidActionException
         when(service.updateBicicleta(anyInt(), any(Bicicleta.class))).thenThrow(new InvalidActionException("Dados da bicicleta inválidos"));
 
@@ -139,7 +139,9 @@ class BicicletaControllerTest {
 
     @Test
     void putBicicleta_NotFound() {
-        // Mock do comportamento do serviço para lançar a exceção NotFoundException
+        // Mock do comportamento do conversor para retornar uma bicicleta inválida
+        when(converter.dtoToEntity(any(BicicletaDto.class))).thenReturn(bicicleta);
+        // Mock do comportamento do serviço para lançar a exceção InvalidActionException
         when(service.updateBicicleta(anyInt(), any(Bicicleta.class))).thenThrow(new NotFoundException("Bicicleta não encontrada"));
         
         // Verifica se a exceção NotFoundException é lançada

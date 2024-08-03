@@ -16,7 +16,7 @@ import java.util.Optional;
 @Repository
 public class TrancaRepository {
 
-    private static HashMap<Integer, Tranca> trancas = new HashMap<>();
+    private static final HashMap<Integer, Tranca> trancas = new HashMap<>();
 
     private final IdGenerator id;
 
@@ -36,9 +36,7 @@ public class TrancaRepository {
     }
 
     public List<Tranca> findAll(){
-        List<Tranca> allTrancas = new ArrayList<>();
-        allTrancas.addAll(trancas.values());
-        return allTrancas;
+        return new ArrayList<>(trancas.values());
     }
 
     public Optional<Tranca> findById(Integer id){
