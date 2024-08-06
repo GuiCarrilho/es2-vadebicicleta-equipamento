@@ -6,7 +6,6 @@ import lombok.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 public class TrancaDto {
 
     private Integer numero;
