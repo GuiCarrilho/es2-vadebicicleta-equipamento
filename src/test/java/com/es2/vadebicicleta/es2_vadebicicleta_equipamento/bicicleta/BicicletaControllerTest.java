@@ -46,7 +46,7 @@ class BicicletaControllerTest {
     }
 
     @Test
-    void geticicletas_Success() {
+    void getBicicletas_Success() {
         // Mock do comportamento do serviço para retornar uma lista de totens
         when(service.getAll()).thenReturn(List.of(bicicleta));
 
