@@ -6,18 +6,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class TrancaConverter {
 
-    public TrancaDto entityToDto(Tranca tranca){
-        TrancaDto dto = new TrancaDto();
-
-        dto.setNumero(tranca.getNumero());
-        dto.setAnoDeFabricacao(tranca.getAnoDeFabricacao());
-        dto.setLocalizacao(tranca.getLocalizacao());
-        dto.setModelo(tranca.getModelo());
-        dto.setStatus(tranca.getStatus());
-
-        return dto;
-    }
-
     public Tranca dtoToEntity(TrancaDto dto){
         Tranca tranca = new Tranca();
 

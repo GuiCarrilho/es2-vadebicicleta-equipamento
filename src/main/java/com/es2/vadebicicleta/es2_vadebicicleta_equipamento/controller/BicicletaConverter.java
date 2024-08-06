@@ -7,18 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class BicicletaConverter {
 
-    public BicicletaDto entityToDto(Bicicleta bicicleta){
-        BicicletaDto dto = new BicicletaDto();
-
-        dto.setAno(bicicleta.getAno());
-        dto.setModelo(bicicleta.getModelo());
-        dto.setNumero(bicicleta.getNumero());
-        dto.setMarca(bicicleta.getMarca());
-        dto.setStatus(bicicleta.getStatus());
-
-        return dto;
-    }
-
     public Bicicleta dtoToEntity(BicicletaDto dto){
         Bicicleta bicicleta = new Bicicleta();
 

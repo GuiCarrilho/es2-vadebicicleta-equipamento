@@ -7,15 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class TotemConverter {
 
-    public TotemDto entityToDto(Totem totem) {
-        TotemDto dto = new TotemDto();
-
-        dto.setDescricao(totem.getDescricao());
-        dto.setLocalizacao(totem.getLocalizacao());
-
-        return dto;
-    }
-
     public Totem dtoToEntity(TotemDto dto){
         Totem totem = new Totem();
 
