@@ -1,5 +1,6 @@
 package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository;
 
+import ch.qos.logback.classic.util.LogbackMDCAdapter;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Totem;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
@@ -17,6 +18,8 @@ import java.util.Optional;
 public class TotemRepository {
 
     private static final HashMap<Integer, Totem> totens = new HashMap<>();
+    private static final HashMap<Integer, List<Tranca>> trancasByTotemId = new HashMap<>();
+    private static final HashMap<Integer, List<Bicicleta>> bicicletasByTotemId = new HashMap<>();
 
     private final IdGenerator id;
 
@@ -49,5 +52,73 @@ public class TotemRepository {
             return true;
         }
         return false;
+    }
+
+    public void addTrancasByTotemId(Integer idTotem, Tranca tranca){
+        List<Tranca> trancas = trancasByTotemId.get(idTotem);
+        if(trancas == null){
+            trancasByTotemId.put(idTotem, new ArrayList<>());
+            trancas = new ArrayList<>();
+            trancasByTotemId.put(idTotem, trancas);
+            trancas.add(tranca);
+        }
+        else
+            trancas.add(tranca);
+
+    }
+
+    public boolean removeTrancaByTotemId(Integer idTotem, Tranca tranca){
+        List<Tranca> trancas = trancasByTotemId.get(idTotem);
+        if(trancas == null){
+            return false;
+        }
+        trancas.remove(tranca);
+        if(trancas.isEmpty()){
+            trancasByTotemId.remove(idTotem);
+        }
+        return true;
+    }
+
+    public void addBicicletasByTotemId(Integer idTotem, Bicicleta bicicleta){
+        List<Bicicleta> bicicletas = bicicletasByTotemId.get(idTotem);
+        if(bicicletas == null){
+            bicicletasByTotemId.put(idTotem, new ArrayList<>());
+            bicicletas = new ArrayList<>();
+            bicicletasByTotemId.put(idTotem, bicicletas);
+            bicicletas.add(bicicleta);
+        }
+        else
+            bicicletas.add(bicicleta);
+    }
+
+    public boolean removeBicicletaByTotemId(Integer idTotem, Bicicleta bicicleta){
+        List<Bicicleta> bicicletas = bicicletasByTotemId.get(idTotem);
+        if(bicicletas == null){
+            return false;
+        }
+        bicicletas.remove(bicicleta);
+        if(bicicletas.isEmpty()){
+            bicicletasByTotemId.remove(idTotem);
+        }
+        return true;
+    }
+
+    public List<Tranca> findTrancasByTotemId(Integer idTotem){
+        return trancasByTotemId.get(idTotem);
+    }
+
+    public Integer findTotemByTranca(Tranca trancaBuscada){
+        for(Map.Entry<Integer, List<Tranca>> entry: trancasByTotemId.entrySet()){
+            Integer idTotem = entry.getKey();
+            List<Tranca> trancas = entry.getValue();
+            if(trancas.contains(trancaBuscada)){
+                return idTotem;
+            }
+        }
+        return null;
+    }
+
+    public List<Bicicleta> findBicicletasByTotemId(Integer idTotem){
+        return bicicletasByTotemId.get(idTotem);
     }
 }

@@ -1,5 +1,6 @@
 package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller;
 
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusBicicletaEnum;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.BicicletaDto;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.BicicletaService;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +51,24 @@ public class BicicletaController {
     @DeleteMapping("/bicicleta/{idBicicleta}")
     public ResponseEntity<Void> deleteBicicleta(@PathVariable Integer idBicicleta) {
         service.deleteBicicleta(idBicicleta);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/bicicleta/{idBicicleta}/status/{acao}")
+    public ResponseEntity<Bicicleta> postStatus(@PathVariable Integer idBicicleta, @PathVariable StatusBicicletaEnum acao) {
+        Bicicleta bicicletaNovoStatus = service.postStatus(idBicicleta, acao);
+        return ResponseEntity.ok().body(bicicletaNovoStatus);
+    }
+
+    @PostMapping("bicicleta/incluirNaRede")
+    public ResponseEntity<Void> incluirNaRede(@RequestBody Integer idTranca, @RequestBody Integer idBicicleta, @RequestBody Integer idFuncionario){
+        service.incluirBicicletaNaRedeTotem(idTranca, idBicicleta, idFuncionario);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/bicicleta/retirarDaRede")
+    public ResponseEntity<Void> retirarDaRede(@RequestBody Integer idTranca, @RequestBody Integer idBicicleta, @RequestBody Integer idFuncionario, @RequestBody String statusAcaoReparador){
+        service.retirarBicicletaDaRedeTotem(idTranca, idBicicleta, idFuncionario, statusAcaoReparador);
         return ResponseEntity.ok().build();
     }
 }

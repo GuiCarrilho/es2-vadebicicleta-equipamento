@@ -1,6 +1,8 @@
 package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller;
 
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Totem;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.TotemDto;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.TotemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,5 +47,25 @@ public class TotemController {
     public ResponseEntity<Void> deleteTotem(@PathVariable Integer idTotem){
         service.deleteTotem(idTotem);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/totem/{idTotem}/trancas")
+    public ResponseEntity<List<Tranca>> getTrancasByTotemId(@PathVariable Integer idTotem){
+        List<Tranca> trancas = service.getTrancasByTotem(idTotem);
+
+        if(!trancas.isEmpty()){
+            return ResponseEntity.ok().body(trancas);
+        }
+        return null;
+    }
+
+    @GetMapping("/totem/{idTotem}/bicicletas")
+    public ResponseEntity<List<Bicicleta>> getBicicletasByTotem(@PathVariable Integer idTotem){
+        List<Bicicleta> bicicletas = service.getBicicletasByTotem(idTotem);
+
+        if(!bicicletas.isEmpty()){
+            return ResponseEntity.ok().body(bicicletas);
+        }
+        return null;
     }
 }

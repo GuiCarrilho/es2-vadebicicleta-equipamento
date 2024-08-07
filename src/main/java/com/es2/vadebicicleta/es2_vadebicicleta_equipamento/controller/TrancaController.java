@@ -1,5 +1,6 @@
 package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller;
 
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusTrancaEnum;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.TrancaDto;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.TrancaService;
@@ -52,5 +53,37 @@ public class TrancaController {
         service.deleteTranca(idTranca);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/tranca/{idTranca}/trancar")
+    public ResponseEntity<Tranca> statusTrancar(@PathVariable Integer idTranca, @RequestBody(required = false) Integer idBicicleta) {
+        Tranca tranca = service.trancar(idTranca, idBicicleta);
+        return ResponseEntity.ok().body(tranca);
+    }
+
+    @PostMapping("/tranca/{idTranca}/destrancar")
+    public ResponseEntity<Tranca> statusDestrancar(@PathVariable Integer idTranca, @RequestBody(required = false) Integer idBicicleta) {
+        Tranca tranca = service.destrancar(idTranca, idBicicleta);
+        return ResponseEntity.ok().body(tranca);
+    }
+
+    @PostMapping("/tranca/{idTranca}/status/{acao}")
+    public ResponseEntity<Tranca> postStatus(@PathVariable Integer idTranca, @PathVariable StatusTrancaEnum acao) {
+        Tranca trancaNovoStatus = service.postStatus(idTranca, acao);
+
+        return ResponseEntity.ok().body(trancaNovoStatus);
+    }
+
+    @PostMapping("tranca/incluirNaRede")
+    public ResponseEntity<Void> incluirNaRede(@RequestBody Integer idTotem, @RequestBody Integer idTranca, @RequestBody Integer idFuncionario) {
+        service.incluirTrancaNaRedeTotem(idTotem, idTranca, idFuncionario);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/tranca/retirarDaRede")
+    public ResponseEntity<Void> incluirDaRede(@RequestBody Integer idTotem, @RequestBody Integer idTranca, @RequestBody Integer idFuncionario, @RequestBody String statusAcaoReparador) {
+        service.retirarTrancaDaRedeTotem(idTotem, idTranca, idFuncionario, statusAcaoReparador);
+        return ResponseEntity.ok().build();
+    }
+
 }
 
