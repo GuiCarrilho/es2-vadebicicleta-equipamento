@@ -10,6 +10,7 @@ import java.util.List;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller.BicicletaController;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller.BicicletaConverter;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusBicicletaEnum;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.BicicletaDto;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.BicicletaService;
@@ -176,6 +177,91 @@ class BicicletaControllerTest {
         // Verifica a mensagem da exceção
         assertEquals("Bicicleta não encontrada", exception.getMessage());
     }
+
+    @Test
+    void postStatus_Success() {
+        // Mock do comportamento do serviço para atualizar o status da bicicleta
+        when(service.postStatus(anyInt(), any(StatusBicicletaEnum.class))).thenReturn(bicicleta);
+
+        // Chama o método do controller e verifica o resultado
+        ResponseEntity<Bicicleta> response = controller.postStatus(1, StatusBicicletaEnum.DISPONIVEL);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(bicicleta, response.getBody());
+    }
+
+    @Test
+    void postStatus_BicicletaNotFound() {
+        // Mock do comportamento do serviço para lançar a exceção NotFoundException
+        when(service.postStatus(anyInt(), any(StatusBicicletaEnum.class))).thenThrow(new NotFoundException("Bicicleta não encontrada"));
+
+        // Verifica se a exceção NotFoundException é lançada
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+            controller.postStatus(1, StatusBicicletaEnum.DISPONIVEL);
+        });
+
+        // Verifica a mensagem da exceção
+        assertEquals("Bicicleta não encontrada", exception.getMessage());
+    }
+
+    @Test
+    void postStatus_InvalidActionException() {
+        // Mock do comportamento do serviço para lançar a exceção InvalidActionException
+        when(service.postStatus(anyInt(), any(StatusBicicletaEnum.class))).thenThrow(new InvalidActionException("Status não escolhido"));
+
+        // Verifica se a exceção InvalidActionException é lançada
+        InvalidActionException exception = assertThrows(InvalidActionException.class, () -> {
+            controller.postStatus(1, StatusBicicletaEnum.DISPONIVEL);
+        });
+
+        // Verifica a mensagem da exceção
+        assertEquals("Status não escolhido", exception.getMessage());
+    }
+
+    @Test
+    void incluirNaRede_Success() {
+        // Mock do comportamento do serviço para incluir a bicicleta na rede
+        doNothing().when(service).incluirBicicletaNaRedeTotem(anyInt(), anyInt(), anyInt());
+
+        // Chama o método do controller e verifica o resultado
+        ResponseEntity<Void> response = controller.incluirNaRede(1, 1, 1);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    void incluirNaRede_InvalidActionException() {
+        // Mock do comportamento do serviço para lançar a exceção InvalidActionException
+        doThrow(new InvalidActionException("Dados inválidos")).when(service).incluirBicicletaNaRedeTotem(anyInt(), anyInt(), anyInt());
+
+        // Verifica se a exceção InvalidActionException é lançada
+        InvalidActionException exception = assertThrows(InvalidActionException.class, () -> {
+            controller.incluirNaRede(1, 1, 1);
+        });
+
+        // Verifica a mensagem da exceção
+        assertEquals("Dados inválidos", exception.getMessage());
+    }
+
+    @Test
+    void retirarDaRede_Success() {
+        // Mock do comportamento do serviço para retirar a bicicleta da rede
+        doNothing().when(service).retirarBicicletaDaRedeTotem(anyInt(), anyInt(), anyInt(), anyString());
+
+        // Chama o método do controller e verifica o resultado
+        ResponseEntity<Void> response = controller.retirarDaRede(1, 1, 1, "APOSENTADA");
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    void retirarDaRede_InvalidActionException() {
+        // Mock do comportamento do serviço para lançar a exceção InvalidActionException
+        doThrow(new InvalidActionException("Dados inválidos")).when(service).retirarBicicletaDaRedeTotem(anyInt(), anyInt(), anyInt(), anyString());
+
+        // Verifica se a exceção InvalidActionException é lançada
+        InvalidActionException exception = assertThrows(InvalidActionException.class, () -> {
+            controller.retirarDaRede(1, 1, 1, "APOSENTADA");
+        });
+
+        // Verifica a mensagem da exceção
+        assertEquals("Dados inválidos", exception.getMessage());
+    }
 }
-
-
