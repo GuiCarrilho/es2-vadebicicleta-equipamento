@@ -9,9 +9,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Totem;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.InvalidActionException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.BicicletaRepository;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.TotemRepository;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.TotemService;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +29,9 @@ class TotemServiceTest {
 
      @Mock
     private TotemRepository totemRepository;
+
+    @Mock
+    private BicicletaRepository bicicletaRepository;
 
     @InjectMocks
     private TotemService totemService;
@@ -157,6 +163,83 @@ class TotemServiceTest {
         
         // Verifica se a exceção NotFoundException é lançada
         assertThrows(NotFoundException.class, () -> totemService.deleteTotem(1));
+    }
+
+     @Test
+    void getTrancasByTotem_Success() {
+        // Configura um objeto Tranca
+        Tranca tranca = new Tranca(1, 1, 101, "local1", "2024", "modelo1", "ABERTA");
+        List<Tranca> trancas = Collections.singletonList(tranca);
+        
+        // Mock do comportamento do método getById do serviço
+        when(totemRepository.findById(anyInt())).thenReturn(Optional.of(totem));
+        // Mock do comportamento do método findTrancasByTotemId do repositório
+        when(totemRepository.findTrancasByTotemId(anyInt())).thenReturn(trancas);
+        
+        // Chama o método getTrancasByTotem do serviço
+        List<Tranca> foundTrancas = totemService.getTrancasByTotem(1);
+        
+        // Verifica se a lista retornada contém a tranca esperada
+        assertEquals(1, foundTrancas.size());
+        assertEquals(tranca.getId(), foundTrancas.get(0).getId());
+    }
+
+    @Test
+    void getTrancasByTotem_NotFound_ThrowsNotFoundException() {
+        // Mock do comportamento do método getById do serviço para retornar Optional.empty()
+        when(totemRepository.findById(anyInt())).thenReturn(Optional.empty());
+        
+        // Verifica se a exceção NotFoundException é lançada
+        assertThrows(NotFoundException.class, () -> totemService.getTrancasByTotem(1));
+    }
+
+    @Test
+    void getBicicletasByTotem_Success() {
+        // Configura um objeto Tranca
+        Tranca tranca = new Tranca(1, 1, 101, "local1", "2024", "modelo1", "TRANCAR");
+        // Configura um objeto Bicicleta
+        Bicicleta bicicleta = new Bicicleta(1, "Marca A", "Modelo A", "2024", 123, "DISPONIVEL");
+        List<Bicicleta> bicicletas = Collections.singletonList(bicicleta);
+        
+        // Mock do comportamento do método getById do serviço
+        when(totemRepository.findById(anyInt())).thenReturn(Optional.of(totem));
+        // Mock do comportamento do método findBicicletasByTotemId do repositório
+        when(totemRepository.findBicicletasByTotemId(anyInt())).thenReturn(bicicletas);
+
+        
+        // Chama o método getBicicletasByTotem do serviço
+        List<Bicicleta> foundBicicletas = totemService.getBicicletasByTotem(1);
+        
+        // Verifica se a lista retornada contém a bicicleta esperada
+        assertEquals(1, foundBicicletas.size());
+        assertEquals(bicicleta.getId(), foundBicicletas.get(0).getId());
+        
+        // Verifica que o método findBicicletasByTotemId foi chamado com o id correto
+        verify(totemRepository).findBicicletasByTotemId(1);
+    }
+
+    @Test
+    void getBicicletasByTotem_NotFound_ThrowsNotFoundException() {
+        // Mock do comportamento do método getById do serviço para retornar Optional.empty()
+        when(totemRepository.findById(anyInt())).thenReturn(Optional.empty());
+        
+        // Verifica se a exceção NotFoundException é lançada
+        assertThrows(NotFoundException.class, () -> totemService.getBicicletasByTotem(1));
+    }
+
+    @Test
+    void getBicicletasByTotem_NoTrancas_ThrowsNotFoundException() {
+        // Configura um objeto Tranca
+        Tranca tranca = new Tranca(1, 1, 101, "local1", "2024", "modelo1", "ABERTA");
+        List<Tranca> trancas = Collections.singletonList(tranca);
+
+        // Mock do comportamento do método getById do serviço
+        when(totemRepository.findById(anyInt())).thenReturn(Optional.of(totem));
+        // Mock do comportamento do método findBicicletasByTotemId do repositório para lançar exceção
+        when(totemRepository.findBicicletasByTotemId(anyInt())).thenThrow(new NotFoundException("Nenhuma bicicleta na rede de totens"));
+        
+        // Verifica se a exceção NotFoundException é lançada
+        assertThrows(NotFoundException.class, () -> totemService.getBicicletasByTotem(1));
     }
 }
 
