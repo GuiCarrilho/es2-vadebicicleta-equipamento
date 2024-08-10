@@ -76,6 +76,10 @@ public class BicicletaService {
     }
 
     public Bicicleta postStatus(Integer idBicicleta, StatusBicicletaEnum acao){
+        if (acao == null) {
+            throw new InvalidActionException("Status não escolhido");
+        }
+        
         Bicicleta bicicleta = repository.findById(idBicicleta).orElseThrow(
                 () -> new NotFoundException("Bicicleta não encontrada"));
 
@@ -119,8 +123,8 @@ public class BicicletaService {
             throw new InvalidActionException("Tranca não está relacionada com nenhum totem");
         }
         Bicicleta bicicleta = getById(idBicicleta);
-        if(Objects.equals(bicicleta.getStatus(), "NOVA") || Objects.equals(bicicleta.getStatus(), "DISPONIVEL")){
-            totemRepository.addBicicletasByTotemId(idTotem, bicicleta);
+        if(Objects.equals(bicicleta.getStatus(), "NOVA") || Objects.equals(bicicleta.getStatus(), "DISPONÍVEL")){
+            totemRepository.addTrancasByTotemId(idTotem, tranca);
         }
         else throw new InvalidActionException("Status de bicicleta inválido");
     }
@@ -139,9 +143,9 @@ public class BicicletaService {
             throw new InvalidActionException("Tranca não está relacionada com nenhum totem");
         }
         Bicicleta bicicleta = getById(idBicicleta);
-        if(Objects.equals(statusAcaoReparador, "APOSENTADA") || Objects.equals(statusAcaoReparador, "REPARO_SOLICITADO")){
+        if(Objects.equals(statusAcaoReparador, "APOSENTADA") || Objects.equals(statusAcaoReparador, "EM_REPARO")){
             bicicleta.setStatus(statusAcaoReparador);
-            boolean removido = totemRepository.removeBicicletaByTotemId(idTotem, bicicleta);
+            boolean removido = totemRepository.removeTrancaByTotemId(idTotem, tranca);
             if(!removido){
                 throw new InvalidActionException("Bicicleta não está associada ao totem");
             }

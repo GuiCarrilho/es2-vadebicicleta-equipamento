@@ -79,30 +79,6 @@ public class TotemRepository {
         return true;
     }
 
-    public void addBicicletasByTotemId(Integer idTotem, Bicicleta bicicleta){
-        List<Bicicleta> bicicletas = bicicletasByTotemId.get(idTotem);
-        if(bicicletas == null){
-            bicicletasByTotemId.put(idTotem, new ArrayList<>());
-            bicicletas = new ArrayList<>();
-            bicicletasByTotemId.put(idTotem, bicicletas);
-            bicicletas.add(bicicleta);
-        }
-        else
-            bicicletas.add(bicicleta);
-    }
-
-    public boolean removeBicicletaByTotemId(Integer idTotem, Bicicleta bicicleta){
-        List<Bicicleta> bicicletas = bicicletasByTotemId.get(idTotem);
-        if(bicicletas == null){
-            return false;
-        }
-        bicicletas.remove(bicicleta);
-        if(bicicletas.isEmpty()){
-            bicicletasByTotemId.remove(idTotem);
-        }
-        return true;
-    }
-
     public List<Tranca> findTrancasByTotemId(Integer idTotem){
         return trancasByTotemId.get(idTotem);
     }
