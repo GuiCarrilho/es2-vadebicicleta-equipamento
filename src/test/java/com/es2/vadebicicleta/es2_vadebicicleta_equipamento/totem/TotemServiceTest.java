@@ -190,7 +190,7 @@ class TotemServiceTest {
         when(totemRepository.findById(anyInt())).thenReturn(Optional.empty());
         
         // Verifica se a exceção NotFoundException é lançada
-        assertThrows(NotFoundException.class, () -> totemService.getTrancasByTotem(1));
+        assertThrows(NotFoundException.class, () -> totemService.getTrancasByTotem(2));
     }
 
     @Test
@@ -205,7 +205,6 @@ class TotemServiceTest {
         when(totemRepository.findById(anyInt())).thenReturn(Optional.of(totem));
         // Mock do comportamento do método findBicicletasByTotemId do repositório
         when(totemRepository.findBicicletasByTotemId(anyInt())).thenReturn(bicicletas);
-
         
         // Chama o método getBicicletasByTotem do serviço
         List<Bicicleta> foundBicicletas = totemService.getBicicletasByTotem(1);
@@ -224,7 +223,7 @@ class TotemServiceTest {
         when(totemRepository.findById(anyInt())).thenReturn(Optional.empty());
         
         // Verifica se a exceção NotFoundException é lançada
-        assertThrows(NotFoundException.class, () -> totemService.getBicicletasByTotem(1));
+        assertThrows(NotFoundException.class, () -> totemService.getBicicletasByTotem(2));
     }
 
     @Test

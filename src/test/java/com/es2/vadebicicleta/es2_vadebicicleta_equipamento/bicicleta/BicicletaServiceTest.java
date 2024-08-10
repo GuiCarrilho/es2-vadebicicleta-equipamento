@@ -197,7 +197,7 @@ class BicicletaServiceTest {
         when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(bicicleta));
 
         // Verifica se a exceção InvalidActionException é lançada
-        assertThrows(InvalidActionException.class, () -> bicicletaService.postStatus(1, StatusBicicletaEnum.INDISPONÍVEL));
+        assertThrows(InvalidActionException.class, () -> bicicletaService.postStatus(1, StatusBicicletaEnum.TESTE));
     }
 
     @Test
