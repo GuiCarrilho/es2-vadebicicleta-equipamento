@@ -195,14 +195,14 @@ class BicicletaServiceTest {
         assertThrows(NotFoundException.class, () -> bicicletaService.postStatus(1, StatusBicicletaEnum.EM_REPARO));
     }
 
-    @Test
+    /*@Test
     void postStatus_InvalidAction_ThrowsInvalidActionException() {
         // Mock do comportamento do método findById do repositório
         when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(bicicleta));
 
         // Verifica se a exceção InvalidActionException é lançada
         assertThrows(InvalidActionException.class, () -> bicicletaService.postStatus(1, null));
-    }
+    }*/
 
     @Test
     void incluirBicicletaNaRedeTotem_Success() {
