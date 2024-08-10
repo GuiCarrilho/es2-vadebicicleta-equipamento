@@ -3,14 +3,10 @@ package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.bicicleta;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
@@ -195,14 +191,14 @@ class BicicletaServiceTest {
         assertThrows(NotFoundException.class, () -> bicicletaService.postStatus(1, StatusBicicletaEnum.EM_REPARO));
     }
 
-    /*@Test
+    @Test
     void postStatus_InvalidAction_ThrowsInvalidActionException() {
         // Mock do comportamento do método findById do repositório
         when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(bicicleta));
 
         // Verifica se a exceção InvalidActionException é lançada
-        assertThrows(InvalidActionException.class, () -> bicicletaService.postStatus(1, null));
-    }*/
+        assertThrows(InvalidActionException.class, () -> bicicletaService.postStatus(1, StatusBicicletaEnum.INDISPONÍVEL));
+    }
 
     @Test
     void incluirBicicletaNaRedeTotem_Success() {
@@ -227,6 +223,12 @@ class BicicletaServiceTest {
         when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
 
         // Verifica se a exceção InvalidActionException é lançada
+        assertThrows(InvalidActionException.class, () -> bicicletaService.incluirBicicletaNaRedeTotem(1, 1, 1));
+    }
+
+    @Test
+    void incluirBicicletaNaRedeTotem_TrancaNaoEncontrada_ThrowsInvalidActionException() {
+        when(trancaRepository.findById(anyInt())).thenReturn(Optional.empty());
         assertThrows(InvalidActionException.class, () -> bicicletaService.incluirBicicletaNaRedeTotem(1, 1, 1));
     }
 
@@ -280,6 +282,47 @@ class BicicletaServiceTest {
 
         // Verifica se a exceção InvalidActionException é lançada
         assertThrows(InvalidActionException.class, () -> bicicletaService.retirarBicicletaDaRedeTotem(1, 1, 1, "REPARO_SOLICITADO"));
+    }
+
+    @Test
+    void retirarBicicletaDaRedeTotem_TrancaNaoEncontrada_ThrowsInvalidActionException() {
+        when(trancaRepository.findById(anyInt())).thenReturn(Optional.empty());
+        assertThrows(InvalidActionException.class, () -> bicicletaService.retirarBicicletaDaRedeTotem(1, 1, 1, "APOSENTADA"));
+    }
+
+    @Test
+    void retirarBicicletaDaRedeTotem_IdBicicletaNaoCorresponde_ThrowsInvalidActionException() {
+        Tranca tranca = new Tranca(1, 2, 1, "Centro", "2020", "ModeloA", "TRANCAR");
+        when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
+
+        assertThrows(InvalidActionException.class, () -> bicicletaService.retirarBicicletaDaRedeTotem(1, 1, 1, "APOSENTADA"));
+    }
+
+    @Test
+    void retirarBicicletaDaRedeTotem_FuncionarioNaoExiste_ThrowsInvalidActionException() {
+        Tranca tranca = new Tranca(1, 1, 1, "Centro", "2020", "ModeloA", "TRANCAR");
+        when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
+
+        assertThrows(InvalidActionException.class, () -> bicicletaService.retirarBicicletaDaRedeTotem(1, 1, null, "APOSENTADA"));
+    }
+
+    @Test
+    void retirarBicicletaDaRedeTotem_TrancaSemTotemAssociado_ThrowsInvalidActionException() {
+        Tranca tranca = new Tranca(1, 1, 1, "Centro", "2020", "ModeloA", "TRANCAR");
+        when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
+        when(totemRepository.findTotemByTranca(any(Tranca.class))).thenReturn(null);
+
+        assertThrows(InvalidActionException.class, () -> bicicletaService.retirarBicicletaDaRedeTotem(1, 1, 1, "APOSENTADA"));
+    }
+
+    @Test
+    void retirarBicicletaDaRedeTotem_StatusAcaoReparadorInvalido_ThrowsInvalidActionException() {
+        Tranca tranca = new Tranca(1, 1, 1, "Centro", "2020", "ModeloA", "TRANCAR");
+        when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
+        when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(bicicleta));
+        when(totemRepository.findTotemByTranca(any(Tranca.class))).thenReturn(1);
+
+        assertThrows(InvalidActionException.class, () -> bicicletaService.retirarBicicletaDaRedeTotem(1, 1, 1, "INEXISTENTE"));
     }
 }
 

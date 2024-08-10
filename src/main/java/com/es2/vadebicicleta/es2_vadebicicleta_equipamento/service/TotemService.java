@@ -65,10 +65,18 @@ public class TotemService {
     }
 
     public List<Tranca> getTrancasByTotem(Integer idTotem){
+        Totem totem = getById(idTotem);
+        if(totem == null){
+            throw new NotFoundException("Totem não existe");
+        }
         return repository.findTrancasByTotemId(idTotem);
     }
 
     public List<Bicicleta> getBicicletasByTotem(Integer idTotem){
+        Totem totem = getById(idTotem);
+        if(totem == null){
+            throw new NotFoundException("Totem não existe");
+        }
         return repository.findBicicletasByTotemId(idTotem);
     }
 }

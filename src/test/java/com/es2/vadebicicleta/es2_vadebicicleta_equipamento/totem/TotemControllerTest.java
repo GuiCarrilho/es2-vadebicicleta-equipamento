@@ -9,7 +9,9 @@ import java.util.List;
 
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller.TotemController;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller.TotemConverter;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Totem;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.TotemDto;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.TotemService;
@@ -148,6 +150,91 @@ class TotemControllerTest {
 
         // Verifica a mensagem da exceção
         assertEquals("Totem não encontrada", exception.getMessage());
+    }
+
+    @Test
+    void getTrancasByTotemId_Success() {
+        // Cria uma Tranca para o teste
+        Tranca tranca = new Tranca(1, 1, 1, "Centro", "2020", "ModeloA", "TRANCAR");
+
+        // Mock do comportamento do serviço para retornar uma lista de trancas
+        when(service.getTrancasByTotem(anyInt())).thenReturn(List.of(tranca));
+        
+        // Chama o método do controller e verifica o resultado
+        ResponseEntity<List<Tranca>> response = controller.getTrancasByTotemId(1);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(1, response.getBody().size());
+    }
+
+    @Test
+    void getTrancasByTotemId_TrancaNotFound() {
+        // Mock do comportamento do serviço para lançar a exceção NotFoundException
+        when(service.getTrancasByTotem(anyInt())).thenThrow(new NotFoundException("Nenhuma tranca encontrada"));
+
+        // Verifica se a exceção NotFoundException é lançada
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+            controller.getTrancasByTotemId(1);
+        });
+
+        // Verifica a mensagem da exceção
+        assertEquals("Nenhuma tranca encontrada", exception.getMessage());
+    }
+
+    @Test
+    void getTrancasByTotemId_TotemNotFound() {
+        // Mock do comportamento do serviço para lançar a exceção NotFoundException
+        when(service.getTrancasByTotem(anyInt())).thenThrow(new NotFoundException("Totem não existe"));
+
+        // Verifica se a exceção NotFoundException é lançada
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+            controller.getTrancasByTotemId(2);
+        });
+
+        // Verifica a mensagem da exceção
+        assertEquals("Totem não existe", exception.getMessage());
+    }
+
+
+    @Test
+    void getBicicletasByTotem_Success() {
+        // Cria uma Bicicleta para o teste
+        Bicicleta bicicleta = new Bicicleta(1, "MarcaX", "Montanha", "2022", 123, "DISPONÍVEL");
+
+        // Mock do comportamento do serviço para retornar uma lista de bicicletas
+        when(service.getBicicletasByTotem(anyInt())).thenReturn(List.of(bicicleta));
+        
+        // Chama o método do controller e verifica o resultado
+        ResponseEntity<List<Bicicleta>> response = controller.getBicicletasByTotem(1);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(1, response.getBody().size());
+    }
+
+    @Test
+    void getBicicletasByTotem_BicicletaNotFound() {
+        // Mock do comportamento do serviço para lançar a exceção NotFoundException
+        when(service.getBicicletasByTotem(anyInt())).thenThrow(new NotFoundException("Nenhuma bicicleta encontrada"));
+
+        // Verifica se a exceção NotFoundException é lançada
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+            controller.getBicicletasByTotem(1);
+        });
+
+        // Verifica a mensagem da exceção
+        assertEquals("Nenhuma bicicleta encontrada", exception.getMessage());
+    }
+
+    @Test
+    void getBicicletasByTotem_TotemNotFound() {
+        // Mock do comportamento do serviço para lançar a exceção NotFoundException
+        when(service.getBicicletasByTotem(anyInt())).thenThrow(new NotFoundException("Totem não existe"));
+
+        // Verifica se a exceção NotFoundException é lançada
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+            controller.getBicicletasByTotem(2);
+        });
+
+        // Verifica a mensagem da exceção
+        assertEquals("Totem não existe", exception.getMessage());
     }
 }
 

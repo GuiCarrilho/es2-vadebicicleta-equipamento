@@ -4,6 +4,9 @@ import ch.qos.logback.classic.util.LogbackMDCAdapter;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Totem;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.InvalidActionException;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
+
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -19,12 +22,13 @@ public class TotemRepository {
 
     private static final HashMap<Integer, Totem> totens = new HashMap<>();
     private static final HashMap<Integer, List<Tranca>> trancasByTotemId = new HashMap<>();
-    private static final HashMap<Integer, List<Bicicleta>> bicicletasByTotemId = new HashMap<>();
 
     private final IdGenerator id;
+    private final BicicletaRepository bicicletaRepository;
 
-    public TotemRepository(IdGenerator id){
+    public TotemRepository(IdGenerator id, BicicletaRepository bicicletaRepository){
         this.id = id;
+        this.bicicletaRepository = bicicletaRepository;
     }
 
    public Totem save(Totem totem){
@@ -95,6 +99,24 @@ public class TotemRepository {
     }
 
     public List<Bicicleta> findBicicletasByTotemId(Integer idTotem){
-        return bicicletasByTotemId.get(idTotem);
+        List<Bicicleta> bicicletas = new ArrayList<>();
+        
+        List<Tranca> trancas = trancasByTotemId.get(idTotem);
+        if (trancas == null) {
+            throw new NotFoundException("Nenhuma bicicleta na rede de totens");
+        }
+        
+        for (Tranca tranca : trancas) {
+            Integer idBicicleta = tranca.getBicicleta();
+            if (idBicicleta != null) {
+                Bicicleta bicicleta = bicicletaRepository.findById(idBicicleta).orElseThrow(
+                () -> new NotFoundException("Bicicleta não encontrada"));
+                if (bicicleta != null) {
+                    bicicletas.add(bicicleta);
+                }
+            }
+        }
+        
+        return bicicletas;
     }
 }
