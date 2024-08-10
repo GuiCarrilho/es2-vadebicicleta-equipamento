@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller.TotemController;
@@ -194,6 +195,13 @@ class TotemControllerTest {
         assertEquals("Totem não existe", exception.getMessage());
     }
 
+    @Test
+    void getTrancasByTotemId_EmptyList() {
+        when(service.getTrancasByTotem(anyInt())).thenReturn(Collections.emptyList());
+        
+        ResponseEntity<List<Tranca>> response = controller.getTrancasByTotemId(1);
+        assertNull(response.getBody());
+    }
 
     @Test
     void getBicicletasByTotem_Success() {
