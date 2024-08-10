@@ -7,8 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Totem;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.TotemRepository;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.BicicletaRepository;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.IdGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,15 +27,24 @@ class TotemRepositoryTest {
     @Mock
     private IdGenerator idGenerator;
 
+    @Mock
+    private BicicletaRepository bicicletaRepository;
+
     @InjectMocks
     private TotemRepository totemRepository;
 
     private Totem totem;
+    private Tranca tranca;
+    private Bicicleta bicicleta;
 
     @BeforeEach
     void setUp() {
         // Configura um objeto Totem para ser usado em todos os testes
         totem = new Totem(1, "Urca", "em frente a Unirio");
+        // Configura um objeto Tranca
+        tranca = new Tranca(1, 1, 101, "local1", "2024", "modelo1", "ABERTA");
+        // Configura um objeto Bicicleta
+        bicicleta = new Bicicleta(1, "Marca A", "Modelo A", "2024", 123, "DISPONIVEL");
     }
 
     @Test
@@ -123,5 +136,117 @@ class TotemRepositoryTest {
         
         // Verifica se a totem não foi encontrada para remoção
         assertFalse(result);
+    }
+
+    @Test
+    void addTrancasByTotemId_Success() {
+        // Adiciona a tranca ao totem
+        totemRepository.addTrancasByTotemId(1, tranca);
+
+        // Verifica se a tranca foi adicionada corretamente
+        List<Tranca> trancas = totemRepository.findTrancasByTotemId(1);
+        assertNotNull(trancas);
+        assertTrue(trancas.contains(tranca));
+    }
+
+    @Test
+    void removeTrancaByTotemId_Success() {
+        // Adiciona a tranca ao totem
+        totemRepository.addTrancasByTotemId(1, tranca);
+
+        // Remove a tranca
+        boolean result = totemRepository.removeTrancaByTotemId(1, tranca);
+
+        // Verifica se a tranca foi removida corretamente
+        assertTrue(result);
+        assertFalse(totemRepository.findTrancasByTotemId(1).contains(tranca));
+    }
+
+    @Test
+    void removeTrancaByTotemId_NotFound() {
+        // Tenta remover uma tranca de um totem que não existe
+        boolean result = totemRepository.removeTrancaByTotemId(2, tranca);
+
+        // Verifica se a operação retornou false
+        assertFalse(result);
+    }
+
+    @Test
+    void findTrancasByTotemId_Success() {
+        // Adiciona a tranca ao totem
+        totemRepository.addTrancasByTotemId(1, tranca);
+
+        // Encontra as trancas pelo ID do totem
+        List<Tranca> trancas = totemRepository.findTrancasByTotemId(1);
+
+        // Verifica se a lista de trancas é a esperada
+        assertNotNull(trancas);
+        assertTrue(trancas.contains(tranca));
+    }
+
+    @Test
+    void findTrancasByTotemId_NotFound() {
+    // Tenta encontrar Trancas para um ID de Totem inexistente
+    List<Tranca> trancas = totemRepository.findTrancasByTotemId(999);
+
+    // Verifica se a lista retornada é vazia
+    assertNotNull(trancas);
+    assertTrue(trancas.isEmpty());
+}
+
+    @Test
+    void findTotemByTranca_Found() {
+        // Adiciona a tranca ao totem
+        totemRepository.addTrancasByTotemId(1, tranca);
+
+        // Encontra o totem pela tranca
+        Integer idTotem = totemRepository.findTotemByTranca(tranca);
+
+        // Verifica se o ID do totem é o esperado
+        assertNotNull(idTotem);
+        assertEquals(1, idTotem);
+    }
+
+    @Test
+    void findTotemByTranca_NotFound() {
+        // Tenta encontrar o totem pela tranca que não está associada a nenhum totem
+        Integer idTotem = totemRepository.findTotemByTranca(tranca);
+
+        // Verifica se o ID do totem é null
+        assertNull(idTotem);
+    }
+
+    @Test
+    void findBicicletasByTotemId_Success() {
+        // Adiciona a tranca com uma bicicleta ao totem
+        tranca.setBicicleta(1);
+        totemRepository.addTrancasByTotemId(1, tranca);
+        // Mock do comportamento do método findById do repositório de bicicletas
+        when(bicicletaRepository.findById(1)).thenReturn(Optional.of(bicicleta));
+
+        // Encontra as bicicletas pelo ID do totem
+        List<Bicicleta> bicicletas = totemRepository.findBicicletasByTotemId(1);
+
+        // Verifica se a lista de bicicletas é a esperada
+        assertNotNull(bicicletas);
+        assertTrue(bicicletas.contains(bicicleta));
+    }
+
+    @Test
+    void findBicicletasByTotemId_NoTrancas_ThrowsNotFoundException() {
+        // Tenta encontrar bicicletas de um totem sem trancas associadas
+        assertThrows(NotFoundException.class, () -> totemRepository.findBicicletasByTotemId(1));
+    }
+
+    @Test
+    void findBicicletasByTotemId_BicicletaNotFound_ThrowsNotFoundException() {
+        // Adiciona a tranca com uma bicicleta ao totem
+        tranca.setBicicleta(1);
+        totemRepository.addTrancasByTotemId(1, tranca);
+        // Mock do comportamento do método findById do repositório de bicicletas
+        when(bicicletaRepository.findById(1)).thenReturn(Optional.empty());
+
+        // Tenta encontrar as bicicletas pelo ID do totem
+        assertThrows(NotFoundException.class, () -> totemRepository.findBicicletasByTotemId(1));
     }
 }
