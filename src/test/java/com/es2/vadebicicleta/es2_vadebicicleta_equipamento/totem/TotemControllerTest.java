@@ -196,14 +196,6 @@ class TotemControllerTest {
     }
 
     @Test
-    void getTrancasByTotemId_EmptyList() {
-        when(service.getTrancasByTotem(anyInt())).thenReturn(Collections.emptyList());
-        
-        ResponseEntity<List<Tranca>> response = controller.getTrancasByTotemId(1);
-        assertNull(response.getBody());
-    }
-
-    @Test
     void getBicicletasByTotem_Success() {
         // Cria uma Bicicleta para o teste
         Bicicleta bicicleta = new Bicicleta(1, "MarcaX", "Montanha", "2022", 123, "DISPONÍVEL");
