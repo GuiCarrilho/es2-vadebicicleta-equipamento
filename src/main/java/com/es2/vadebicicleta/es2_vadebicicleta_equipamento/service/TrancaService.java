@@ -154,7 +154,7 @@ public class TrancaService {
             throw new InvalidActionException("Bicicleta já está disassociada de tranca");
         }
         if (Objects.equals(tranca.getStatus(), destrancarMens)) {
-            throw new NotFoundException("Dados inválidos ou tranca já se encontra destrancada");
+            throw new InvalidActionException("Dados inválidos ou tranca já se encontra destrancada");
         }
         tranca.setStatus(destrancarMens);
         repository.save(tranca);
@@ -180,6 +180,10 @@ public class TrancaService {
         if(idFuncionario == null){
             throw new InvalidActionException("Funcionário não existe");
         }
+        Integer idTotemValidado = totemRepository.findTotemByTranca(tranca);
+        if(idTotem == idTotemValidado){
+            throw new InvalidActionException("Tranca já associada ao totem");
+        }
         if(Objects.equals(tranca.getStatus(), "NOVA") || Objects.equals(tranca.getStatus(), destrancarMens)){
             totemRepository.addTrancasByTotemId(totem.getId(), tranca);
         }
@@ -193,6 +197,10 @@ public class TrancaService {
                 () -> new InvalidActionException(trancaErro));
         if(idFuncionario == null){
             throw new InvalidActionException("Funcionário não existe");
+        }
+        Integer idTotemValidado = totemRepository.findTotemByTranca(tranca);
+        if(idTotemValidado != idTotem){
+            throw new InvalidActionException("Tranca já se encontra desassociada do totem");
         }
         if(Objects.equals(statusAcaoReparador, "APOSENTADA") || Objects.equals(statusAcaoReparador, "EM_REPARO")){
             tranca.setStatus(statusAcaoReparador);
