@@ -1,5 +1,6 @@
 package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller;
 
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusTrancaEnum;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.TrancaDto;
@@ -83,6 +84,12 @@ public class TrancaController {
     public ResponseEntity<Void> incluirDaRede(@RequestBody Integer idTotem, @RequestBody Integer idTranca, @RequestBody Integer idFuncionario, @RequestBody String statusAcaoReparador) {
         service.retirarTrancaDaRedeTotem(idTotem, idTranca, idFuncionario, statusAcaoReparador);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/tranca/{idTranca}/bicicleta")
+    public ResponseEntity<Bicicleta> getBicicletaByTrancaId(@PathVariable Integer idTranca){
+        Bicicleta bicicleta = service.getBicicletaByTrancaId(idTranca);
+        return ResponseEntity.ok().body(bicicleta);
     }
 
 }
