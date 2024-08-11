@@ -81,7 +81,7 @@ public class TrancaController {
     }
 
     @PostMapping("/tranca/retirarDaRede")
-    public ResponseEntity<Void> incluirDaRede(@RequestBody Integer idTotem, @RequestBody Integer idTranca, @RequestBody Integer idFuncionario, @RequestBody String statusAcaoReparador) {
+    public ResponseEntity<Void> retirarDaRede(@RequestBody Integer idTotem, @RequestBody Integer idTranca, @RequestBody Integer idFuncionario, @RequestBody String statusAcaoReparador) {
         service.retirarTrancaDaRedeTotem(idTotem, idTranca, idFuncionario, statusAcaoReparador);
         return ResponseEntity.ok().build();
     }

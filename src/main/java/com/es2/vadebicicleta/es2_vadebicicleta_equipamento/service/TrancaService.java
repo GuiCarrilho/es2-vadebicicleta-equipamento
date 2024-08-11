@@ -123,6 +123,9 @@ public class TrancaService {
         if (tranca == null) {
             throw new NotFoundException(trancaErro);
         }
+        if(tranca.getBicicleta() == idBicicleta){
+            throw new InvalidActionException("Bicicleta já está associada a tranca");
+        }
         if (Objects.equals(tranca.getStatus(), trancarMens)) {
             throw new NotFoundException("Dados inválidos ou tranca já se encontra trancada");
         }
@@ -146,6 +149,9 @@ public class TrancaService {
         Tranca tranca = getById(idTranca);
         if (tranca == null) {
             throw new NotFoundException(trancaErro);
+        }
+        if(tranca.getBicicleta() != idBicicleta){
+            throw new InvalidActionException("Bicicleta já está disassociada de tranca");
         }
         if (Objects.equals(tranca.getStatus(), destrancarMens)) {
             throw new NotFoundException("Dados inválidos ou tranca já se encontra destrancada");

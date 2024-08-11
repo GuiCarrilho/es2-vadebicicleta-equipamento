@@ -147,7 +147,7 @@ class BicicletaControllerTest {
         
         // Verifica se a exceção NotFoundException é lançada
         NotFoundException exception = assertThrows(NotFoundException.class, () -> {
-            controller.putBicicleta(1, bicicletaDto);
+            controller.putBicicleta(2, bicicletaDto);
         });
 
         // Verifica a mensagem da exceção
@@ -171,7 +171,7 @@ class BicicletaControllerTest {
         
         // Verifica se a exceção NotFoundException é lançada
         NotFoundException exception = assertThrows(NotFoundException.class, () -> {
-            controller.deleteBicicleta(1);
+            controller.deleteBicicleta(2);
         });
 
         // Verifica a mensagem da exceção
@@ -196,7 +196,7 @@ class BicicletaControllerTest {
 
         // Verifica se a exceção NotFoundException é lançada
         NotFoundException exception = assertThrows(NotFoundException.class, () -> {
-            controller.postStatus(1, StatusBicicletaEnum.DISPONIVEL);
+            controller.postStatus(2, StatusBicicletaEnum.DISPONIVEL);
         });
 
         // Verifica a mensagem da exceção
@@ -210,7 +210,7 @@ class BicicletaControllerTest {
 
         // Verifica se a exceção InvalidActionException é lançada
         InvalidActionException exception = assertThrows(InvalidActionException.class, () -> {
-            controller.postStatus(1, StatusBicicletaEnum.DISPONIVEL);
+            controller.postStatus(1, StatusBicicletaEnum.TESTE);
         });
 
         // Verifica a mensagem da exceção
