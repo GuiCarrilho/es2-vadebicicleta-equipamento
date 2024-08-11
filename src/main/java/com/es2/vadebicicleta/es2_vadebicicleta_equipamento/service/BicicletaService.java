@@ -92,7 +92,7 @@ public class BicicletaService {
                 bicicleta.setStatus("APOSENTADA");
                 break;
             case REPARO_SOLICITADO:
-                bicicleta.setStatus("REPARAO_SOLICITADO");
+                bicicleta.setStatus("REPARO_SOLICITADO");
                 break;
             case EM_REPARO:
                 bicicleta.setStatus("EM_REPARO");
