@@ -168,7 +168,7 @@ class BicicletaServiceTest {
     }
 
     @Test
-    void postStatus_Success() {
+    void postStatus_Success_EM_REPARO() {
         // Mock do comportamento do método findById do repositório
         when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(bicicleta));
         // Mock do comportamento do método save do repositório
@@ -180,6 +180,81 @@ class BicicletaServiceTest {
         // Verifica se a bicicleta retornada não é nula e se o status foi atualizado
         assertNotNull(updatedBicicleta);
         assertEquals("EM_REPARO", updatedBicicleta.getStatus());
+    }
+
+    @Test
+    void postStatus_Success_DISPONIVEL() {
+        // Mock do comportamento do método findById do repositório
+        when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(bicicleta));
+        // Mock do comportamento do método save do repositório
+        when(bicicletaRepository.save(any(Bicicleta.class))).thenReturn(bicicleta);
+
+        // Chama o método postStatus do serviço
+        Bicicleta updatedBicicleta = bicicletaService.postStatus(1, StatusBicicletaEnum.DISPONIVEL);
+
+        // Verifica se a bicicleta retornada não é nula e se o status foi atualizado
+        assertNotNull(updatedBicicleta);
+        assertEquals("DISPONIVEL", updatedBicicleta.getStatus());
+    }
+
+    @Test
+    void postStatus_Success_EM_USO() {
+        // Mock do comportamento do método findById do repositório
+        when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(bicicleta));
+        // Mock do comportamento do método save do repositório
+        when(bicicletaRepository.save(any(Bicicleta.class))).thenReturn(bicicleta);
+
+        // Chama o método postStatus do serviço
+        Bicicleta updatedBicicleta = bicicletaService.postStatus(1, StatusBicicletaEnum.EM_USO);
+
+        // Verifica se a bicicleta retornada não é nula e se o status foi atualizado
+        assertNotNull(updatedBicicleta);
+        assertEquals("EM_USO", updatedBicicleta.getStatus());
+    }
+
+    @Test
+    void postStatus_Success_NOVA() {
+        // Mock do comportamento do método findById do repositório
+        when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(bicicleta));
+        // Mock do comportamento do método save do repositório
+        when(bicicletaRepository.save(any(Bicicleta.class))).thenReturn(bicicleta);
+
+        // Chama o método postStatus do serviço
+        Bicicleta updatedBicicleta = bicicletaService.postStatus(1, StatusBicicletaEnum.NOVA);
+
+        // Verifica se a bicicleta retornada não é nula e se o status foi atualizado
+        assertNotNull(updatedBicicleta);
+        assertEquals("NOVA", updatedBicicleta.getStatus());
+    }
+
+    @Test
+    void postStatus_Success_APOSENTADA() {
+        // Mock do comportamento do método findById do repositório
+        when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(bicicleta));
+        // Mock do comportamento do método save do repositório
+        when(bicicletaRepository.save(any(Bicicleta.class))).thenReturn(bicicleta);
+
+        // Chama o método postStatus do serviço
+        Bicicleta updatedBicicleta = bicicletaService.postStatus(1, StatusBicicletaEnum.APOSENTADA);
+
+        // Verifica se a bicicleta retornada não é nula e se o status foi atualizado
+        assertNotNull(updatedBicicleta);
+        assertEquals("APOSENTADA", updatedBicicleta.getStatus());
+    }
+
+    @Test
+    void postStatus_Success_REPARO_SOLICITADO() {
+        // Mock do comportamento do método findById do repositório
+        when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(bicicleta));
+        // Mock do comportamento do método save do repositório
+        when(bicicletaRepository.save(any(Bicicleta.class))).thenReturn(bicicleta);
+
+        // Chama o método postStatus do serviço
+        Bicicleta updatedBicicleta = bicicletaService.postStatus(1, StatusBicicletaEnum.REPARO_SOLICITADO);
+
+        // Verifica se a bicicleta retornada não é nula e se o status foi atualizado
+        assertNotNull(updatedBicicleta);
+        assertEquals("REPARO_SOLICITADO", updatedBicicleta.getStatus());
     }
 
     @Test

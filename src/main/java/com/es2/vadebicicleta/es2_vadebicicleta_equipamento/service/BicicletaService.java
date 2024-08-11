@@ -69,7 +69,6 @@ public class BicicletaService {
     }
 
     public void deleteBicicleta(Integer idBicicleta){
-
         if(!repository.deleteById(idBicicleta)){
             throw new NotFoundException("Bicicleta não encontrada");
         }

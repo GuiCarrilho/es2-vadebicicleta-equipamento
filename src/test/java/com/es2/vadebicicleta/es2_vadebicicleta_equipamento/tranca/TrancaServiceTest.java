@@ -173,7 +173,7 @@ class TrancaServiceTest {
     }
 
     @Test
-    void postStatus_Success() {
+    void postStatus_Success_NOVA() {
         // Mock do comportamento do método findById do repositório
         when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
         // Mock do comportamento do método save do repositório
@@ -185,6 +185,51 @@ class TrancaServiceTest {
         // Verifica se a tranca retornada não é nula e se o status foi atualizado
         assertNotNull(updatedTranca);
         assertEquals("NOVA", updatedTranca.getStatus());
+    }
+
+    @Test
+    void postStatus_Success_DESTRANCAR() {
+        // Mock do comportamento do método findById do repositório
+        when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
+        // Mock do comportamento do método save do repositório
+        when(trancaRepository.save(any(Tranca.class))).thenReturn(tranca);
+
+        // Chama o método postStatus do serviço
+        Tranca updatedTranca = trancaService.postStatus(1, StatusTrancaEnum.DESTRANCAR);
+
+        // Verifica se a tranca retornada não é nula e se o status foi atualizado
+        assertNotNull(updatedTranca);
+        assertEquals("DESTRANCAR", updatedTranca.getStatus());
+    }
+
+    @Test
+    void postStatus_Success_TRANCAR() {
+        // Mock do comportamento do método findById do repositório
+        when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
+        // Mock do comportamento do método save do repositório
+        when(trancaRepository.save(any(Tranca.class))).thenReturn(tranca);
+
+        // Chama o método postStatus do serviço
+        Tranca updatedTranca = trancaService.postStatus(1, StatusTrancaEnum.TRANCAR);
+
+        // Verifica se a tranca retornada não é nula e se o status foi atualizado
+        assertNotNull(updatedTranca);
+        assertEquals("TRANCAR", updatedTranca.getStatus());
+    }
+
+    @Test
+    void postStatus_Success_EM_REPARO() {
+        // Mock do comportamento do método findById do repositório
+        when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
+        // Mock do comportamento do método save do repositório
+        when(trancaRepository.save(any(Tranca.class))).thenReturn(tranca);
+
+        // Chama o método postStatus do serviço
+        Tranca updatedTranca = trancaService.postStatus(1, StatusTrancaEnum.EM_REPARO);
+
+        // Verifica se a tranca retornada não é nula e se o status foi atualizado
+        assertNotNull(updatedTranca);
+        assertEquals("EM_REPARO", updatedTranca.getStatus());
     }
 
     @Test

@@ -181,7 +181,7 @@ public class TrancaService {
             throw new InvalidActionException("Funcionário não existe");
         }
         Integer idTotemValidado = totemRepository.findTotemByTranca(tranca);
-        if(idTotem == idTotemValidado){
+        if(idTotem.equals(idTotemValidado)){
             throw new InvalidActionException("Tranca já associada ao totem");
         }
         if(Objects.equals(tranca.getStatus(), "NOVA") || Objects.equals(tranca.getStatus(), destrancarMens)){
@@ -199,7 +199,7 @@ public class TrancaService {
             throw new InvalidActionException("Funcionário não existe");
         }
         Integer idTotemValidado = totemRepository.findTotemByTranca(tranca);
-        if(idTotemValidado != idTotem){
+        if (idTotemValidado == null || !idTotemValidado.equals(idTotem)) {
             throw new InvalidActionException("Tranca já se encontra desassociada do totem");
         }
         if(Objects.equals(statusAcaoReparador, "APOSENTADA") || Objects.equals(statusAcaoReparador, "EM_REPARO")){
