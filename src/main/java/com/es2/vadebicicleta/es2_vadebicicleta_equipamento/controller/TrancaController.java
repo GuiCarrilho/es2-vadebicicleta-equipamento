@@ -3,6 +3,7 @@ package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusTrancaEnum;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.TrancaRequest;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.TrancaDto;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.TrancaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +57,8 @@ public class TrancaController {
     }
 
     @PostMapping("/tranca/{idTranca}/trancar")
-    public ResponseEntity<Tranca> statusTrancar(@PathVariable Integer idTranca, @RequestBody(required = false) Integer idBicicleta) {
+    public ResponseEntity<Tranca> statusTrancar(@PathVariable Integer idTranca, @RequestBody(required = false) TrancaRequest request) {
+        Integer idBicicleta = (request != null) ? request.getIdBicicleta() : null;
         Tranca tranca = service.trancar(idTranca, idBicicleta);
         return ResponseEntity.ok().body(tranca);
     }
