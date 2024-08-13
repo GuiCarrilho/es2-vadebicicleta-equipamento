@@ -268,15 +268,6 @@ class TrancaControllerTest {
     }
 
     @Test
-    void postStatus_AposentadaSuccess() {
-        when(service.postStatus(anyInt(), any(StatusTrancaEnum.class))).thenReturn(tranca);
-        
-        ResponseEntity<Tranca> response = controller.postStatus(1, StatusTrancaEnum.APOSENTADA);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(tranca, response.getBody());
-    }
-
-    @Test
     void postStatus_TrancaNotFound() {
         // Mock do comportamento do serviço para lançar a exceção NotFoundException
         when(service.postStatus(anyInt(), any(StatusTrancaEnum.class))).thenThrow(new NotFoundException("Tranca não encontrada"));

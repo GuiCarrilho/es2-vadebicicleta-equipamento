@@ -260,6 +260,21 @@ class TrancaServiceTest {
     }
 
     @Test
+    void postStatus_Success_APOSENTADA() {
+        // Mock do comportamento do método findById do repositório
+        when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
+        // Mock do comportamento do método save do repositório
+        when(trancaRepository.save(any(Tranca.class))).thenReturn(tranca);
+
+        // Chama o método postStatus do serviço
+        Tranca updatedTranca = trancaService.postStatus(1, StatusTrancaEnum.APOSENTADA);
+
+        // Verifica se a tranca retornada não é nula e se o status foi atualizado
+        assertNotNull(updatedTranca);
+        assertEquals("APOSENTADA", updatedTranca.getStatus());
+    }
+
+    @Test
     void postStatus_Success_DESTRANCAR() {
         // Mock do comportamento do método findById do repositório
         when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
