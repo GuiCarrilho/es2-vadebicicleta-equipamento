@@ -258,11 +258,20 @@ class TrancaControllerTest {
         assertEquals("Não encontrado", exception.getMessage());
     }
 
-     @Test
+    @Test
     void postStatus_Success() {
         when(service.postStatus(anyInt(), any(StatusTrancaEnum.class))).thenReturn(tranca);
         
         ResponseEntity<Tranca> response = controller.postStatus(1, StatusTrancaEnum.NOVA);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(tranca, response.getBody());
+    }
+
+    @Test
+    void postStatus_AposentadaSuccess() {
+        when(service.postStatus(anyInt(), any(StatusTrancaEnum.class))).thenReturn(tranca);
+        
+        ResponseEntity<Tranca> response = controller.postStatus(1, StatusTrancaEnum.APOSENTADA);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(tranca, response.getBody());
     }
