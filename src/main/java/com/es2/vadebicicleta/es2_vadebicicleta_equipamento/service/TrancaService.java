@@ -104,6 +104,10 @@ public class TrancaService {
         Tranca tranca = repository.findById(idTranca).orElseThrow(
                 () -> new NotFoundException(trancaErro));
 
+        if(acao == null){
+            throw new InvalidActionException("Status inválido");
+        }
+
         switch (acao){
             case DESTRANCAR:
                 tranca.setStatus(destrancarMens);
