@@ -2,9 +2,12 @@ package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller;
 
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusBicicletaEnum;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.BicicletaDto;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.request.BicicletaIncluirNaRedeRequest;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.request.BicicletaRetirarDaRedeRequest;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.BicicletaService;
 import org.springframework.http.ResponseEntity;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,13 +64,20 @@ public class BicicletaController {
     }
 
     @PostMapping("bicicleta/incluirNaRede")
-    public ResponseEntity<Void> incluirNaRede(@RequestBody Integer idTranca, @RequestBody Integer idBicicleta, @RequestBody Integer idFuncionario){
+    public ResponseEntity<Void> incluirNaRede(@RequestBody BicicletaIncluirNaRedeRequest request){
+        Integer idTranca = request.getIdTranca();
+        Integer idBicicleta = request.getIdBicicleta();
+        Integer idFuncionario = request.getIdFuncionario();
         service.incluirBicicletaNaRedeTotem(idTranca, idBicicleta, idFuncionario);
         return ResponseEntity.ok().build();
-    }
+}
 
     @PostMapping("/bicicleta/retirarDaRede")
-    public ResponseEntity<Void> retirarDaRede(@RequestBody Integer idTranca, @RequestBody Integer idBicicleta, @RequestBody Integer idFuncionario, @RequestBody String statusAcaoReparador){
+    public ResponseEntity<Void> retirarDaRede(@RequestBody BicicletaRetirarDaRedeRequest request ){
+        Integer idTranca = request.getIdTranca();
+        Integer idBicicleta = request.getIdBicicleta();
+        Integer idFuncionario = request.getIdFuncionario();
+        String statusAcaoReparador = request.getStatusAcaoReparador();
         service.retirarBicicletaDaRedeTotem(idTranca, idBicicleta, idFuncionario, statusAcaoReparador);
         return ResponseEntity.ok().build();
     }

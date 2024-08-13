@@ -3,6 +3,7 @@ package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.bicicleta;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 import java.util.List;
@@ -12,6 +13,8 @@ import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller.BicicletaC
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusBicicletaEnum;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.BicicletaDto;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.request.BicicletaIncluirNaRedeRequest;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.request.BicicletaRetirarDaRedeRequest;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.BicicletaService;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.InvalidActionException;
@@ -219,11 +222,22 @@ class BicicletaControllerTest {
 
     @Test
     void incluirNaRede_Success() {
+        // Criação do objeto de requisição com os dados necessários
+        BicicletaIncluirNaRedeRequest request = new BicicletaIncluirNaRedeRequest();
+        request.setIdTranca(1);
+        request.setIdBicicleta(1);
+        request.setIdFuncionario(1);
+
         // Mock do comportamento do serviço para incluir a bicicleta na rede
         doNothing().when(service).incluirBicicletaNaRedeTotem(anyInt(), anyInt(), anyInt());
 
-        // Chama o método do controller e verifica o resultado
-        ResponseEntity<Void> response = controller.incluirNaRede(1, 1, 1);
+        // Chama o método do controlador passando o objeto de requisição
+        ResponseEntity<Void> response = controller.incluirNaRede(request);
+
+        // Verifica se o serviço foi chamado corretamente
+        verify(service).incluirBicicletaNaRedeTotem(1, 1, 1);
+
+        // Verifica o resultado da resposta
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
@@ -232,33 +246,57 @@ class BicicletaControllerTest {
         // Mock do comportamento do serviço para lançar a exceção InvalidActionException
         doThrow(new InvalidActionException("Dados inválidos")).when(service).incluirBicicletaNaRedeTotem(anyInt(), anyInt(), anyInt());
 
-        // Verifica se a exceção InvalidActionException é lançada
-        InvalidActionException exception = assertThrows(InvalidActionException.class, () -> {
-            controller.incluirNaRede(1, 1, 1);
+            // Cria um objeto de request com os valores de teste
+            BicicletaIncluirNaRedeRequest request = new BicicletaIncluirNaRedeRequest();
+            request.setIdTranca(1);
+            request.setIdBicicleta(1);
+            request.setIdFuncionario(1);
+            // Verifica se a exceção InvalidActionException é lançada
+            InvalidActionException exception = assertThrows(InvalidActionException.class, () -> {
+            controller.incluirNaRede(request);
         });
-
+        
         // Verifica a mensagem da exceção
         assertEquals("Dados inválidos", exception.getMessage());
     }
 
     @Test
     void retirarDaRede_Success() {
-        // Mock do comportamento do serviço para retirar a bicicleta da rede
-        doNothing().when(service).retirarBicicletaDaRedeTotem(anyInt(), anyInt(), anyInt(), anyString());
+        // Criação do objeto de requisição com os dados necessários
+        BicicletaRetirarDaRedeRequest request = new BicicletaRetirarDaRedeRequest();
+        request.setIdTranca(1);
+        request.setIdBicicleta(1);
+        request.setIdFuncionario(1);
+        request.setStatusAcaoReparador("APOSENTADA");
 
-        // Chama o método do controller e verifica o resultado
-        ResponseEntity<Void> response = controller.retirarDaRede(1, 1, 1, "APOSENTADA");
+        // Mock do comportamento do serviço para retirar a bicicleta da rede
+        doNothing().when(service).retirarBicicletaDaRedeTotem(1, 1, 1, "APOSENTADA");
+
+        // Chama o método do controlador passando o objeto de requisição
+        ResponseEntity<Void> response = controller.retirarDaRede(request);
+
+        // Verifica se o serviço foi chamado corretamente
+        verify(service).retirarBicicletaDaRedeTotem(1, 1, 1, "APOSENTADA");
+
+        // Verifica o resultado da resposta
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
     void retirarDaRede_InvalidActionException() {
         // Mock do comportamento do serviço para lançar a exceção InvalidActionException
-        doThrow(new InvalidActionException("Dados inválidos")).when(service).retirarBicicletaDaRedeTotem(anyInt(), anyInt(), anyInt(), anyString());
+        doThrow(new InvalidActionException("Dados inválidos")).when(service).retirarBicicletaDaRedeTotem(1, 1, 1, "APOSENTADA");
+
+        // Cria um objeto de request com os valores de teste
+        BicicletaRetirarDaRedeRequest request = new BicicletaRetirarDaRedeRequest();
+        request.setIdTranca(1);
+        request.setIdBicicleta(1);
+        request.setIdFuncionario(1);
+        request.setStatusAcaoReparador("APOSENTADA");
 
         // Verifica se a exceção InvalidActionException é lançada
         InvalidActionException exception = assertThrows(InvalidActionException.class, () -> {
-            controller.retirarDaRede(1, 1, 1, "APOSENTADA");
+            controller.retirarDaRede(request);
         });
 
         // Verifica a mensagem da exceção

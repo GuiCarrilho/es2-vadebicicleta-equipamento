@@ -1,4 +1,4 @@
-package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain;
+package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.request;
 
 public class TrancaRequest {
 
