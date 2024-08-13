@@ -38,10 +38,7 @@ public class TotemService {
         if(totem.getDescricao() == null || totem.getDescricao().isEmpty()){
             return true;
         }
-        if(totem.getLocalizacao() == null || totem.getLocalizacao().isEmpty()){
-            return true;
-        }
-        return false;
+        return (totem.getLocalizacao() == null || totem.getLocalizacao().isEmpty());
     }
 
     public Totem getById(Integer id){
