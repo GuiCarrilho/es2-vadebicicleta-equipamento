@@ -14,6 +14,7 @@ import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller.TrancaConv
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusTrancaEnum;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.TrancaRequest;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.TrancaDto;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.TrancaService;
@@ -188,9 +189,11 @@ class TrancaControllerTest {
     void statusTrancar_Success_WithBicicleta() {
         // Mock do comportamento do serviço para trancar com uma bicicleta
         when(service.trancar(anyInt(), anyInt())).thenReturn(tranca);
+        TrancaRequest request = new TrancaRequest();
+        request.setIdBicicleta(1);
         
         // Chama o método do controller e verifica o resultado
-        ResponseEntity<Tranca> response = controller.statusTrancar(1, 1);
+        ResponseEntity<Tranca> response = controller.statusTrancar(1, request);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(tranca, response.getBody());
     }
@@ -208,9 +211,11 @@ class TrancaControllerTest {
 
     void statusTrancar_NotFound() {
         when(service.trancar(anyInt(), anyInt())).thenThrow(new NotFoundException("Não encontrado"));
+        TrancaRequest request = new TrancaRequest();
+        request.setIdBicicleta(1);
 
         NotFoundException exception = assertThrows(NotFoundException.class, () -> {
-            controller.statusTrancar(2, 1);
+            controller.statusTrancar(1, request);
         });
 
         assertEquals("Não econtrado", exception.getMessage());
@@ -220,9 +225,11 @@ class TrancaControllerTest {
     void statusDestrancar_Success_WithBicicleta() {
         // Mock do comportamento do serviço para destrancar com uma bicicleta
         when(service.destrancar(anyInt(), anyInt())).thenReturn(tranca);
+        TrancaRequest request = new TrancaRequest();
+        request.setIdBicicleta(1);
         
         // Chama o método do controller e verifica o resultado
-        ResponseEntity<Tranca> response = controller.statusDestrancar(1, 1);
+        ResponseEntity<Tranca> response = controller.statusDestrancar(1, request);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(tranca, response.getBody());
     }
@@ -241,9 +248,11 @@ class TrancaControllerTest {
     @Test
     void statusDestrancar_NotFound() {
         when(service.destrancar(anyInt(), anyInt())).thenThrow(new NotFoundException("Não encontrado"));
+        TrancaRequest request = new TrancaRequest();
+        request.setIdBicicleta(1);
 
         NotFoundException exception = assertThrows(NotFoundException.class, () -> {
-            controller.statusDestrancar(2, 1);
+            controller.statusDestrancar(2, request);
         });
 
         assertEquals("Não encontrado", exception.getMessage());

@@ -64,7 +64,8 @@ public class TrancaController {
     }
 
     @PostMapping("/tranca/{idTranca}/destrancar")
-    public ResponseEntity<Tranca> statusDestrancar(@PathVariable Integer idTranca, @RequestBody(required = false) Integer idBicicleta) {
+    public ResponseEntity<Tranca> statusDestrancar(@PathVariable Integer idTranca, @RequestBody(required = false) TrancaRequest request) {
+        Integer idBicicleta = (request != null) ? request.getIdBicicleta() : null;
         Tranca tranca = service.destrancar(idTranca, idBicicleta);
         return ResponseEntity.ok().body(tranca);
     }
