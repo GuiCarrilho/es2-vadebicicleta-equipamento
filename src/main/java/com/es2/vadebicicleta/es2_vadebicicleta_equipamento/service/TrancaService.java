@@ -4,17 +4,14 @@ import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusTrancaEnum;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Totem;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
-import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.TrancaDto;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.InvalidActionException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.TotemRepository;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.TrancaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 
 @Service
@@ -44,7 +41,19 @@ public class TrancaService {
     }
 
     private boolean validateTranca(Tranca tranca){
-        return tranca.getLocalizacao() == null || tranca.getNumero() == null || tranca.getModelo() == null || tranca.getAnoDeFabricacao() == null || tranca.getStatus() == null;
+        if(tranca.getLocalizacao() == null || tranca.getLocalizacao().isEmpty()){
+            return true;
+        }
+        if(tranca.getModelo() == null || tranca.getModelo().isEmpty()){
+            return true;
+        }
+        if(tranca.getAnoDeFabricacao() == null || tranca.getAnoDeFabricacao().isEmpty()){
+            return true;
+        }
+        if(tranca.getStatus() == null || tranca.getStatus().isEmpty()){
+            return true;
+        }
+        return tranca.getNumero() == null;
     }
 
     public List<Tranca> getAll() {

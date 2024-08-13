@@ -51,10 +51,7 @@ public class BicicletaService {
         if(bicicleta.getStatus() == null || bicicleta.getStatus().isEmpty()){
             return true;
         }
-        if(bicicleta.getNumero() == null){
-            return true;
-        }
-        return false;
+        return bicicleta.getNumero() == null;
     }
 
     public List<Bicicleta> getAll() {

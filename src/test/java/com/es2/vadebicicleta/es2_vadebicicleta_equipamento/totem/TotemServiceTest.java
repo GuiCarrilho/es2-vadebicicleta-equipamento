@@ -58,9 +58,36 @@ class TotemServiceTest {
     }
 
     @Test
-    void saveTotem_InvalidData_ThrowsInvalidActionException() {
+    void saveTotem_DescricaoInvalidData_ThrowsInvalidActionException() {
         // Configura dados inválidos na totem
         totem.setDescricao(null);
+        
+        // Verifica se a exceção InvalidActionException é lançada
+        assertThrows(InvalidActionException.class, () -> totemService.save(totem));
+    }
+
+    @Test
+    void saveTotem_LocalizacaoInvalidData_ThrowsInvalidActionException() {
+        // Configura dados inválidos na totem
+        totem.setLocalizacao(null);
+        
+        // Verifica se a exceção InvalidActionException é lançada
+        assertThrows(InvalidActionException.class, () -> totemService.save(totem));
+    }
+
+    @Test
+    void saveTotem_DescricaoEmptyData_ThrowsInvalidActionException() {
+        // Configura dados inválidos na totem
+        totem.setDescricao("");
+        
+        // Verifica se a exceção InvalidActionException é lançada
+        assertThrows(InvalidActionException.class, () -> totemService.save(totem));
+    }
+
+    @Test
+    void saveTotem_LocalizacaoEmptyData_ThrowsInvalidActionException() {
+        // Configura dados inválidos na totem
+        totem.setLocalizacao("");
         
         // Verifica se a exceção InvalidActionException é lançada
         assertThrows(InvalidActionException.class, () -> totemService.save(totem));

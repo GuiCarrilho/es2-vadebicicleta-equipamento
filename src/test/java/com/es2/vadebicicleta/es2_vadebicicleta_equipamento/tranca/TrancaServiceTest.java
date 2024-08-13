@@ -67,10 +67,82 @@ class TrancaServiceTest {
         assertEquals(tranca.getId(), savedTranca.getId());
     }
 
-     @Test
-    void saveTranca_InvalidData_ThrowsInvalidActionException() {
+    @Test
+    void saveTranca_LocalizacaoInvalidData_ThrowsInvalidActionException() {
         // Configura dados inválidos na tranca
         tranca.setLocalizacao(null);
+        
+        // Verifica se a exceção InvalidActionException é lançada
+        assertThrows(InvalidActionException.class, () -> trancaService.save(tranca));
+    }
+
+    @Test
+    void saveTranca_ModeloInvalidData_ThrowsInvalidActionException() {
+        // Configura dados inválidos na tranca
+        tranca.setModelo(null);
+        
+        // Verifica se a exceção InvalidActionException é lançada
+        assertThrows(InvalidActionException.class, () -> trancaService.save(tranca));
+    }
+
+    @Test
+    void saveTranca_AnoDeFabricacaoInvalidData_ThrowsInvalidActionException() {
+        // Configura dados inválidos na tranca
+        tranca.setAnoDeFabricacao(null);
+        
+        // Verifica se a exceção InvalidActionException é lançada
+        assertThrows(InvalidActionException.class, () -> trancaService.save(tranca));
+    }
+
+    @Test
+    void saveTranca_StatusInvalidData_ThrowsInvalidActionException() {
+        // Configura dados inválidos na tranca
+        tranca.setStatus(null);
+        
+        // Verifica se a exceção InvalidActionException é lançada
+        assertThrows(InvalidActionException.class, () -> trancaService.save(tranca));
+    }
+
+    @Test
+    void saveTranca_NumeroInvalidData_ThrowsInvalidActionException() {
+        // Configura dados inválidos na tranca
+        tranca.setNumero(null);
+        
+        // Verifica se a exceção InvalidActionException é lançada
+        assertThrows(InvalidActionException.class, () -> trancaService.save(tranca));
+    }
+
+    @Test
+    void saveTranca_LocalizacaoEmptyData_ThrowsInvalidActionException() {
+        // Configura dados inválidos na tranca
+        tranca.setLocalizacao("");
+        
+        // Verifica se a exceção InvalidActionException é lançada
+        assertThrows(InvalidActionException.class, () -> trancaService.save(tranca));
+    }
+
+    @Test
+    void saveTranca_ModeloEmptyData_ThrowsInvalidActionException() {
+        // Configura dados inválidos na tranca
+        tranca.setModelo("");
+        
+        // Verifica se a exceção InvalidActionException é lançada
+        assertThrows(InvalidActionException.class, () -> trancaService.save(tranca));
+    }
+
+    @Test
+    void saveTranca_AnoDeFabricacaoEmptyData_ThrowsInvalidActionException() {
+        // Configura dados inválidos na tranca
+        tranca.setAnoDeFabricacao("");
+        
+        // Verifica se a exceção InvalidActionException é lançada
+        assertThrows(InvalidActionException.class, () -> trancaService.save(tranca));
+    }
+
+    @Test
+    void saveTranca_StatusEmptyData_ThrowsInvalidActionException() {
+        // Configura dados inválidos na tranca
+        tranca.setStatus("");
         
         // Verifica se a exceção InvalidActionException é lançada
         assertThrows(InvalidActionException.class, () -> trancaService.save(tranca));

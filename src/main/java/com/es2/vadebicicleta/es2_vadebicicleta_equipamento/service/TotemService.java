@@ -7,11 +7,9 @@ import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.InvalidActi
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.TotemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TotemService {
@@ -37,7 +35,13 @@ public class TotemService {
     }
 
     private boolean validateTotem(Totem totem){
-        return totem.getDescricao() == null || totem.getLocalizacao() == null;
+        if(totem.getDescricao() == null || totem.getDescricao().isEmpty()){
+            return true;
+        }
+        if(totem.getLocalizacao() == null || totem.getLocalizacao().isEmpty()){
+            return true;
+        }
+        return false;
     }
 
     public Totem getById(Integer id){
