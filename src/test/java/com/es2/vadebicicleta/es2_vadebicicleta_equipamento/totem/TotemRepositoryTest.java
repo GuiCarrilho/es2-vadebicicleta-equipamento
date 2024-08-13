@@ -174,10 +174,10 @@ class TotemRepositoryTest {
     @Test
     void findTrancasByTotemId_Success() {
     // Configura a tranca no totem
-    totemRepository.addTrancasByTotemId(1, tranca);
+    totemRepository.addTrancasByTotemId(2, tranca);
 
     // Encontra as trancas pelo ID do totem
-    List<Tranca> trancas = totemRepository.findTrancasByTotemId(1);
+    List<Tranca> trancas = totemRepository.findTrancasByTotemId(2);
 
     // Verifica se a lista de trancas não é nula e contém a tranca esperada
     assertNotNull(trancas);
