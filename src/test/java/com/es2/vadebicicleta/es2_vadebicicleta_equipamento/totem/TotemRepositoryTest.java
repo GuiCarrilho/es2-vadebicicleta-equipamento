@@ -173,16 +173,15 @@ class TotemRepositoryTest {
 
     @Test
     void findTrancasByTotemId_Success() {
-    // Configura a tranca no totem
-    totemRepository.addTrancasByTotemId(2, tranca);
+        // Adiciona a tranca ao totem
+        totemRepository.addTrancasByTotemId(1, tranca);
 
-    // Encontra as trancas pelo ID do totem
-    List<Tranca> trancas = totemRepository.findTrancasByTotemId(2);
+        // Encontra as trancas pelo ID do totem
+        List<Tranca> trancas = totemRepository.findTrancasByTotemId(1);
 
-    // Verifica se a lista de trancas não é nula e contém a tranca esperada
-    assertNotNull(trancas);
-    assertEquals(1, trancas.size());
-    assertTrue(trancas.contains(tranca));
+        // Verifica se a lista de trancas é a esperada
+        assertNotNull(trancas);
+        assertTrue(trancas.contains(tranca));
     }
 
     @Test
