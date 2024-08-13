@@ -195,8 +195,6 @@ class TotemServiceTest {
 
     @Test
     void getBicicletasByTotem_Success() {
-        // Configura um objeto Tranca
-        Tranca tranca = new Tranca(1, 1, 101, "local1", "2024", "modelo1", "TRANCAR");
         // Configura um objeto Bicicleta
         Bicicleta bicicleta = new Bicicleta(1, "Marca A", "Modelo A", "2024", 123, "DISPONIVEL");
         List<Bicicleta> bicicletas = Collections.singletonList(bicicleta);
@@ -228,10 +226,6 @@ class TotemServiceTest {
 
     @Test
     void getBicicletasByTotem_NoTrancas_ThrowsNotFoundException() {
-        // Configura um objeto Tranca
-        Tranca tranca = new Tranca(1, 1, 101, "local1", "2024", "modelo1", "ABERTA");
-        List<Tranca> trancas = Collections.singletonList(tranca);
-
         // Mock do comportamento do método getById do serviço
         when(totemRepository.findById(anyInt())).thenReturn(Optional.of(totem));
         // Mock do comportamento do método findBicicletasByTotemId do repositório para lançar exceção

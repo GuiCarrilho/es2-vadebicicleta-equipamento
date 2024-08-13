@@ -18,6 +18,8 @@ public class TotemService {
 
     private final TotemRepository repository;
 
+    private String totemMens = "Totem não existe";
+
     @Autowired
     public TotemService(TotemRepository repository) {
         this.repository = repository;
@@ -40,13 +42,13 @@ public class TotemService {
 
     public Totem getById(Integer id){
         return repository.findById(id).orElseThrow(
-                () -> new NotFoundException("Totem não existe"));
+                () -> new NotFoundException(totemMens));
     }
 
     public Totem updateTotem(Integer idTotem, Totem novoTotem){
         Totem totemAtualizado = getById(idTotem);
         if(totemAtualizado.getId() == null) {
-            throw new NotFoundException("Totem não existe");
+            throw new NotFoundException(totemMens);
         }
         if(validateTotem(novoTotem)){
             throw new InvalidActionException("Dados do totem inválidos");
@@ -67,7 +69,7 @@ public class TotemService {
     public List<Tranca> getTrancasByTotem(Integer idTotem){
         Totem totem = getById(idTotem);
         if(totem == null){
-            throw new NotFoundException("Totem não existe");
+            throw new NotFoundException(totemMens);
         }
         return repository.findTrancasByTotemId(idTotem);
     }
@@ -75,7 +77,7 @@ public class TotemService {
     public List<Bicicleta> getBicicletasByTotem(Integer idTotem){
         Totem totem = getById(idTotem);
         if(totem == null){
-            throw new NotFoundException("Totem não existe");
+            throw new NotFoundException(totemMens);
         }
         return repository.findBicicletasByTotemId(idTotem);
     }

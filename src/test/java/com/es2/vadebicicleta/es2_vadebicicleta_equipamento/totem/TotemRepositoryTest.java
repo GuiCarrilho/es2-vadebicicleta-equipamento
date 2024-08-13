@@ -173,8 +173,9 @@ class TotemRepositoryTest {
 
     @Test
     void findTrancasByTotemId_Success() {
+        Tranca trancaNova = new Tranca(2, 2, 150, "Méier", "2020", "Corrida", "TRANCAR");
         // Adiciona a tranca ao totem
-        totemRepository.addTrancasByTotemId(1, tranca);
+        totemRepository.addTrancasByTotemId(1, trancaNova);
 
         // Encontra as trancas pelo ID do totem
         List<Tranca> trancas = totemRepository.findTrancasByTotemId(1);
