@@ -3,7 +3,6 @@ package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.tranca;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.*;
 
@@ -15,7 +14,9 @@ import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusTrancaEnum;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.TrancaDto;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.request.TrancaIncluirNaRedeRequest;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.request.TrancaRequest;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.request.TrancaRetirarDaRedeRequest;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.TrancaService;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.InvalidActionException;
@@ -294,55 +295,91 @@ class TrancaControllerTest {
         // Verifica a mensagem da exceção
         assertEquals("Status não escolhido", exception.getMessage());
     }
-
+    
     @Test
     void incluirNaRede_Success() {
-        // Mock do comportamento do serviço para incluir a bicicleta na rede
-        doNothing().when(service).incluirTrancaNaRedeTotem(anyInt(), anyInt(), anyInt());
+        // Criação do objeto de requisição com os dados necessários
+        TrancaIncluirNaRedeRequest request = new TrancaIncluirNaRedeRequest();
+        request.setIdTotem(1);
+        request.setIdTranca(1);
+        request.setIdFuncionario(1);
 
-        // Chama o método do controller e verifica o resultado
-        ResponseEntity<Void> response = controller.incluirNaRede(1, 1, 1);
+        // Mock do comportamento do serviço para incluir a tranca na rede
+        doNothing().when(service).incluirTrancaNaRedeTotem(1, 1, 1);
+
+        // Chama o método do controlador passando o objeto de requisição
+        ResponseEntity<Void> response = controller.incluirNaRede(request);
+
+        // Verifica se o serviço foi chamado corretamente
+        verify(service).incluirTrancaNaRedeTotem(1, 1, 1);
+
+        // Verifica o resultado da resposta
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
     void incluirNaRede_InvalidActionException() {
         // Mock do comportamento do serviço para lançar a exceção InvalidActionException
-        doThrow(new InvalidActionException("Dados inválidos")).when(service).incluirTrancaNaRedeTotem(anyInt(), anyInt(), anyInt());
+        doThrow(new InvalidActionException("Dados inválidos")).when(service).incluirTrancaNaRedeTotem(1, 1, 1);
+
+        // Cria um objeto de request com os valores de teste
+        TrancaIncluirNaRedeRequest request = new TrancaIncluirNaRedeRequest();
+        request.setIdTotem(1);
+        request.setIdTranca(1);
+        request.setIdFuncionario(1);
 
         // Verifica se a exceção InvalidActionException é lançada
         InvalidActionException exception = assertThrows(InvalidActionException.class, () -> {
-            controller.incluirNaRede(1, 1, 1);
+            controller.incluirNaRede(request);
         });
 
         // Verifica a mensagem da exceção
         assertEquals("Dados inválidos", exception.getMessage());
     }
-
+    
     @Test
     void retirarDaRede_Success() {
-        // Mock do comportamento do serviço para retirar a bicicleta da rede
-        doNothing().when(service).retirarTrancaDaRedeTotem(anyInt(), anyInt(), anyInt(), anyString());
+        // Criação do objeto de requisição com os dados necessários
+        TrancaRetirarDaRedeRequest request = new TrancaRetirarDaRedeRequest();
+        request.setIdTotem(1);
+        request.setIdTranca(1);
+        request.setIdFuncionario(1);
+        request.setStatusAcaoReparador("APOSENTADA");
 
-        // Chama o método do controller e verifica o resultado
-        ResponseEntity<Void> response = controller.retirarDaRede(1, 1, 1, "APOSENTADA");
+        // Mock do comportamento do serviço para retirar a tranca da rede
+        doNothing().when(service).retirarTrancaDaRedeTotem(1, 1, 1, "APOSENTADA");
+
+        // Chama o método do controlador passando o objeto de requisição
+        ResponseEntity<Void> response = controller.retirarDaRede(request);
+
+        // Verifica se o serviço foi chamado corretamente
+        verify(service).retirarTrancaDaRedeTotem(1, 1, 1, "APOSENTADA");
+
+        // Verifica o resultado da resposta
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
+
 
     @Test
     void retirarDaRede_InvalidActionException() {
         // Mock do comportamento do serviço para lançar a exceção InvalidActionException
-        doThrow(new InvalidActionException("Dados inválidos")).when(service).retirarTrancaDaRedeTotem(anyInt(), anyInt(), anyInt(), anyString());
+        doThrow(new InvalidActionException("Dados inválidos")).when(service).retirarTrancaDaRedeTotem(1, 1, 1, "APOSENTADA");
+
+        // Cria um objeto de request com os valores de teste
+        TrancaRetirarDaRedeRequest request = new TrancaRetirarDaRedeRequest();
+        request.setIdTotem(1);
+        request.setIdTranca(1);
+        request.setIdFuncionario(1);
+        request.setStatusAcaoReparador("APOSENTADA");
 
         // Verifica se a exceção InvalidActionException é lançada
         InvalidActionException exception = assertThrows(InvalidActionException.class, () -> {
-            controller.retirarDaRede(1, 1, 1, "APOSENTADA");
+            controller.retirarDaRede(request);
         });
 
         // Verifica a mensagem da exceção
         assertEquals("Dados inválidos", exception.getMessage());
     }
-
     @Test
     void getBicicletaByTrancaId_Success() {
         when(service.getBicicletaByTrancaId(anyInt())).thenReturn(bicicleta);

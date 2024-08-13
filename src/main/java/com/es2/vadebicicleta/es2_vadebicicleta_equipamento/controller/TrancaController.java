@@ -4,7 +4,11 @@ import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusTrancaEnum;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.TrancaDto;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.request.BicicletaIncluirNaRedeRequest;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.request.BicicletaRetirarDaRedeRequest;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.request.TrancaIncluirNaRedeRequest;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.request.TrancaRequest;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.request.TrancaRetirarDaRedeRequest;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.TrancaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -77,17 +81,25 @@ public class TrancaController {
         return ResponseEntity.ok().body(trancaNovoStatus);
     }
 
-    @PostMapping("tranca/incluirNaRede")
-    public ResponseEntity<Void> incluirNaRede(@RequestBody Integer idTotem, @RequestBody Integer idTranca, @RequestBody Integer idFuncionario) {
-        service.incluirTrancaNaRedeTotem(idTotem, idTranca, idFuncionario);
-        return ResponseEntity.ok().build();
+    @PostMapping("/tranca/incluirNaRede")
+    public ResponseEntity<Void> incluirNaRede(@RequestBody TrancaIncluirNaRedeRequest request) {
+    Integer idTotem = request.getIdTotem();
+    Integer idTranca = request.getIdTranca();
+    Integer idFuncionario = request.getIdFuncionario();
+    service.incluirTrancaNaRedeTotem(idTotem, idTranca, idFuncionario);
+    return ResponseEntity.ok().build();
     }
-
+    
     @PostMapping("/tranca/retirarDaRede")
-    public ResponseEntity<Void> retirarDaRede(@RequestBody Integer idTotem, @RequestBody Integer idTranca, @RequestBody Integer idFuncionario, @RequestBody String statusAcaoReparador) {
-        service.retirarTrancaDaRedeTotem(idTotem, idTranca, idFuncionario, statusAcaoReparador);
-        return ResponseEntity.ok().build();
-    }
+    public ResponseEntity<Void> retirarDaRede(@RequestBody TrancaRetirarDaRedeRequest request) {
+    Integer idTotem = request.getIdTotem();
+    Integer idTranca = request.getIdTranca();
+    Integer idFuncionario = request.getIdFuncionario();
+    String statusAcaoReparador = request.getStatusAcaoReparador();
+    service.retirarTrancaDaRedeTotem(idTotem, idTranca, idFuncionario, statusAcaoReparador);
+    return ResponseEntity.ok().build();
+}
+
 
     @GetMapping("/tranca/{idTranca}/bicicleta")
     public ResponseEntity<Bicicleta> getBicicletaByTrancaId(@PathVariable Integer idTranca){
