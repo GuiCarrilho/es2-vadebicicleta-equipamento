@@ -89,6 +89,10 @@ public class BicicletaService {
     public Bicicleta postStatus(Integer idBicicleta, StatusBicicletaEnum acao){
         Bicicleta bicicleta = repository.findById(idBicicleta).orElseThrow(
                 () -> new NotFoundException("Bicicleta não encontrada"));
+        
+        if(acao == null){
+            throw new InvalidActionException("Status inválido");
+        }
 
         switch (acao){
             case DISPONIVEL:
