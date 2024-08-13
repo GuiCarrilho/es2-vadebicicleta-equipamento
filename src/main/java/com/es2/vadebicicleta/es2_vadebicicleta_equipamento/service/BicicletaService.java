@@ -39,7 +39,22 @@ public class BicicletaService {
     }
 
     private boolean validateBicicleta(Bicicleta bicicleta){
-        return bicicleta.getAno() == null || bicicleta.getNumero() == null || bicicleta.getModelo() == null || bicicleta.getMarca() == null || bicicleta.getStatus() == null;
+        if(bicicleta.getAno() == null || bicicleta.getAno().isEmpty()){
+            return true;
+        }
+        if(bicicleta.getModelo() == null || bicicleta.getModelo().isEmpty()){
+            return true;
+        }  
+        if(bicicleta.getMarca() == null || bicicleta.getMarca().isEmpty()){
+            return true;
+        }   
+        if(bicicleta.getStatus() == null || bicicleta.getStatus().isEmpty()){
+            return true;
+        }
+        if(bicicleta.getNumero() == null){
+            return true;
+        }
+        return false;
     }
 
     public List<Bicicleta> getAll() {

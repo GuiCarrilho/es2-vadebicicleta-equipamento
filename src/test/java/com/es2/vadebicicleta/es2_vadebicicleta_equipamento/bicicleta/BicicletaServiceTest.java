@@ -46,7 +46,7 @@ class BicicletaServiceTest {
     @BeforeEach
     void setUp() {
         // Configura um objeto Bicicleta para ser usado em todos os testes
-        bicicleta = new Bicicleta(1, "MarcaX", "Montanha", "2022", 123, "DISPONÍVEL");
+        bicicleta = new Bicicleta(1, "MarcaX", "Montanha", "2022", 123, "NOVA");
     }
 
     @Test
@@ -62,8 +62,8 @@ class BicicletaServiceTest {
         assertEquals(bicicleta.getId(), savedBicicleta.getId());
     }
 
-     @Test
-    void saveBicicleta_InvalidData_ThrowsInvalidActionException() {
+    @Test
+    void saveBicicleta_AnoInvalidData_ThrowsInvalidActionException() {
         // Configura dados inválidos na bicicleta
         bicicleta.setAno(null);
         
@@ -71,7 +71,74 @@ class BicicletaServiceTest {
         assertThrows(InvalidActionException.class, () -> bicicletaService.save(bicicleta));
     }
 
+    @Test
+    void saveBicicleta_NumeroInvalidData_ThrowsInvalidActionException() {
+        // Configura dados inválidos na bicicleta
+        bicicleta.setNumero(null);
+        
+        // Verifica se a exceção InvalidActionException é lançada
+        assertThrows(InvalidActionException.class, () -> bicicletaService.save(bicicleta));
+    }
+
+    @Test
+    void saveBicicleta_ModeloInvalidData_ThrowsInvalidActionException() {
+        // Configura dados inválidos na bicicleta
+        bicicleta.setModelo(null);
+        
+        // Verifica se a exceção InvalidActionException é lançada
+        assertThrows(InvalidActionException.class, () -> bicicletaService.save(bicicleta));
+    }
+
+    @Test
+    void saveBicicleta_MarcaInvalidData_ThrowsInvalidActionException() {
+        // Configura dados inválidos na bicicleta
+        bicicleta.setMarca(null);
+        
+        // Verifica se a exceção InvalidActionException é lançada
+        assertThrows(InvalidActionException.class, () -> bicicletaService.save(bicicleta));
+    }
+
+    @Test
+    void saveBicicleta_StatusInvalidData_ThrowsInvalidActionException() {
+        // Configura dados inválidos na bicicleta
+        bicicleta.setStatus(null);
+        
+        // Verifica se a exceção InvalidActionException é lançada
+        assertThrows(InvalidActionException.class, () -> bicicletaService.save(bicicleta));
+    }
+
+    @Test
+    void saveBicicleta_AnoEmptyData_ThrowsInvalidActionException() {
+    // Configura dados inválidos na bicicleta
+        bicicleta.setAno("");
+         // Verifica se a exceção InvalidActionException é lançada
+        assertThrows(InvalidActionException.class, () -> bicicletaService.save(bicicleta));
+    }
     
+    @Test
+    void saveBicicleta_ModeloEmptyData_ThrowsInvalidActionException() {
+    // Configura dados inválidos na bicicleta
+        bicicleta.setModelo("");  // Define o ano como uma string vazia
+         // Verifica se a exceção InvalidActionException é lançada
+        assertThrows(InvalidActionException.class, () -> bicicletaService.save(bicicleta));
+    }
+
+    @Test
+    void saveBicicleta_MarcaEmptyData_ThrowsInvalidActionException() {
+    // Configura dados inválidos na bicicleta
+        bicicleta.setMarca("");  // Define o ano como uma string vazia
+         // Verifica se a exceção InvalidActionException é lançada
+        assertThrows(InvalidActionException.class, () -> bicicletaService.save(bicicleta));
+    }
+
+    @Test
+    void saveBicicleta_StatusEmptyData_ThrowsInvalidActionException() {
+    // Configura dados inválidos na bicicleta
+        bicicleta.setStatus("");  // Define o ano como uma string vazia
+         // Verifica se a exceção InvalidActionException é lançada
+        assertThrows(InvalidActionException.class, () -> bicicletaService.save(bicicleta));
+    }
+
     @Test
     void getAllBicicletas_Success() {
         // Configura o repositório para retornar uma lista contendo a bicicleta
@@ -110,7 +177,7 @@ class BicicletaServiceTest {
     @Test
     void updateBicicleta_Success() {
         // Configura uma nova bicicleta para atualizar
-        Bicicleta novaBicicleta = new Bicicleta(1, "MarcaX", "Montanha", "2023", 124, "NOVA");
+        Bicicleta novaBicicleta = new Bicicleta(1, "MarcaY", "Corrida", "2023", 124, "NOVA");
         
         // Mock do comportamento do método findById do repositório
         when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(bicicleta));
