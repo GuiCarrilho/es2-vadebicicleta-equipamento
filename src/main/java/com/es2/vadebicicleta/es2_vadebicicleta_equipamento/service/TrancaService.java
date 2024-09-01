@@ -33,7 +33,7 @@ public class TrancaService {
     private String livreMens = "LIVRE";
     private String ocuparMens = "OCUPADA";
     private String aposentada = "APOSENTADA";
-    private String emReparo = "EM_RAPARO";
+    private String emReparo = "EM_REPARO";
 
     @Autowired
     public TrancaService(TrancaRepository repository, BicicletaService bicicletaService, TotemRepository totemRepository, AluguelClient aluguelClient, ExternoClient externoClient) {
