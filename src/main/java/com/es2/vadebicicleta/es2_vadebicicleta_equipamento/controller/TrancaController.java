@@ -3,7 +3,9 @@ package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusTrancaEnum;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.BicicletaDtoReturn;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.TrancaDto;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.TrancaDtoReturn;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.request.TrancaIncluirNaRedeRequest;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.request.TrancaRequest;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.request.TrancaRetirarDaRedeRequest;
@@ -21,10 +23,13 @@ public class TrancaController {
 
     private final TrancaConverter converter;
 
+    private final BicicletaConverter bicicletaConverter;
+
     @Autowired
-    public TrancaController(TrancaService service, TrancaConverter converter) {
+    public TrancaController(TrancaService service, TrancaConverter converter, BicicletaConverter bicicletaConverter) {
         this.service = service;
         this.converter = converter;
+        this.bicicletaConverter = bicicletaConverter;
     }
 
     @GetMapping("/tranca")
@@ -33,23 +38,26 @@ public class TrancaController {
     }
 
     @PostMapping("/tranca")
-    public ResponseEntity<Tranca> postTranca(@RequestBody TrancaDto trancaDto) {
+    public ResponseEntity<TrancaDtoReturn> postTranca(@RequestBody TrancaDto trancaDto) {
         Tranca tranca = converter.dtoToEntity(trancaDto);
         Tranca trancaNova = service.save(tranca);
-        return ResponseEntity.ok().body(trancaNova);
+        TrancaDtoReturn dtoReturn = converter.entityToDtoReturn(trancaNova);
+        return ResponseEntity.ok().body(dtoReturn);
     }
 
     @GetMapping("/tranca/{idTranca}")
-    public ResponseEntity<Tranca> getTrancaById(@PathVariable Integer idTranca) {
+    public ResponseEntity<TrancaDtoReturn> getTrancaById(@PathVariable Integer idTranca) {
         Tranca tranca = service.getById(idTranca);
-        return ResponseEntity.ok().body(tranca);
+        TrancaDtoReturn dtoReturn = converter.entityToDtoReturn(tranca);
+        return ResponseEntity.ok().body(dtoReturn);
     }
 
     @PutMapping("/tranca/{idTranca}")
-    public ResponseEntity<Tranca> putTranca(@PathVariable Integer idTranca, @RequestBody TrancaDto trancaDto) {
+    public ResponseEntity<TrancaDtoReturn> putTranca(@PathVariable Integer idTranca, @RequestBody TrancaDto trancaDto) {
         Tranca novaTranca = converter.dtoToEntity(trancaDto);
         Tranca trancaAtualizada = service.updateTranca(idTranca, novaTranca);
-        return ResponseEntity.ok().body(trancaAtualizada);
+        TrancaDtoReturn dtoReturn = converter.entityToDtoReturn(trancaAtualizada);
+        return ResponseEntity.ok().body(dtoReturn);
     }
 
     @DeleteMapping("/tranca/{idTranca}")
@@ -59,24 +67,26 @@ public class TrancaController {
     }
 
     @PostMapping("/tranca/{idTranca}/trancar")
-    public ResponseEntity<Tranca> statusTrancar(@PathVariable Integer idTranca, @RequestBody(required = false) TrancaRequest request) {
+    public ResponseEntity<TrancaDtoReturn> statusTrancar(@PathVariable Integer idTranca, @RequestBody(required = false) TrancaRequest request) {
         Integer idBicicleta = (request != null) ? request.getIdBicicleta() : null;
         Tranca tranca = service.trancar(idTranca, idBicicleta);
-        return ResponseEntity.ok().body(tranca);
+        TrancaDtoReturn dtoReturn = converter.entityToDtoReturn(tranca);
+        return ResponseEntity.ok().body(dtoReturn);
     }
 
     @PostMapping("/tranca/{idTranca}/destrancar")
-    public ResponseEntity<Tranca> statusDestrancar(@PathVariable Integer idTranca, @RequestBody(required = false) TrancaRequest request) {
+    public ResponseEntity<TrancaDtoReturn> statusDestrancar(@PathVariable Integer idTranca, @RequestBody(required = false) TrancaRequest request) {
         Integer idBicicleta = (request != null) ? request.getIdBicicleta() : null;
         Tranca tranca = service.destrancar(idTranca, idBicicleta);
-        return ResponseEntity.ok().body(tranca);
+        TrancaDtoReturn dtoReturn = converter.entityToDtoReturn(tranca);
+        return ResponseEntity.ok().body(dtoReturn);
     }
 
     @PostMapping("/tranca/{idTranca}/status/{acao}")
-    public ResponseEntity<Tranca> postStatus(@PathVariable Integer idTranca, @PathVariable StatusTrancaEnum acao) {
+    public ResponseEntity<TrancaDtoReturn> postStatus(@PathVariable Integer idTranca, @PathVariable StatusTrancaEnum acao) {
         Tranca trancaNovoStatus = service.postStatus(idTranca, acao);
-
-        return ResponseEntity.ok().body(trancaNovoStatus);
+        TrancaDtoReturn dtoReturn = converter.entityToDtoReturn(trancaNovoStatus);
+        return ResponseEntity.ok().body(dtoReturn);
     }
 
     @PostMapping("/tranca/incluirNaRede")
@@ -100,9 +110,10 @@ public class TrancaController {
 
 
     @GetMapping("/tranca/{idTranca}/bicicleta")
-    public ResponseEntity<Bicicleta> getBicicletaByTrancaId(@PathVariable Integer idTranca){
+    public ResponseEntity<BicicletaDtoReturn> getBicicletaByTrancaId(@PathVariable Integer idTranca){
         Bicicleta bicicleta = service.getBicicletaByTrancaId(idTranca);
-        return ResponseEntity.ok().body(bicicleta);
+        BicicletaDtoReturn dtoReturn = bicicletaConverter.entityToDtoReturn(bicicleta);
+        return ResponseEntity.ok().body(dtoReturn);
     }
 
 }

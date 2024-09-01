@@ -2,6 +2,7 @@ package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller;
 
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusBicicletaEnum;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.BicicletaDto;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.BicicletaDtoReturn;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.request.BicicletaIncluirNaRedeRequest;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.request.BicicletaRetirarDaRedeRequest;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.BicicletaService;
@@ -32,23 +33,26 @@ public class BicicletaController {
     }
 
     @PostMapping("/bicicleta")
-    public ResponseEntity<Bicicleta> postBicicleta(@RequestBody BicicletaDto bicicletaDto) {
+    public ResponseEntity<BicicletaDtoReturn> postBicicleta(@RequestBody BicicletaDto bicicletaDto) {
         Bicicleta bicicleta = converter.dtoToEntity(bicicletaDto);
         Bicicleta novaBicicleta = service.save(bicicleta);
-        return ResponseEntity.ok().body(novaBicicleta);
+        BicicletaDtoReturn dtoReturn = converter.entityToDtoReturn(novaBicicleta);
+        return ResponseEntity.ok().body(dtoReturn);
     }
 
     @GetMapping("/bicicleta/{idBicicleta}")
-    public ResponseEntity<Bicicleta> getBicicletaById(@PathVariable Integer idBicicleta) {
+    public ResponseEntity<BicicletaDtoReturn> getBicicletaById(@PathVariable Integer idBicicleta) {
         Bicicleta bicicleta = service.getById(idBicicleta);
-        return ResponseEntity.ok().body(bicicleta);
+        BicicletaDtoReturn dtoReturn = converter.entityToDtoReturn(bicicleta);
+        return ResponseEntity.ok().body(dtoReturn);
     }
 
     @PutMapping("/bicicleta/{idBicicleta}")
-    public ResponseEntity<Bicicleta> putBicicleta(@PathVariable Integer idBicicleta, @RequestBody BicicletaDto bicicletaDto) {
+    public ResponseEntity<BicicletaDtoReturn> putBicicleta(@PathVariable Integer idBicicleta, @RequestBody BicicletaDto bicicletaDto) {
         Bicicleta novaBicicleta = converter.dtoToEntity(bicicletaDto);
         Bicicleta bicicletaAtualizada = service.updateBicicleta(idBicicleta, novaBicicleta);
-        return ResponseEntity.ok().body(bicicletaAtualizada);
+        BicicletaDtoReturn dtoReturn = converter.entityToDtoReturn(bicicletaAtualizada);
+        return ResponseEntity.ok().body(dtoReturn);
     }
 
     @DeleteMapping("/bicicleta/{idBicicleta}")
@@ -58,9 +62,10 @@ public class BicicletaController {
     }
 
     @PostMapping("/bicicleta/{idBicicleta}/status/{acao}")
-    public ResponseEntity<Bicicleta> postStatus(@PathVariable Integer idBicicleta, @PathVariable StatusBicicletaEnum acao) {
+    public ResponseEntity<BicicletaDtoReturn> postStatus(@PathVariable Integer idBicicleta, @PathVariable StatusBicicletaEnum acao) {
         Bicicleta bicicletaNovoStatus = service.postStatus(idBicicleta, acao);
-        return ResponseEntity.ok().body(bicicletaNovoStatus);
+        BicicletaDtoReturn dtoReturn = converter.entityToDtoReturn(bicicletaNovoStatus);
+        return ResponseEntity.ok().body(dtoReturn);
     }
 
     @PostMapping("bicicleta/incluirNaRede")

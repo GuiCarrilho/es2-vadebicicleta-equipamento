@@ -4,7 +4,6 @@ import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.EnderecoEmail;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Funcionario;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusBicicletaEnum;
-import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Totem;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.InvalidActionException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
@@ -224,7 +223,7 @@ public class BicicletaService {
             bicicleta.setStatus(statusAcaoReparador);
             bicicleta.setFuncionario(idFuncionario);
         }
-        enviarEmailRemocao(funcionario, bicicleta, tranca):
+        enviarEmailRemocao(funcionario, bicicleta, tranca);
     }
 }
 
