@@ -155,7 +155,7 @@ class TotemControllerTest {
     @Test
     void getTrancasByTotemId_Success() {
         // Cria uma Tranca para o teste
-        Tranca tranca = new Tranca(1, 1, 1, "Centro", "2020", "ModeloA", "TRANCAR");
+        Tranca tranca = new Tranca(1, 1, 1, "Centro", "2020", "ModeloA", "OCUPADA", null, 0);
 
         // Mock do comportamento do serviço para retornar uma lista de trancas
         when(service.getTrancasByTotem(anyInt())).thenReturn(List.of(tranca));
@@ -197,7 +197,7 @@ class TotemControllerTest {
     @Test
     void getBicicletasByTotem_Success() {
         // Cria uma Bicicleta para o teste
-        Bicicleta bicicleta = new Bicicleta(1, "MarcaX", "Montanha", "2022", 123, "DISPONÍVEL");
+        Bicicleta bicicleta = new Bicicleta(1, "MarcaX", "Montanha", "2022", 123, "DISPONÍVEL", null, 0);
 
         // Mock do comportamento do serviço para retornar uma lista de bicicletas
         when(service.getBicicletasByTotem(anyInt())).thenReturn(List.of(bicicleta));

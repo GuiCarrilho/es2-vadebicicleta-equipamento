@@ -453,6 +453,45 @@ class BicicletaServiceTest {
 
     assertThrows(InvalidActionException.class, () -> bicicletaService.incluirBicicletaNaRedeTotem(1, 1, 1));
     }
+
+    @Test
+    void incluirBicicletaNaRedeTotem_FuncionarioIgual_ThrowsInvalidActionException() {
+    Tranca tranca = new Tranca(1, 0, 0, "Centro", "2020", "ModeloA", "LIVRE", null, 0);
+    Bicicleta bicicleta = new Bicicleta(1, "MarcaX", "ModeloY", "2022", 123, "EM_REPARO", LocalDateTime.now(), 1); // Funcionário 2
+    Funcionario funcionario = new Funcionario(1, "funcionario@example.com"); // Funcionário 1
+    EnderecoEmail email = new EnderecoEmail("Teste", 1L, "Mensagem teste", "teste@gmail.com");
+
+    // Mock do comportamento dos repositórios e serviços
+    when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
+    when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(bicicleta));
+    when(totemRepository.findTotemByTranca(any(Tranca.class))).thenReturn(1);
+    when(aluguelClient.obterFuncionario(anyInt())).thenReturn(funcionario);
+    when(externoClient.enviarEmail(any(EnderecoEmail.class))).thenReturn(email);
+    when(trancaService.trancar(anyInt(), anyInt())).thenReturn(tranca);
+
+
+    // Chamada ao método e verificação de exceção
+    assertDoesNotThrow(() -> bicicletaService.incluirBicicletaNaRedeTotem(1, 1, 1));
+
+    // Verifique se o email foi enviado
+    verify(externoClient).enviarEmail(any(EnderecoEmail.class));
+}
+
+    @Test
+    void incluirBicicletaNaRedeTotem_FuncionarioDiferente_ThrowsInvalidActionException() {
+    Tranca tranca = new Tranca(1, 0, 0, "Centro", "2020", "ModeloA", "LIVRE", null, 0);
+    Bicicleta bicicleta = new Bicicleta(1, "MarcaX", "ModeloY", "2022", 123, "EM_REPARO", LocalDateTime.now(), 0); // Funcionário 2
+    Funcionario funcionario = new Funcionario(1, "funcionario@example.com"); // Funcionário 1
+
+    // Mock do comportamento dos repositórios e serviços
+    when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
+    when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(bicicleta));
+    when(totemRepository.findTotemByTranca(any(Tranca.class))).thenReturn(1);
+    when(aluguelClient.obterFuncionario(anyInt())).thenReturn(funcionario);
+
+    // Chamada ao método e verificação de exceção
+    assertThrows(InvalidActionException.class, () -> bicicletaService.incluirBicicletaNaRedeTotem(1, 1, 1));
+}
     
     @Test
     void incluirBicicletaNaRedeTotem_TrancaSemTotemAssociado_ThrowsInvalidActionException() {

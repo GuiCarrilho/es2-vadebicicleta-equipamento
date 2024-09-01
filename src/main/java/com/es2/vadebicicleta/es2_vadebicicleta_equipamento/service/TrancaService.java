@@ -228,6 +228,9 @@ public class TrancaService {
         if(idTotem.equals(idTotemValidado)){
             throw new InvalidActionException("Tranca já associada ao totem");
         }
+        if(!tranca.getStatus().equals("NOVA") && !tranca.getStatus().equals("EM_REPARO")){
+            throw new InvalidActionException("Status da tranca inválida");
+        }
         if(Objects.equals(tranca.getStatus(), "NOVA")){
             totemRepository.addTrancasByTotemId(totem.getId(), tranca);
             tranca.setDataHoraInsRet(LocalDateTime.now());
@@ -239,7 +242,6 @@ public class TrancaService {
             totemRepository.addTrancasByTotemId(totem.getId(), tranca);
             tranca.setDataHoraInsRet(LocalDateTime.now());
         }
-        else throw new InvalidActionException("Status da tranca inválido");
         tranca.setStatus(livreMens);
         enviarEmailInclusao(funcionario, tranca);
     }
@@ -256,6 +258,9 @@ public class TrancaService {
         Integer idTotemValidado = totemRepository.findTotemByTranca(tranca);
         if (idTotemValidado == null || !idTotemValidado.equals(idTotem)) {
             throw new InvalidActionException("Tranca já se encontra desassociada do totem");
+        }
+        if(!statusAcaoReparador.equals("APOSENTADA") && !statusAcaoReparador.equals("EM_REPARO")){
+            throw new InvalidActionException("Status da ação do reparador inválido");
         }
         if(Objects.equals(statusAcaoReparador, "APOSENTADA")){
             tranca.setStatus(statusAcaoReparador);
@@ -274,7 +279,6 @@ public class TrancaService {
             tranca.setDataHoraInsRet(LocalDateTime.now());
             tranca.setFuncionario(idFuncionario);
         }
-        else throw new InvalidActionException("Status da tranca inválido");
         enviarEmailRemocao(funcionario, tranca);
     }
 }

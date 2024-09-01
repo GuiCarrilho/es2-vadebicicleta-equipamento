@@ -31,7 +31,7 @@ class TrancaRepositoryTest {
     @BeforeEach
     void setUp() {
         // Configura um objeto Tranca para ser usado em todos os testes
-        tranca = new Tranca(1, null, 123, "Unirio", "2019", "Corrida", "Trancar");
+        tranca = new Tranca(1, null, 123, "Unirio", "2019", "Corrida", "NOVA", null, 0);
     }
 
     @Test

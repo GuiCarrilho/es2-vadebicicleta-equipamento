@@ -5,16 +5,21 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.EnderecoEmail;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Funcionario;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusTrancaEnum;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Totem;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.InvalidActionException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.integracao.AluguelClient;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.integracao.ExternoClient;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.TotemRepository;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.TrancaRepository;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.BicicletaService;
@@ -38,19 +43,25 @@ class TrancaServiceTest {
     @Mock
     private BicicletaService bicicletaService;
 
+    @Mock
+    private AluguelClient aluguelClient;
+
+    @Mock
+    private ExternoClient externoClient;
+
     @InjectMocks
     private TrancaService trancaService;
 
     private Tranca tranca;
     private Totem totem;
 
-    private String trancarMens = "TRANCAR";
-    private String destrancarMens = "DESTRANCAR";
+    private String ocuparMens = "OCUPADA";
+    private String livreMens = "LIVRE";
 
     @BeforeEach
     void setUp() {
         // Configura um objeto Tranca para ser usado em todos os testes
-        tranca = new Tranca(1, 0, 123, "Unirio", "2019", "Corrida", "Trancar");
+        tranca = new Tranca(1, 0, 123, "Unirio", "2019", "Corrida", "NOVA", null, 0);
         totem = new Totem(1, "Centro", "Totem principal");
     }
 
@@ -187,7 +198,7 @@ class TrancaServiceTest {
     @Test
     void updateTranca_Success() {
         // Configura uma nova tranca para atualizar
-        Tranca novaTranca = new Tranca(1, 0, 123, "Unirio", "2019", "Montanha", "TRANCAR");
+        Tranca novaTranca = new Tranca(1, 0, 123, "Unirio", "2019", "Montanha", "APOSENTADA", null, 0);
         
         // Mock do comportamento do método findById do repositório
         when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
@@ -208,16 +219,15 @@ class TrancaServiceTest {
         when(trancaRepository.findById(anyInt())).thenReturn(Optional.empty());
         
         // Configura uma nova tranca para atualizar
-        Tranca novaTranca = new Tranca(1, 0, 123, "Unirio", "2019", "Montanha", "TRANCAR");
+        Tranca novaTranca = new Tranca(1, 0, 123, "Unirio", "2019", "Montanha", "NOVA", null, 0);
         
         // Verifica se a exceção NotFoundException é lançada
         assertThrows(NotFoundException.class, () -> trancaService.updateTranca(1, novaTranca));
     }
-   
-@Test
-    void updateTranca_InvalidData_ThrowsInvalidActionException() {
+   @Test
+   void updateTranca_InvalidData_ThrowsInvalidActionException() {
         // Configura uma nova tranca com dados inválidos
-        Tranca novaTranca = new Tranca(1, 0, 123, "Unirio", "2019", null, "TRANCAR");
+        Tranca novaTranca = new Tranca(1, 0, 123, "Unirio", "2019", null, "APOSENTADA", null, 0);
         
         // Mock do comportamento do método findById do repositório
         when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
@@ -228,21 +238,49 @@ class TrancaServiceTest {
 
     @Test
     void deleteTranca_Success() {
-        // Mock do comportamento do método deleteById do repositório
-        when(trancaRepository.deleteById(anyInt())).thenReturn(true);
-        
-        // Verifica se a operação de exclusão não lança exceção
-        assertDoesNotThrow(() -> trancaService.deleteTranca(1));
+    // Mock do comportamento do método findById do repositório
+    when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
+    
+    // Mock do comportamento do método deleteById do repositório
+    when(trancaRepository.deleteById(anyInt())).thenReturn(true);
+    
+    // Verifica se a operação de exclusão não lança exceção
+    assertDoesNotThrow(() -> trancaService.deleteTranca(1));
     }
-
+    
     @Test
-    void deleteTranca_NotFound_ThrowsNotFoundException() {
-        // Mock do comportamento do método deleteById do repositório
-        when(trancaRepository.deleteById(anyInt())).thenReturn(false);
-        
-        // Verifica se a exceção NotFoundException é lançada
-        assertThrows(NotFoundException.class, () -> trancaService.deleteTranca(1));
+    void deleteTranca_NotFound_ThrowsInvalidActionException() {
+    // Mock do comportamento do método findById do repositório
+    when(trancaRepository.findById(anyInt())).thenReturn(Optional.empty());
+    
+    // Verifica se a exceção InvalidActionException é lançada
+    assertThrows(InvalidActionException.class, () -> trancaService.deleteTranca(1));
     }
+    
+    @Test
+    void deleteTranca_AssociatedWithBicicleta_ThrowsInvalidActionException() {
+    // Atualiza o objeto tranca para simular uma tranca associada a uma bicicleta
+    tranca.setBicicleta(1);
+    
+    // Mock do comportamento do método findById do repositório
+    when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
+    
+    // Verifica se a exceção InvalidActionException é lançada
+    assertThrows(InvalidActionException.class, () -> trancaService.deleteTranca(1));
+    }
+    
+    @Test
+    void deleteTranca_DeleteFailed_ThrowsNotFoundException() {
+    // Mock do comportamento do método findById do repositório
+    when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
+    
+    // Mock do comportamento do método deleteById do repositório
+    when(trancaRepository.deleteById(anyInt())).thenReturn(false);
+    
+    // Verifica se a exceção NotFoundException é lançada
+    assertThrows(NotFoundException.class, () -> trancaService.deleteTranca(1));
+}
+
 
     @Test
     void postStatus_Success_NOVA() {
@@ -275,33 +313,33 @@ class TrancaServiceTest {
     }
 
     @Test
-    void postStatus_Success_DESTRANCAR() {
+    void postStatus_Success_LIVRE() {
         // Mock do comportamento do método findById do repositório
         when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
         // Mock do comportamento do método save do repositório
         when(trancaRepository.save(any(Tranca.class))).thenReturn(tranca);
 
         // Chama o método postStatus do serviço
-        Tranca updatedTranca = trancaService.postStatus(1, StatusTrancaEnum.DESTRANCAR);
+        Tranca updatedTranca = trancaService.postStatus(1, StatusTrancaEnum.LIVRE);
 
         // Verifica se a tranca retornada não é nula e se o status foi atualizado
         assertNotNull(updatedTranca);
-        assertEquals("DESTRANCAR", updatedTranca.getStatus());
+        assertEquals("LIVRE", updatedTranca.getStatus());
     }
 
     @Test
-    void postStatus_Success_TRANCAR() {
+    void postStatus_Success_OCUPADA() {
         // Mock do comportamento do método findById do repositório
         when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
         // Mock do comportamento do método save do repositório
         when(trancaRepository.save(any(Tranca.class))).thenReturn(tranca);
 
         // Chama o método postStatus do serviço
-        Tranca updatedTranca = trancaService.postStatus(1, StatusTrancaEnum.TRANCAR);
+        Tranca updatedTranca = trancaService.postStatus(1, StatusTrancaEnum.OCUPADA);
 
         // Verifica se a tranca retornada não é nula e se o status foi atualizado
         assertNotNull(updatedTranca);
-        assertEquals("TRANCAR", updatedTranca.getStatus());
+        assertEquals("OCUPADA", updatedTranca.getStatus());
     }
 
     @Test
@@ -339,14 +377,20 @@ class TrancaServiceTest {
 
     @Test
     void incluirTrancaNaRedeTotem_Success() {
+    Funcionario funcionario = new Funcionario(1, "funcionario@example.com");
+    EnderecoEmail email = new EnderecoEmail("Teste", 1L, "Mensagem teste", "teste@gmail.com");
     // Mock do comportamento dos repositórios
     when(totemRepository.findById(anyInt())).thenReturn(Optional.of(totem));
     when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
     when(totemRepository.findTotemByTranca(any(Tranca.class))).thenReturn(null);  // Nenhum totem associado
+    when(aluguelClient.obterFuncionario(anyInt())).thenReturn(funcionario);
+    when(externoClient.enviarEmail(any(EnderecoEmail.class))).thenReturn(email);
     tranca.setStatus("NOVA");
 
     // Chama o método incluirTrancaNaRedeTotem do serviço
     assertDoesNotThrow(() -> trancaService.incluirTrancaNaRedeTotem(1, 1, 1));
+
+    verify(externoClient).enviarEmail(any(EnderecoEmail.class));
     }
     
     @Test
@@ -372,6 +416,38 @@ class TrancaServiceTest {
     void incluirTrancaNaRedeTotem_FuncionarioNaoExiste_ThrowsInvalidActionException() {
         assertThrows(InvalidActionException.class, () -> trancaService.incluirTrancaNaRedeTotem(1, 1, null));
     }
+
+    @Test
+    void incluirTrancaNaRedeTotem_FuncionarioIgual() {
+    Tranca novaTranca = new Tranca(1, 0, 123, "Unirio", "2019", "Corrida", "EM_REPARO", null, 1);
+    Funcionario funcionario = new Funcionario(1, "funcionario@example.com");
+    EnderecoEmail email = new EnderecoEmail("Teste", 1L, "Mensagem teste", "teste@gmail.com");
+    // Mock do comportamento dos repositórios
+    when(totemRepository.findById(anyInt())).thenReturn(Optional.of(totem));
+    when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(novaTranca));
+    when(totemRepository.findTotemByTranca(any(Tranca.class))).thenReturn(null);  // Nenhum totem associado
+    when(aluguelClient.obterFuncionario(anyInt())).thenReturn(funcionario);
+    when(externoClient.enviarEmail(any(EnderecoEmail.class))).thenReturn(email);
+
+    // Chama o método incluirTrancaNaRedeTotem do serviço
+    assertDoesNotThrow(() -> trancaService.incluirTrancaNaRedeTotem(1, 1, 1));
+
+    verify(externoClient).enviarEmail(any(EnderecoEmail.class));
+    }
+
+    @Test
+    void incluirTrancaNaRedeTotem_FuncionarioDiferente() {
+    Tranca novaTranca = new Tranca(1, 0, 123, "Unirio", "2019", "Corrida", "EM_REPARO", LocalDateTime.now(), 0);
+    Funcionario funcionario = new Funcionario(1, "funcionario@example.com");
+    // Mock do comportamento dos repositórios
+    when(totemRepository.findById(anyInt())).thenReturn(Optional.of(totem));
+    when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(novaTranca));
+    when(aluguelClient.obterFuncionario(anyInt())).thenReturn(funcionario);
+    when(totemRepository.findTotemByTranca(any(Tranca.class))).thenReturn(null);
+
+    assertThrows(InvalidActionException.class, () -> trancaService.incluirTrancaNaRedeTotem(1, 1, 1));
+
+    }
     
     @Test
     void incluirTrancaNaRedeTotem_TrancaAlreadyAssociated_ThrowsInvalidActionException() {
@@ -382,14 +458,16 @@ class TrancaServiceTest {
 
     // Verifica se a exceção InvalidActionException é lançada
     assertThrows(InvalidActionException.class, () -> trancaService.incluirTrancaNaRedeTotem(1, 1, 1));
-    }
+}
     
     @Test
     void incluirTrancaNaRedeTotem_InvalidStatus_ThrowsInvalidActionException() {
+    Funcionario funcionario = new Funcionario(1, "funcionario@example.com");
     // Mock do comportamento dos repositórios
     when(totemRepository.findById(anyInt())).thenReturn(Optional.of(totem));
     when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
     when(totemRepository.findTotemByTranca(any(Tranca.class))).thenReturn(null);  // Nenhum totem associado
+    when(aluguelClient.obterFuncionario(anyInt())).thenReturn(funcionario);
     tranca.setStatus("INVÁLIDO");  // Status inválido
 
     // Verifica se a exceção InvalidActionException é lançada
@@ -398,10 +476,14 @@ class TrancaServiceTest {
 
     @Test
     void retirarTrancaDaRedeTotem_Success() {
+    Funcionario funcionario = new Funcionario(1, "funcionario@example.com");
+    EnderecoEmail email = new EnderecoEmail("Teste", 1L, "Mensagem teste", "teste@gmail.com");
     // Mock do comportamento dos repositórios
     when(totemRepository.findById(anyInt())).thenReturn(Optional.of(totem));
     when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
     when(totemRepository.findTotemByTranca(any(Tranca.class))).thenReturn(1);  // Tranca associada
+    when(aluguelClient.obterFuncionario(anyInt())).thenReturn(funcionario);
+    when(externoClient.enviarEmail(any(EnderecoEmail.class))).thenReturn(email);
 
     // Mock do comportamento de remover a tranca do totem
     when(totemRepository.removeTrancaByTotemId(anyInt(), any(Tranca.class))).thenReturn(true);
@@ -438,14 +520,17 @@ class TrancaServiceTest {
 
     // Verifica se a exceção InvalidActionException é lançada
     assertThrows(InvalidActionException.class, () -> trancaService.retirarTrancaDaRedeTotem(1, 1, 1, "APOSENTADA"));
-    }
+}
     
     @Test
     void retirarTrancaDaRedeTotem_InvalidStatus_ThrowsInvalidActionException() {
+    Funcionario funcionario = new Funcionario(1, "funcionario@example.com");
     // Mock do comportamento dos repositórios
     when(totemRepository.findById(anyInt())).thenReturn(Optional.of(totem));
     when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
     when(totemRepository.findTotemByTranca(any(Tranca.class))).thenReturn(1);  // Tranca associada
+    when(aluguelClient.obterFuncionario(anyInt())).thenReturn(funcionario);
+
 
     // Verifica se a exceção InvalidActionException é lançada
     assertThrows(InvalidActionException.class, () -> trancaService.retirarTrancaDaRedeTotem(1, 1, 1, "EM_USO"));
@@ -453,7 +538,7 @@ class TrancaServiceTest {
 
     @Test
     void getBicicletaByTrancaId_Success() {
-    Bicicleta bicicleta = new Bicicleta(1, "MarcaX", "Montanha", "2022", 123, "DISPONÍVEL");
+    Bicicleta bicicleta = new Bicicleta(1, "MarcaX", "Montanha", "2022", 123, "DISPONÍVEL", null, 0);
     // Mock do comportamento dos repositórios
     when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
     when(bicicletaService.getById(anyInt())).thenReturn(bicicleta);
@@ -484,15 +569,15 @@ class TrancaServiceTest {
 
     @Test
     void trancar_Success() {
-    Bicicleta bicicleta = new Bicicleta(1, "MarcaX", "Montanha", "2022", 123, "DISPONÍVEL");
+    Bicicleta bicicleta = new Bicicleta(1, "MarcaX", "Montanha", "2022", 123, "DISPONÍVEL", null, 0);
     // Mock do comportamento dos repositórios
     when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
     when(bicicletaService.getById(anyInt())).thenReturn(bicicleta);
-    tranca.setStatus(destrancarMens);
+    tranca.setStatus(livreMens);
 
     // Chama o método trancar do serviço
     Tranca result = assertDoesNotThrow(() -> trancaService.trancar(1, 1));
-    assertEquals(trancarMens, result.getStatus());
+    assertEquals(ocuparMens, result.getStatus());
     assertEquals(1, result.getBicicleta());
     }
     
@@ -519,7 +604,7 @@ class TrancaServiceTest {
     void trancar_TrancaAlreadyLocked_ThrowsNotFoundException() {
     // Mock do comportamento dos repositórios
     when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
-    tranca.setStatus(trancarMens); // Tranca já trancada
+    tranca.setStatus(ocuparMens); // Tranca já trancada
 
     // Verifica se a exceção NotFoundException é lançada
     assertThrows(NotFoundException.class, () -> trancaService.trancar(1, 1));
@@ -530,7 +615,7 @@ class TrancaServiceTest {
     // Mock do comportamento dos repositórios
     when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
     when(bicicletaService.getById(anyInt())).thenReturn(null); // Bicicleta não encontrada
-    tranca.setStatus(destrancarMens);
+    tranca.setStatus(livreMens);
 
     // Verifica se a exceção NotFoundException é lançada
     assertThrows(NotFoundException.class, () -> trancaService.trancar(1, 1));
@@ -538,17 +623,17 @@ class TrancaServiceTest {
 
     @Test
     void destrancar_Success() {
-    Bicicleta bicicleta = new Bicicleta(1, "MarcaX", "Montanha", "2022", 123, "DISPONÍVEL");
+    Bicicleta bicicleta = new Bicicleta(1, "MarcaX", "Montanha", "2022", 123, "DISPONÍVEL", null, 0);
     // Mock do comportamento dos repositórios
     when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
     when(bicicletaService.getById(anyInt())).thenReturn(bicicleta);
-    tranca.setStatus(trancarMens);
+    tranca.setStatus(ocuparMens);
     tranca.setBicicleta(1);
 
     // Chama o método destrancar do serviço
     Tranca result = assertDoesNotThrow(() -> trancaService.destrancar(1, 1));
-    assertEquals(destrancarMens, result.getStatus());
-    assertNull(result.getBicicleta());
+    assertEquals(livreMens, result.getStatus());
+    assertEquals(0, result.getBicicleta());
     }
     
     @Test
@@ -574,7 +659,7 @@ class TrancaServiceTest {
     void destrancar_TrancaAlreadyUnlocked_ThrowsNotFoundException() {
     // Mock do comportamento dos repositórios
     when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
-    tranca.setStatus(destrancarMens); // Tranca já destrancada
+    tranca.setStatus(livreMens); // Tranca já destrancada
 
     // Verifica se a exceção NotFoundException é lançada
     assertThrows(InvalidActionException.class, () -> trancaService.destrancar(1, 1));
@@ -585,7 +670,7 @@ class TrancaServiceTest {
     // Configura o mock do repositório para retornar uma tranca válida com bicicleta associada
     when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
     tranca.setBicicleta(1); // Associa uma bicicleta à tranca
-    tranca.setStatus(trancarMens);
+    tranca.setStatus(ocuparMens);
 
     // Configura o mock do serviço para retornar null ao buscar a bicicleta
     when(bicicletaService.getById(anyInt())).thenReturn(null); // Bicicleta não encontrada

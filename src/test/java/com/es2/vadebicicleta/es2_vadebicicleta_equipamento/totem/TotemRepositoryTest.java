@@ -42,9 +42,9 @@ class TotemRepositoryTest {
         // Configura um objeto Totem para ser usado em todos os testes
         totem = new Totem(1, "Urca", "em frente a Unirio");
         // Configura um objeto Tranca
-        tranca = new Tranca(1, 1, 101, "local1", "2024", "modelo1", "ABERTA");
+        tranca = new Tranca(1, 1, 101, "local1", "2024", "modelo1", "LIVRE", null, 0);
         // Configura um objeto Bicicleta
-        bicicleta = new Bicicleta(1, "Marca A", "Modelo A", "2024", 123, "DISPONIVEL");
+        bicicleta = new Bicicleta(1, "Marca A", "Modelo A", "2024", 123, "DISPONIVEL", null, 0);
     }
 
     @Test

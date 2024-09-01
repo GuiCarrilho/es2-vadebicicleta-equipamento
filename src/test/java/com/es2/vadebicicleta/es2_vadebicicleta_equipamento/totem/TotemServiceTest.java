@@ -195,7 +195,7 @@ class TotemServiceTest {
      @Test
     void getTrancasByTotem_Success() {
         // Configura um objeto Tranca
-        Tranca tranca = new Tranca(1, 1, 101, "local1", "2024", "modelo1", "ABERTA");
+        Tranca tranca = new Tranca(1, 1, 101, "local1", "2024", "modelo1", "LIVRE", null, 0);
         List<Tranca> trancas = Collections.singletonList(tranca);
         
         // Mock do comportamento do método getById do serviço
@@ -223,7 +223,7 @@ class TotemServiceTest {
     @Test
     void getBicicletasByTotem_Success() {
         // Configura um objeto Bicicleta
-        Bicicleta bicicleta = new Bicicleta(1, "Marca A", "Modelo A", "2024", 123, "DISPONIVEL");
+        Bicicleta bicicleta = new Bicicleta(1, "Marca A", "Modelo A", "2024", 123, "DISPONIVEL", null, 0);
         List<Bicicleta> bicicletas = Collections.singletonList(bicicleta);
         
         // Mock do comportamento do método getById do serviço

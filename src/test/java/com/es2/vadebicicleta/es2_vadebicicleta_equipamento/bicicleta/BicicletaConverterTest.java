@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller.BicicletaConverter;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.BicicletaDto;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.BicicletaDtoReturn;
 
 class BicicletaConverterTest {
 
@@ -39,6 +40,30 @@ class BicicletaConverterTest {
         assertEquals("Marca X", bicicleta.getMarca());
         assertEquals("2023", bicicleta.getAno());
         assertEquals("DISPONIVEL", bicicleta.getStatus());
+    }
+
+    @Test
+    void entityToDtoReturn_ValidEntity_Success() {
+        // Configura a entidade com dados válidos
+        Bicicleta bicicleta = new Bicicleta();
+        bicicleta.setId(1);
+        bicicleta.setModelo("Montanha");
+        bicicleta.setNumero(123);
+        bicicleta.setMarca("Marca X");
+        bicicleta.setAno("2023");
+        bicicleta.setStatus("DISPONIVEL");
+
+        // Converte a entidade para o DTO
+        BicicletaDtoReturn dtoReturn = bicicletaConverter.entityToDtoReturn(bicicleta);
+
+        // Verifica se a conversão foi bem-sucedida
+        assertNotNull(dtoReturn);
+        assertEquals(1, dtoReturn.getId());
+        assertEquals("Montanha", dtoReturn.getModelo());
+        assertEquals(123, dtoReturn.getNumero());
+        assertEquals("Marca X", dtoReturn.getMarca());
+        assertEquals("2023", dtoReturn.getAno());
+        assertEquals("DISPONIVEL", dtoReturn.getStatus());
     }
 
 }
