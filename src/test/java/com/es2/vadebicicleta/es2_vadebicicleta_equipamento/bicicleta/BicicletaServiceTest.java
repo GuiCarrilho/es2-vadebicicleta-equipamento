@@ -411,13 +411,13 @@ class BicicletaServiceTest {
     @Test
     void incluirBicicletaNaRedeTotem_Success() {
     Tranca tranca = new Tranca(1, 0, 235, "Centro", "2020", "ModeloA", "LIVRE", null, 0);
-    Bicicleta bicicleta = new Bicicleta(1, "MarcaX", "ModeloY", "2022", 123, "NOVA", null, 0);
+    Bicicleta novaBicicleta = new Bicicleta(1, "MarcaX", "ModeloY", "2022", 123, "NOVA", null, 0);
     Funcionario funcionario = new Funcionario(1, "funcionario@example.com");
     EnderecoEmail email = new EnderecoEmail("Teste", 1L, "Mensagem teste", "teste@gmail.com");
 
     // Mock do comportamento dos repositórios
     when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
-    when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(bicicleta));
+    when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(novaBicicleta));
     when(totemRepository.findTotemByTranca(any(Tranca.class))).thenReturn(1);
     when(aluguelClient.obterFuncionario(anyInt())).thenReturn(funcionario);
     when(externoClient.enviarEmail(any(EnderecoEmail.class))).thenReturn(email);
@@ -457,13 +457,13 @@ class BicicletaServiceTest {
     @Test
     void incluirBicicletaNaRedeTotem_FuncionarioIgual_ThrowsInvalidActionException() {
     Tranca tranca = new Tranca(1, 0, 0, "Centro", "2020", "ModeloA", "LIVRE", null, 0);
-    Bicicleta bicicleta = new Bicicleta(1, "MarcaX", "ModeloY", "2022", 123, "EM_REPARO", LocalDateTime.now(), 1); // Funcionário 2
+    Bicicleta novaBicicleta = new Bicicleta(1, "MarcaX", "ModeloY", "2022", 123, "EM_REPARO", LocalDateTime.now(), 1); // Funcionário 2
     Funcionario funcionario = new Funcionario(1, "funcionario@example.com"); // Funcionário 1
     EnderecoEmail email = new EnderecoEmail("Teste", 1L, "Mensagem teste", "teste@gmail.com");
 
     // Mock do comportamento dos repositórios e serviços
     when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
-    when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(bicicleta));
+    when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(novaBicicleta));
     when(totemRepository.findTotemByTranca(any(Tranca.class))).thenReturn(1);
     when(aluguelClient.obterFuncionario(anyInt())).thenReturn(funcionario);
     when(externoClient.enviarEmail(any(EnderecoEmail.class))).thenReturn(email);
@@ -480,12 +480,12 @@ class BicicletaServiceTest {
     @Test
     void incluirBicicletaNaRedeTotem_FuncionarioDiferente_ThrowsInvalidActionException() {
     Tranca tranca = new Tranca(1, 0, 0, "Centro", "2020", "ModeloA", "LIVRE", null, 0);
-    Bicicleta bicicleta = new Bicicleta(1, "MarcaX", "ModeloY", "2022", 123, "EM_REPARO", LocalDateTime.now(), 0); // Funcionário 2
+    Bicicleta novaBicicleta = new Bicicleta(1, "MarcaX", "ModeloY", "2022", 123, "EM_REPARO", LocalDateTime.now(), 0); // Funcionário 2
     Funcionario funcionario = new Funcionario(1, "funcionario@example.com"); // Funcionário 1
 
     // Mock do comportamento dos repositórios e serviços
     when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
-    when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(bicicleta));
+    when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(novaBicicleta));
     when(totemRepository.findTotemByTranca(any(Tranca.class))).thenReturn(1);
     when(aluguelClient.obterFuncionario(anyInt())).thenReturn(funcionario);
 
@@ -517,13 +517,13 @@ class BicicletaServiceTest {
     @Test
     void retirarBicicletaDaRedeTotem_Success() {
     Tranca tranca = new Tranca(1, 1, 1, "Centro", "2020", "ModeloA", "OCUPADA", null, 0);
-    Bicicleta bicicleta = new Bicicleta(1, "MarcaX", "ModeloY", "2022", 123, "REPARO_SOLICITADO", null, 0);
+    Bicicleta novaBicicleta = new Bicicleta(1, "MarcaX", "ModeloY", "2022", 123, "REPARO_SOLICITADO", null, 0);
     Funcionario funcionario = new Funcionario(1, "funcionario@example.com");
     EnderecoEmail email = new EnderecoEmail("Teste", 1L, "Mensagem teste", "teste@gmail.com");
 
     // Mock do comportamento dos repositórios
     when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
-    when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(bicicleta));
+    when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(novaBicicleta));
     when(totemRepository.findTotemByTranca(any(Tranca.class))).thenReturn(1);
     when(aluguelClient.obterFuncionario(anyInt())).thenReturn(funcionario);
     when(trancaService.destrancar(anyInt(), anyInt())).thenReturn(tranca);
@@ -581,11 +581,11 @@ class BicicletaServiceTest {
 @Test
 void retirarBicicletaDaRedeTotem_StatusAcaoReparadorInvalido_ThrowsInvalidActionException() {
     Tranca tranca = new Tranca(1, 1, 1, "Centro", "2020", "ModeloA", "OCUPADA", null, 0);
-    Bicicleta bicicleta = new Bicicleta(1, "MarcaX", "ModeloY", "2022", 123, "REPARO_SOLICITADO", null, 0);
+    Bicicleta novaBicicleta = new Bicicleta(1, "MarcaX", "ModeloY", "2022", 123, "REPARO_SOLICITADO", null, 0);
 
     // Configura o comportamento esperado dos mocks
     when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
-    when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(bicicleta));
+    when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(novaBicicleta));
     when(totemRepository.findTotemByTranca(any(Tranca.class))).thenReturn(1);
     when(aluguelClient.obterFuncionario(anyInt())).thenReturn(new Funcionario(1, "funcionario@example.com"));
 

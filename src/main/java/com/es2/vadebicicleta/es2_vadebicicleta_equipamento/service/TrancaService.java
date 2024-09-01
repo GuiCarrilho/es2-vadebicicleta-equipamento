@@ -32,6 +32,8 @@ public class TrancaService {
     private String bicicletaErro = "Bicicleta não encontrada";
     private String livreMens = "LIVRE";
     private String ocuparMens = "OCUPADA";
+    private String aposentada = "APOSENTADA";
+    private String emReparo = "EM_RAPARO";
 
     @Autowired
     public TrancaService(TrancaRepository repository, BicicletaService bicicletaService, TotemRepository totemRepository, AluguelClient aluguelClient, ExternoClient externoClient) {
@@ -133,13 +135,13 @@ public class TrancaService {
                 tranca.setStatus(ocuparMens);
                 break;
             case APOSENTADA:
-                tranca.setStatus("APOSENTADA");
+                tranca.setStatus(aposentada);
                 break;
             case NOVA:
                 tranca.setStatus("NOVA");
                 break;
             case EM_REPARO:
-                tranca.setStatus("EM_REPARO");
+                tranca.setStatus(emReparo);
                 break;
             default:
                 throw new InvalidActionException("Status não escolhido");
@@ -228,14 +230,14 @@ public class TrancaService {
         if(idTotem.equals(idTotemValidado)){
             throw new InvalidActionException("Tranca já associada ao totem");
         }
-        if(!tranca.getStatus().equals("NOVA") && !tranca.getStatus().equals("EM_REPARO")){
+        if(!tranca.getStatus().equals("NOVA") && !tranca.getStatus().equals(emReparo)){
             throw new InvalidActionException("Status da tranca inválida");
         }
         if(Objects.equals(tranca.getStatus(), "NOVA")){
             totemRepository.addTrancasByTotemId(totem.getId(), tranca);
             tranca.setDataHoraInsRet(LocalDateTime.now());
         }
-        if(Objects.equals(tranca.getStatus(), "EM_REPARO")){
+        if(Objects.equals(tranca.getStatus(), emReparo)){
             if(!tranca.getFuncionario().equals(idFuncionario)){
                 throw new InvalidActionException("Funcionário não é o mesmo que a colocou em reparo");
             }
@@ -259,10 +261,10 @@ public class TrancaService {
         if (idTotemValidado == null || !idTotemValidado.equals(idTotem)) {
             throw new InvalidActionException("Tranca já se encontra desassociada do totem");
         }
-        if(!statusAcaoReparador.equals("APOSENTADA") && !statusAcaoReparador.equals("EM_REPARO")){
+        if(!statusAcaoReparador.equals(aposentada) && !statusAcaoReparador.equals(emReparo)){
             throw new InvalidActionException("Status da ação do reparador inválido");
         }
-        if(Objects.equals(statusAcaoReparador, "APOSENTADA")){
+        if(Objects.equals(statusAcaoReparador, aposentada)){
             tranca.setStatus(statusAcaoReparador);
             boolean removido = totemRepository.removeTrancaByTotemId(totem.getId(), tranca);
             if(!removido){
@@ -270,7 +272,7 @@ public class TrancaService {
             }
             tranca.setDataHoraInsRet(LocalDateTime.now());
         }
-        if(Objects.equals(statusAcaoReparador, "EM_REPARO")){
+        if(Objects.equals(statusAcaoReparador, emReparo)){
             tranca.setStatus(statusAcaoReparador);
             boolean removido = totemRepository.removeTrancaByTotemId(totem.getId(), tranca);
             if(!removido){

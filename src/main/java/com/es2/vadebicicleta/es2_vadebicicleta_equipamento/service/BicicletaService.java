@@ -23,16 +23,15 @@ import java.util.Objects;
 public class BicicletaService {
 
     private final BicicletaRepository repository;
-
     private final TrancaRepository trancaRepository;
-
     private final TrancaService trancaService;
-
     private final TotemRepository totemRepository;
-
     private ExternoClient externoClient;
-
     private AluguelClient aluguelClient;
+
+    private String bicicletaMens = "Bicicleta não encontrada";
+    private String aposentada = "APOSENTADA";
+    private String emReparo = "EM_REPARO";
 
     @Autowired
     public BicicletaService(BicicletaRepository repository, TrancaRepository trancaRepository, TrancaService trancaService, TotemRepository totemRepository, ExternoClient externoClient, AluguelClient aluguelClient) {
@@ -99,21 +98,21 @@ public class BicicletaService {
 
     public void deleteBicicleta(Integer idBicicleta){
         Bicicleta bicicleta = repository.findById(idBicicleta).orElseThrow(
-            () -> new NotFoundException("Bicicleta não encontrada"));
-        if(!bicicleta.getStatus().equals("APOSENTADA")){
+            () -> new NotFoundException(bicicletaMens));
+        if(!bicicleta.getStatus().equals(aposentada)){
             throw new NotFoundException("Status Inválido");
         }
         if(!trancaRepository.findTrancaByBicicleta(idBicicleta)){
             throw new NotFoundException("Bicicleta não está associda a nenhuma tranca");
         }
         if(!repository.deleteById(idBicicleta)){
-            throw new NotFoundException("Bicicleta não encontrada");
+            throw new NotFoundException(bicicletaMens);
         }
     }
 
     public Bicicleta postStatus(Integer idBicicleta, StatusBicicletaEnum acao){
         Bicicleta bicicleta = repository.findById(idBicicleta).orElseThrow(
-                () -> new NotFoundException("Bicicleta não encontrada"));
+                () -> new NotFoundException(bicicletaMens));
         
         if(acao == null){
             throw new InvalidActionException("Status inválido");
@@ -130,13 +129,13 @@ public class BicicletaService {
                 bicicleta.setStatus("NOVA");
                 break;
             case APOSENTADA:
-                bicicleta.setStatus("APOSENTADA");
+                bicicleta.setStatus(aposentada);
                 break;
             case REPARO_SOLICITADO:
                 bicicleta.setStatus("REPARO_SOLICITADO");
                 break;
             case EM_REPARO:
-                bicicleta.setStatus("EM_REPARO");
+                bicicleta.setStatus(emReparo);
                 break;
             default:
                 throw new InvalidActionException("Status não escolhido");
@@ -180,7 +179,7 @@ public class BicicletaService {
             throw new InvalidActionException("Tranca não está relacionada com nenhum totem");
         }
         Bicicleta bicicleta = repository.findById(idBicicleta).orElseThrow(
-            () -> new InvalidActionException("Bicicleta não encontrada"));
+            () -> new InvalidActionException(bicicletaMens));
         if(!bicicleta.getStatus().equals("NOVA") && !bicicleta.getStatus().equals("EM_REPARO")){
             throw new InvalidActionException("Status da bicicleta inválido");
         }
@@ -188,7 +187,7 @@ public class BicicletaService {
             tranca = trancaService.trancar(idTranca, idBicicleta);
             bicicleta.setDataHoraInsRet(LocalDateTime.now());
         }
-        if(Objects.equals(bicicleta.getStatus(), "EM_REPARO")){
+        if(Objects.equals(bicicleta.getStatus(), emReparo)){
             if(!bicicleta.getFuncionario().equals(idFuncionario)){
                 throw new InvalidActionException("Funcionário não é o mesmo que a colocou em reparo");
             }
@@ -213,19 +212,19 @@ public class BicicletaService {
             throw new InvalidActionException("Tranca não está relacionada com nenhum totem");
         }
         Bicicleta bicicleta = repository.findById(idBicicleta).orElseThrow(
-            () -> new InvalidActionException("Bicicleta não encontrada"));
+            () -> new InvalidActionException(bicicletaMens));
         trancaService.destrancar(idTranca, idBicicleta);
         bicicleta.setDataHoraInsRet(LocalDateTime.now());
         if(!bicicleta.getStatus().equals("REPARO_SOLICITADO")){
             throw new InvalidActionException("Status da bicicleta inválido");
         }
-        if(!statusAcaoReparador.equals("APOSENTADA") && !statusAcaoReparador.equals("EM_REPARO")){
+        if(!statusAcaoReparador.equals(aposentada) && !statusAcaoReparador.equals(emReparo)){
             throw new InvalidActionException("Status da ação do reparador inválido");
         }
-        if(Objects.equals(statusAcaoReparador, "APOSENTADA")){
+        if(Objects.equals(statusAcaoReparador, aposentada)){
             bicicleta.setStatus(statusAcaoReparador);
         }
-        if(Objects.equals(statusAcaoReparador, "EM_REPARO")){
+        if(Objects.equals(statusAcaoReparador, emReparo)){
             bicicleta.setStatus(statusAcaoReparador);
             bicicleta.setFuncionario(idFuncionario);
         }
