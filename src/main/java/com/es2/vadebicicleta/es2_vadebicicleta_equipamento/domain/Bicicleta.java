@@ -16,6 +16,6 @@ public class Bicicleta {
     private String ano;
     private Integer numero;
     private String status;
-    private LocalDateTime dataHoraInsercao;
+    private LocalDateTime dataHoraInsRet;
     private Integer funcionario = 0;
 }

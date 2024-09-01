@@ -150,7 +150,7 @@ public class BicicletaService {
     private void enviarEmailInclusao(Funcionario funcionario, Bicicleta bicicleta, Tranca tranca){
         EnderecoEmail email = new EnderecoEmail();
         email.setAssunto("Inclusão da bicicleta na rede");
-        email.setMensagem("Data/Hora da Inserção: " + bicicleta.getDataHoraInsercao() + "\nNúmero da Bicicleta: " + bicicleta.getNumero() + "\nNúmero da Tranca: " + tranca.getNumero());
+        email.setMensagem("Data/Hora da Inserção: " + bicicleta.getDataHoraInsRet() + "\nNúmero da Bicicleta: " + bicicleta.getNumero() + "\nNúmero da Tranca: " + tranca.getNumero());
         email.setEmail(funcionario.getEmail());
         externoClient.enviarEmail(email);
     }
@@ -158,7 +158,7 @@ public class BicicletaService {
     private void enviarEmailRemocao(Funcionario funcionario, Bicicleta bicicleta, Tranca tranca){
         EnderecoEmail email = new EnderecoEmail();
         email.setAssunto("Remoção da bicicleta da rede");
-        email.setMensagem("Data/Hora da Remoção: " + bicicleta.getDataHoraInsercao() + "\nNúmero da Bicicleta: " + bicicleta.getNumero() + "\nNúmero da Tranca: " + tranca.getNumero());
+        email.setMensagem("Data/Hora da Remoção: " + bicicleta.getDataHoraInsRet() + "\nNúmero da Bicicleta: " + bicicleta.getNumero() + "\nNúmero da Tranca: " + tranca.getNumero());
         email.setEmail(funcionario.getEmail());
         externoClient.enviarEmail(email);
     }
@@ -184,14 +184,14 @@ public class BicicletaService {
             () -> new InvalidActionException("Bicicleta não encontrada"));
         if(Objects.equals(bicicleta.getStatus(), "NOVA")){
             tranca = trancaService.trancar(idTranca, idBicicleta);
-            bicicleta.setDataHoraInsercao(LocalDateTime.now());
+            bicicleta.setDataHoraInsRet(LocalDateTime.now());
         }
         if(Objects.equals(bicicleta.getStatus(), "EM_REPARO")){
-            tranca = trancaService.trancar(idTranca, idBicicleta);
-            bicicleta.setDataHoraInsercao(LocalDateTime.now());
             if(!bicicleta.getFuncionario().equals(idFuncionario)){
                 throw new InvalidActionException("Funcionário não é o mesmo que a colocou em reparo");
             }
+            tranca = trancaService.trancar(idTranca, idBicicleta);
+            bicicleta.setDataHoraInsRet(LocalDateTime.now());
         }
         enviarEmailInclusao(funcionario, bicicleta, tranca);
     }
@@ -213,7 +213,7 @@ public class BicicletaService {
         Bicicleta bicicleta = repository.findById(idBicicleta).orElseThrow(
             () -> new InvalidActionException("Bicicleta não encontrada"));
         trancaService.destrancar(idTranca, idBicicleta);
-        bicicleta.getDataHoraInsercao();
+        bicicleta.setDataHoraInsRet(LocalDateTime.now());
         if(!bicicleta.getStatus().equals("REPARO_SOLICITADO")){
             throw new InvalidActionException("Status da bicicleta inválido");
         }

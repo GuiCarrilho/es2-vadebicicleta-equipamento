@@ -1,5 +1,7 @@
 package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain;
 
+import java.time.LocalDateTime;
+
 import lombok.*;
 
 @Setter
@@ -15,4 +17,6 @@ public class Tranca {
     private String anoDeFabricacao;
     private String modelo;
     private String status;
+    private LocalDateTime dataHoraInsRet;
+    private Integer funcionario;
 }
