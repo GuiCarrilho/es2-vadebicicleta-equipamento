@@ -87,6 +87,10 @@ public class TotemRepository {
         return trancasByTotemId.getOrDefault(idTotem, new ArrayList<>());
     }
 
+    public boolean findTrancasForTotem(Integer idTotem) {
+        return trancasByTotemId.containsKey(idTotem);
+    }
+
     public Integer findTotemByTranca(Tranca trancaBuscada){
         for(Map.Entry<Integer, List<Tranca>> entry: trancasByTotemId.entrySet()){
             Integer idTotem = entry.getKey();

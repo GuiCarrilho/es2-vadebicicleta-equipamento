@@ -62,6 +62,9 @@ public class TotemService {
         }
 
     public void deleteTotem(Integer idTotem){
+        if(repository.findTrancasForTotem(idTotem)){
+            throw new InvalidActionException("Totem possui uma tranca associada a ele");
+        }
         if(!repository.deleteById(idTotem)){
             throw new NotFoundException("Totem não encontrado");
         }

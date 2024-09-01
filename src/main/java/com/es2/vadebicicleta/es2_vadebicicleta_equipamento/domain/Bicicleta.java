@@ -1,5 +1,7 @@
 package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain;
 
+import java.time.LocalDateTime;
+
 import lombok.*;
 
 @Getter
@@ -14,4 +16,6 @@ public class Bicicleta {
     private String ano;
     private Integer numero;
     private String status;
+    private LocalDateTime dataHoraInsercao;
+    private Integer funcionario = 0;
 }

@@ -4,8 +4,6 @@ import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusTrancaEnum;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.TrancaDto;
-import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.request.BicicletaIncluirNaRedeRequest;
-import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.request.BicicletaRetirarDaRedeRequest;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.request.TrancaIncluirNaRedeRequest;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.request.TrancaRequest;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.request.TrancaRetirarDaRedeRequest;

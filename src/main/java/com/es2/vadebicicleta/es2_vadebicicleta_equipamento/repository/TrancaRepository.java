@@ -1,16 +1,11 @@
 package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository;
 
-import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
-import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusTrancaEnum;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
-import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -47,6 +42,15 @@ public class TrancaRepository {
         if(findById(idTranca).isPresent()){
             trancas.remove(idTranca);
             return true;
+        }
+        return false;
+    }
+
+    public boolean findTrancaByBicicleta(Integer idBicicleta){
+        for (Tranca tranca : trancas.values()) {
+            if (tranca.getBicicleta().equals(idBicicleta)) {
+                return true;
+            }
         }
         return false;
     }
