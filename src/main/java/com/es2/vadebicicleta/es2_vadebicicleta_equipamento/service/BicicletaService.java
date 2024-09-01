@@ -181,6 +181,9 @@ public class BicicletaService {
         }
         Bicicleta bicicleta = repository.findById(idBicicleta).orElseThrow(
             () -> new InvalidActionException("Bicicleta não encontrada"));
+        if(!bicicleta.getStatus().equals("NOVA") && !bicicleta.getStatus().equals("EM_REPARO")){
+            throw new InvalidActionException("Status da bicicleta inválido");
+        }
         if(Objects.equals(bicicleta.getStatus(), "NOVA")){
             tranca = trancaService.trancar(idTranca, idBicicleta);
             bicicleta.setDataHoraInsRet(LocalDateTime.now());
@@ -215,6 +218,9 @@ public class BicicletaService {
         bicicleta.setDataHoraInsRet(LocalDateTime.now());
         if(!bicicleta.getStatus().equals("REPARO_SOLICITADO")){
             throw new InvalidActionException("Status da bicicleta inválido");
+        }
+        if(!statusAcaoReparador.equals("APOSENTADA") && !statusAcaoReparador.equals("EM_REPARO")){
+            throw new InvalidActionException("Status da ação do reparador inválido");
         }
         if(Objects.equals(statusAcaoReparador, "APOSENTADA")){
             bicicleta.setStatus(statusAcaoReparador);

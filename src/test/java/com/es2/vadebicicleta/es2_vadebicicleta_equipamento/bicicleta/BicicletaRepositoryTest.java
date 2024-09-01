@@ -31,7 +31,7 @@ class BicicletaRepositoryTest {
     @BeforeEach
     void setUp() {
         // Configura um objeto Bicicleta para ser usado em todos os testes
-        bicicleta = new Bicicleta(1, "MarcaX", "Moontanha", "2022", 123, "Disponível");
+        bicicleta = new Bicicleta(1, "MarcaX", "Moontanha", "2022", 123, "Disponível", null, 0);
     }
 
     @Test
@@ -121,4 +121,3 @@ class BicicletaRepositoryTest {
         assertFalse(result);
     }
 }
-

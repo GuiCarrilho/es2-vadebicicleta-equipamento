@@ -8,12 +8,15 @@ import static org.mockito.Mockito.*;
 
 import java.util.List;
 
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller.BicicletaConverter;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller.TrancaController;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.controller.TrancaConverter;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusTrancaEnum;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.BicicletaDtoReturn;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.TrancaDto;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.dto.TrancaDtoReturn;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.request.TrancaIncluirNaRedeRequest;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.request.TrancaRequest;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.request.TrancaRetirarDaRedeRequest;
@@ -38,19 +41,22 @@ class TrancaControllerTest {
     @Mock
     private TrancaConverter converter;
 
+    @Mock
+    private BicicletaConverter bicicletaConverter;
+
     @InjectMocks
     private TrancaController controller;
 
     private Tranca tranca;
     private TrancaDto trancaDto;
-    private Bicicleta bicicleta;
+    private TrancaDtoReturn trancaDtoReturn;
 
     @BeforeEach
     void setUp() {
         // Configura um objeto Tranca para ser usado em todos os testes
-        tranca = new Tranca(1, 0, 123, "Unirio", "2019", "Corrida", "Trancar");
-        trancaDto = new TrancaDto(123, "Unirio", "2019", "Corrida", "Trancar");
-        bicicleta = new Bicicleta(1, "Caloi", "Mountain Bike", "2021", 123, "Disponível");
+        tranca = new Tranca(1, 0, 123, "Unirio", "2019", "Corrida", "NOVA", null, 0);
+        trancaDto = new TrancaDto(123, "Unirio", "2019", "Corrida", "NOVA");
+        trancaDtoReturn = new TrancaDtoReturn(1, 123, "Unirio", "2019", "Corrida", "NOVA");
 
     }
 
@@ -70,11 +76,12 @@ class TrancaControllerTest {
         // Mock do comportamento do conversor e do serviço para salvar uma tranca
         when(converter.dtoToEntity(any(TrancaDto.class))).thenReturn(tranca);
         when(service.save(any(Tranca.class))).thenReturn(tranca);
+        when(converter.entityToDtoReturn(any(Tranca.class))).thenReturn(trancaDtoReturn);
         
         // Chama o método do controller e verifica o resultado
-        ResponseEntity<Tranca> response = controller.postTranca(trancaDto);
+        ResponseEntity<TrancaDtoReturn> response = controller.postTranca(trancaDto);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(tranca, response.getBody());
+        assertEquals(trancaDtoReturn, response.getBody());
     }
 
     @Test
@@ -97,11 +104,13 @@ class TrancaControllerTest {
     void getTrancaById_Success() {
         // Mock do comportamento do serviço para retornar uma tranca
         when(service.getById(anyInt())).thenReturn(tranca);
+        when(converter.entityToDtoReturn(any(Tranca.class))).thenReturn(trancaDtoReturn);
+
         
         // Chama o método do controller e verifica o resultado
-        ResponseEntity<Tranca> response = controller.getTrancaById(1);
+        ResponseEntity<TrancaDtoReturn> response = controller.getTrancaById(1);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(tranca, response.getBody());
+        assertEquals(trancaDtoReturn, response.getBody());
     }
 
     @Test
@@ -122,12 +131,13 @@ class TrancaControllerTest {
     void putTranca_Success() {
         // Mock do comportamento do conversor e do serviço para atualizar uma tranca
         when(converter.dtoToEntity(any(TrancaDto.class))).thenReturn(tranca);
+        when(converter.entityToDtoReturn(any(Tranca.class))).thenReturn(trancaDtoReturn);
         when(service.updateTranca(anyInt(), any(Tranca.class))).thenReturn(tranca);
 
         // Chama o método do controller e verifica o resultado
-        ResponseEntity<Tranca> response = controller.putTranca(1, trancaDto);
+        ResponseEntity<TrancaDtoReturn> response = controller.putTranca(1, trancaDto);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(tranca, response.getBody());
+        assertEquals(trancaDtoReturn, response.getBody());
     }
 
     @Test
@@ -190,24 +200,26 @@ class TrancaControllerTest {
     void statusTrancar_Success_WithBicicleta() {
         // Mock do comportamento do serviço para trancar com uma bicicleta
         when(service.trancar(anyInt(), anyInt())).thenReturn(tranca);
+        when(converter.entityToDtoReturn(any(Tranca.class))).thenReturn(trancaDtoReturn);
         TrancaRequest request = new TrancaRequest();
         request.setIdBicicleta(1);
         
         // Chama o método do controller e verifica o resultado
-        ResponseEntity<Tranca> response = controller.statusTrancar(1, request);
+        ResponseEntity<TrancaDtoReturn> response = controller.statusTrancar(1, request);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(tranca, response.getBody());
+        assertEquals(trancaDtoReturn, response.getBody());
     }
 
     @Test
     void statusTrancar_Success_WithoutBicicleta() {
         // Mock do comportamento do serviço para trancar sem uma bicicleta
         when(service.trancar(anyInt(), isNull())).thenReturn(tranca);
+        when(converter.entityToDtoReturn(any(Tranca.class))).thenReturn(trancaDtoReturn);
         
         // Chama o método do controller e verifica o resultado
-        ResponseEntity<Tranca> response = controller.statusTrancar(1, null);
+        ResponseEntity<TrancaDtoReturn> response = controller.statusTrancar(1, null);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(tranca, response.getBody());
+        assertEquals(trancaDtoReturn, response.getBody());
     }
 
     void statusTrancar_NotFound() {
@@ -226,24 +238,26 @@ class TrancaControllerTest {
     void statusDestrancar_Success_WithBicicleta() {
         // Mock do comportamento do serviço para destrancar com uma bicicleta
         when(service.destrancar(anyInt(), anyInt())).thenReturn(tranca);
+        when(converter.entityToDtoReturn(any(Tranca.class))).thenReturn(trancaDtoReturn);
         TrancaRequest request = new TrancaRequest();
         request.setIdBicicleta(1);
         
         // Chama o método do controller e verifica o resultado
-        ResponseEntity<Tranca> response = controller.statusDestrancar(1, request);
+        ResponseEntity<TrancaDtoReturn> response = controller.statusDestrancar(1, request);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(tranca, response.getBody());
+        assertEquals(trancaDtoReturn, response.getBody());
     }
 
     @Test
     void statusDestrancar_Success_WithoutBicicleta() {
         // Mock do comportamento do serviço para destrancar sem uma bicicleta
         when(service.destrancar(anyInt(), isNull())).thenReturn(tranca);
+        when(converter.entityToDtoReturn(any(Tranca.class))).thenReturn(trancaDtoReturn);
         
         // Chama o método do controller e verifica o resultado
-        ResponseEntity<Tranca> response = controller.statusDestrancar(1, null);
+        ResponseEntity<TrancaDtoReturn> response = controller.statusDestrancar(1, null);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(tranca, response.getBody());
+        assertEquals(trancaDtoReturn, response.getBody());
     }
 
     @Test
@@ -262,10 +276,11 @@ class TrancaControllerTest {
     @Test
     void postStatus_Success() {
         when(service.postStatus(anyInt(), any(StatusTrancaEnum.class))).thenReturn(tranca);
+        when(converter.entityToDtoReturn(any(Tranca.class))).thenReturn(trancaDtoReturn);
         
-        ResponseEntity<Tranca> response = controller.postStatus(1, StatusTrancaEnum.NOVA);
+        ResponseEntity<TrancaDtoReturn> response = controller.postStatus(1, StatusTrancaEnum.NOVA);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(tranca, response.getBody());
+        assertEquals(trancaDtoReturn, response.getBody());
     }
 
     @Test
@@ -275,7 +290,7 @@ class TrancaControllerTest {
 
         // Verifica se a exceção NotFoundException é lançada
         NotFoundException exception = assertThrows(NotFoundException.class, () -> {
-            controller.postStatus(2, StatusTrancaEnum.DESTRANCAR);
+            controller.postStatus(2, StatusTrancaEnum.LIVRE);
         });
 
         // Verifica a mensagem da exceção
@@ -382,12 +397,20 @@ class TrancaControllerTest {
     }
     @Test
     void getBicicletaByTrancaId_Success() {
-        when(service.getBicicletaByTrancaId(anyInt())).thenReturn(bicicleta);
+    // Configurando o comportamento esperado dos mocks
+    Bicicleta bicicleta = new Bicicleta(1, "MarcaX", "Montanha", "2022", 123, "NOVA", null, 0);
+    BicicletaDtoReturn bicicletaDtoReturn = new BicicletaDtoReturn(1, "MarcaX", "Montanha", "2022", 123, "NOVA");
+    
+    when(service.getBicicletaByTrancaId(anyInt())).thenReturn(bicicleta);
+    when(bicicletaConverter.entityToDtoReturn(bicicleta)).thenReturn(bicicletaDtoReturn);
 
-        ResponseEntity<Bicicleta> response = controller.getBicicletaByTrancaId(1);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(bicicleta, response.getBody());
-    }
+    // Executando o método que está sendo testado
+    ResponseEntity<BicicletaDtoReturn> response = controller.getBicicletaByTrancaId(1);
+    
+    // Verificando o resultado
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals(bicicletaDtoReturn, response.getBody());
+}
 
     @Test
     void getBicicletaByTrancaId_NotFound() {
