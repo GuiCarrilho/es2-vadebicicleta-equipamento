@@ -12,7 +12,7 @@ import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Funcionario;
 
 @Component
 public class AluguelClient {
-    @Value("${vadbicicleta.aluguel.url}")
+    @Value("${vadebicicleta.aluguel.url}")
     private String url;
 
     private final RestTemplate template;

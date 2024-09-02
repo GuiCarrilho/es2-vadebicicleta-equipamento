@@ -20,9 +20,9 @@ import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.InvalidActi
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.integracao.AluguelClient;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.integracao.ExternoClient;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.BicicletaRepository;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.TotemRepository;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.TrancaRepository;
-import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.BicicletaService;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service.TrancaService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,7 +41,7 @@ class TrancaServiceTest {
     private TotemRepository totemRepository;
 
     @Mock
-    private BicicletaService bicicletaService;
+    private BicicletaRepository bicicletaRepository;
 
     @Mock
     private AluguelClient aluguelClient;
@@ -541,7 +541,7 @@ class TrancaServiceTest {
     Bicicleta bicicleta = new Bicicleta(1, "MarcaX", "Montanha", "2022", 123, "DISPONÍVEL", null, 0);
     // Mock do comportamento dos repositórios
     when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
-    when(bicicletaService.getById(anyInt())).thenReturn(bicicleta);
+    when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(bicicleta));
 
     // Chama o método getBicicletaByTrancaId do serviço
     Bicicleta result = assertDoesNotThrow(() -> trancaService.getBicicletaByTrancaId(1));
@@ -572,7 +572,7 @@ class TrancaServiceTest {
     Bicicleta bicicleta = new Bicicleta(1, "MarcaX", "Montanha", "2022", 123, "DISPONÍVEL", null, 0);
     // Mock do comportamento dos repositórios
     when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
-    when(bicicletaService.getById(anyInt())).thenReturn(bicicleta);
+    when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(bicicleta));
     tranca.setStatus(livreMens);
 
     // Chama o método trancar do serviço
@@ -614,7 +614,7 @@ class TrancaServiceTest {
     void trancar_BicicletaNotFound_ThrowsNotFoundException() {
     // Mock do comportamento dos repositórios
     when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
-    when(bicicletaService.getById(anyInt())).thenReturn(null); // Bicicleta não encontrada
+    when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.empty()); // Bicicleta não encontrada
     tranca.setStatus(livreMens);
 
     // Verifica se a exceção NotFoundException é lançada
@@ -626,7 +626,7 @@ class TrancaServiceTest {
     Bicicleta bicicleta = new Bicicleta(1, "MarcaX", "Montanha", "2022", 123, "DISPONÍVEL", null, 0);
     // Mock do comportamento dos repositórios
     when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
-    when(bicicletaService.getById(anyInt())).thenReturn(bicicleta);
+    when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.of(bicicleta));
     tranca.setStatus(ocuparMens);
     tranca.setBicicleta(1);
 
@@ -673,7 +673,7 @@ class TrancaServiceTest {
     tranca.setStatus(ocuparMens);
 
     // Configura o mock do serviço para retornar null ao buscar a bicicleta
-    when(bicicletaService.getById(anyInt())).thenReturn(null); // Bicicleta não encontrada
+    when(bicicletaRepository.findById(anyInt())).thenReturn(Optional.empty()); // Bicicleta não encontrada
 
     // Verifica se a exceção NotFoundException é lançada quando a bicicleta não é encontrada
     assertThrows(NotFoundException.class, () -> trancaService.destrancar(1, 1));

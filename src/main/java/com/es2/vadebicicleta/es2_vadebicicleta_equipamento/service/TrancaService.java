@@ -10,6 +10,7 @@ import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.InvalidActi
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.integracao.AluguelClient;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.integracao.ExternoClient;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.BicicletaRepository;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.TotemRepository;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.TrancaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ import java.util.Objects;
 public class TrancaService {
 
     private final TrancaRepository repository;
-    private final BicicletaService bicicletaService;
+    private final BicicletaRepository bicicletaRepository;
     private final TotemRepository totemRepository;
     private final AluguelClient aluguelClient;
     private final ExternoClient externoClient;
@@ -36,9 +37,9 @@ public class TrancaService {
     private String emReparo = "EM_REPARO";
 
     @Autowired
-    public TrancaService(TrancaRepository repository, BicicletaService bicicletaService, TotemRepository totemRepository, AluguelClient aluguelClient, ExternoClient externoClient) {
+    public TrancaService(TrancaRepository repository, BicicletaRepository bicicletaRepository, TotemRepository totemRepository, AluguelClient aluguelClient, ExternoClient externoClient) {
         this.repository = repository;
-        this.bicicletaService = bicicletaService;
+        this.bicicletaRepository = bicicletaRepository;
         this.totemRepository = totemRepository;
         this.aluguelClient = aluguelClient;
         this.externoClient = externoClient;
@@ -116,7 +117,10 @@ public class TrancaService {
         if(idBicicleta == null){
             throw new NotFoundException(bicicletaErro);
         }
-        return bicicletaService.getById(idBicicleta);
+        Bicicleta bicicleta = bicicletaRepository.findById(idBicicleta).orElseThrow(
+            () -> new InvalidActionException("Id da bicicleta inválido"));
+        
+        return bicicleta;
     }
 
     public Tranca postStatus(Integer idTranca, StatusTrancaEnum acao){
@@ -164,12 +168,10 @@ public class TrancaService {
         tranca.setStatus(ocuparMens);
         repository.save(tranca);
         if (idBicicleta != null) {
-            Bicicleta bicicleta = bicicletaService.getById(idBicicleta);
-            if (bicicleta == null) {
-                throw new NotFoundException(bicicletaErro);
-            }
+            Bicicleta bicicleta = bicicletaRepository.findById(idBicicleta).orElseThrow(
+            () -> new NotFoundException("Id da bicicleta inválido"));
             bicicleta.setStatus("DISPONIVEL");
-            bicicletaService.save(bicicleta);
+            bicicletaRepository.save(bicicleta);
             tranca.setBicicleta(idBicicleta);
             repository.save(tranca);
             return tranca;
@@ -191,12 +193,10 @@ public class TrancaService {
         tranca.setStatus(livreMens);
         repository.save(tranca);
         if (idBicicleta != null) {
-            Bicicleta bicicleta = bicicletaService.getById(idBicicleta);
-            if (bicicleta == null) {
-                throw new NotFoundException(bicicletaErro);
-            }
+            Bicicleta bicicleta = bicicletaRepository.findById(idBicicleta).orElseThrow(
+            () -> new NotFoundException("Id da bicicleta inválido"));
             bicicleta.setStatus("REPARO_SOLICITADO");
-            bicicletaService.save(bicicleta);
+            bicicletaRepository.save(bicicleta);
             tranca.setBicicleta(0);
             repository.save(tranca);
             return tranca;

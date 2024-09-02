@@ -10,7 +10,7 @@ import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.EnderecoEmail;
 
 @Component
 public class ExternoClient {
-    @Value("${vadbicicleta.externo.url}")
+    @Value("${vadebicicleta.externo.url}")
     private String url;
 
     private final RestTemplate template;
