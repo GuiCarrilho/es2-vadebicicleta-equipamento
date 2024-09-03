@@ -37,6 +37,8 @@ public class BicicletaService {
     private String bicicletaMens = "Bicicleta não encontrada";
     private String aposentada = "APOSENTADA";
     private String emReparo = "EM_REPARO";
+    private String emUso = "EM_USO";
+    private String reparoSolicitado = "REPARO_SOLICITADO";
 
     @Autowired
     public BicicletaService(BicicletaRepository repository, TrancaRepository trancaRepository, TrancaService trancaService, TotemRepository totemRepository, ExternoClient externoClient, AluguelClient aluguelClient) {
@@ -128,7 +130,7 @@ public class BicicletaService {
                 bicicleta.setStatus("DISPONIVEL");
                 break;
             case EM_USO:
-                bicicleta.setStatus("EM_USO");
+                bicicleta.setStatus(emUso);
                 break;
             case NOVA:
                 bicicleta.setStatus("NOVA");
@@ -137,7 +139,7 @@ public class BicicletaService {
                 bicicleta.setStatus(aposentada);
                 break;
             case REPARO_SOLICITADO:
-                bicicleta.setStatus("REPARO_SOLICITADO");
+                bicicleta.setStatus(reparoSolicitado);
                 break;
             case EM_REPARO:
                 bicicleta.setStatus(emReparo);
@@ -188,7 +190,7 @@ public class BicicletaService {
         }
         Bicicleta bicicleta = repository.findById(idBicicleta).orElseThrow(
             () -> new InvalidActionException(bicicletaMens));
-        if(bicicleta.getStatus().equals("EM_USO")) {
+        if(bicicleta.getStatus().equals(emUso)) {
           Devolucao devolucao = new Devolucao();
           devolucao.setIdTranca(idTranca);
           devolucao.setIdBicicleta(idBicicleta);  
@@ -197,7 +199,7 @@ public class BicicletaService {
             throw new InvalidActionException("Devolução inválida");
           }
         }
-        if(!bicicleta.getStatus().equals("NOVA") && !bicicleta.getStatus().equals("EM_REPARO")){
+        if(!bicicleta.getStatus().equals("NOVA") && !bicicleta.getStatus().equals(emReparo)){
             throw new InvalidActionException("Status da bicicleta inválido");
         }
         if(Objects.equals(bicicleta.getStatus(), "NOVA")){
@@ -236,7 +238,7 @@ public class BicicletaService {
             () -> new InvalidActionException(bicicletaMens));
         trancaService.destrancar(idTranca, idBicicleta);
         bicicleta.setDataHoraInsRet(LocalDateTime.now());
-        if(!bicicleta.getStatus().equals("REPARO_SOLICITADO")){
+        if(!bicicleta.getStatus().equals(reparoSolicitado)){
             throw new InvalidActionException("Status da bicicleta inválido");
         }
         if(!statusAcaoReparador.equals(aposentada) && !statusAcaoReparador.equals(emReparo)){
@@ -255,11 +257,12 @@ public class BicicletaService {
 
     @PostConstruct
     public void initialData(){
-        repository.save(new Bicicleta(1, "Caloi", "Caloi", "2020", 12345, "DISPONIVEL", null, 0));
-        repository.save(new Bicicleta(2, "Caloi", "Caloi", "2020", 12345, "REPARO_SOLICITADO", null, 0));
-        repository.save(new Bicicleta(3, "Caloi", "Caloi", "2020", 12345, "EM_USO", null, 0));
-        repository.save(new Bicicleta(4, "Caloi", "Caloi", "2020", 12345, "EM_REPARO", null, 0));
-        repository.save(new Bicicleta(5, "Caloi", "Caloi", "2020", 12345, "EM_USO", null, 0));
+        String caloi = "Caloi";
+        repository.save(new Bicicleta(1, caloi, caloi, "2020", 12345, "DISPONIVEL", null, 0));
+        repository.save(new Bicicleta(2, caloi, caloi, "2020", 12345, reparoSolicitado, null, 0));
+        repository.save(new Bicicleta(3, caloi, caloi, "2020", 12345, emUso, null, 0));
+        repository.save(new Bicicleta(4, caloi, caloi, "2020", 12345, emReparo, null, 0));
+        repository.save(new Bicicleta(5, caloi, caloi, "2020", 12345, emUso, null, 0));
     }
 
     public void bicicletaClear(){

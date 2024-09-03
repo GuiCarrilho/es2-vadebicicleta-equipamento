@@ -34,6 +34,7 @@ public class TrancaService {
 
     private String trancaErro = "Tranca não encontrada";
     private String bicicletaErro = "Bicicleta não encontrada";
+    private String idBicicletaInvalido = "Id da bicicleta inválido";
     private String livreMens = "LIVRE";
     private String ocuparMens = "OCUPADA";
     private String aposentada = "APOSENTADA";
@@ -120,10 +121,9 @@ public class TrancaService {
         if(idBicicleta == null){
             throw new NotFoundException(bicicletaErro);
         }
-        Bicicleta bicicleta = bicicletaRepository.findById(idBicicleta).orElseThrow(
-            () -> new InvalidActionException("Id da bicicleta inválido"));
+        return bicicletaRepository.findById(idBicicleta).orElseThrow(
+            () -> new InvalidActionException(idBicicletaInvalido));
         
-        return bicicleta;
     }
 
     public Tranca postStatus(Integer idTranca, StatusTrancaEnum acao){
@@ -172,7 +172,7 @@ public class TrancaService {
         repository.save(tranca);
         if (idBicicleta != null) {
             Bicicleta bicicleta = bicicletaRepository.findById(idBicicleta).orElseThrow(
-            () -> new NotFoundException("Id da bicicleta inválido"));
+            () -> new NotFoundException(idBicicletaInvalido));
             bicicleta.setStatus("DISPONIVEL");
             bicicletaRepository.save(bicicleta);
             tranca.setBicicleta(idBicicleta);
@@ -197,7 +197,7 @@ public class TrancaService {
         repository.save(tranca);
         if (idBicicleta != null) {
             Bicicleta bicicleta = bicicletaRepository.findById(idBicicleta).orElseThrow(
-            () -> new NotFoundException("Id da bicicleta inválido"));
+            () -> new NotFoundException(idBicicletaInvalido));
             bicicleta.setStatus("EM_USO");
             bicicletaRepository.save(bicicleta);
             tranca.setBicicleta(0);
@@ -297,12 +297,14 @@ public class TrancaService {
 
     @PostConstruct
     public void initialData(){
-        Tranca tranca = new Tranca(1, 1, 12345, "Rio de Janeiro", "2020", "Caloi", "OCUPADA", null, 0);
-        Tranca tranca2 = new Tranca(2, 0, 12345, "Rio de Janeiro", "2020", "Caloi", "LIVRE", null, 0);
-        Tranca tranca3 = new Tranca(3, 2, 12345, "Rio de Janeiro", "2020", "Caloi", "OCUPADA", null, 0);
-        Tranca tranca4 = new Tranca(4, 5, 12345, "Rio de Janeiro", "2020", "Caloi", "OCUPADA", null, 0);
-        Tranca tranca5 = new Tranca(5, 0, 12345, "Rio de Janeiro", "2020", "Caloi", "EM_REPARO", null, 0);
-        Tranca tranca6 = new Tranca(6, 0, 12345, "Rio de Janeiro", "2020", "Caloi", "REPARO_SOLICITADA", null, 0);
+        String rioDeJaneiro = "Rio de Janeiro";
+        String caloi = "Caloi";
+        Tranca tranca = new Tranca(1, 1, 12345, rioDeJaneiro, "2020", caloi, ocuparMens, null, 0);
+        Tranca tranca2 = new Tranca(2, 0, 12345, rioDeJaneiro, "2020", caloi, "LIVRE", null, 0);
+        Tranca tranca3 = new Tranca(3, 2, 12345, rioDeJaneiro, "2020", caloi, ocuparMens, null, 0);
+        Tranca tranca4 = new Tranca(4, 5, 12345, rioDeJaneiro, "2020", caloi, ocuparMens, null, 0);
+        Tranca tranca5 = new Tranca(5, 0, 12345, rioDeJaneiro, "2020", caloi, "EM_REPARO", null, 0);
+        Tranca tranca6 = new Tranca(6, 0, 12345, rioDeJaneiro, "2020", caloi, "REPARO_SOLICITADA", null, 0);
         repository.save(tranca);
         repository.save(tranca2);
         repository.save(tranca3);

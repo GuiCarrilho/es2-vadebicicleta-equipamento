@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Aluguel;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.EnderecoEmail;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Funcionario;
@@ -429,7 +428,7 @@ class BicicletaServiceTest {
     // Verifique se o email foi enviado
     verify(externoClient).enviarEmail(any(EnderecoEmail.class));
     }
-    
+
     @Test
     void incluirBicicletaNaRedeTotem_IdBicicletaInvalid_ThrowsInvalidActionException() {
     Tranca tranca = new Tranca(1, 1, 1, "Centro", "2020", "ModeloA", "LIVRE", null, 0);
