@@ -13,6 +13,9 @@ import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.integracao.ExternoCli
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.BicicletaRepository;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.TotemRepository;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.TrancaRepository;
+
+import jakarta.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -195,7 +198,7 @@ public class TrancaService {
         if (idBicicleta != null) {
             Bicicleta bicicleta = bicicletaRepository.findById(idBicicleta).orElseThrow(
             () -> new NotFoundException("Id da bicicleta inválido"));
-            bicicleta.setStatus("REPARO_SOLICITADO");
+            bicicleta.setStatus("EM_USO");
             bicicletaRepository.save(bicicleta);
             tranca.setBicicleta(0);
             repository.save(tranca);
@@ -226,6 +229,9 @@ public class TrancaService {
         Tranca tranca = repository.findById(idTranca).orElseThrow(
                 () -> new InvalidActionException(trancaErro));
         Funcionario funcionario = aluguelClient.obterFuncionario(idFuncionario);
+        if(funcionario == null){
+            throw new NotFoundException("Funcionário não encontrado");
+        }
         Integer idTotemValidado = totemRepository.findTotemByTranca(tranca);
         if(idTotem.equals(idTotemValidado)){
             throw new InvalidActionException("Tranca já associada ao totem");
@@ -245,6 +251,7 @@ public class TrancaService {
             tranca.setDataHoraInsRet(LocalDateTime.now());
         }
         tranca.setStatus(livreMens);
+        repository.save(tranca);
         enviarEmailInclusao(funcionario, tranca);
     }
 
@@ -257,6 +264,9 @@ public class TrancaService {
             throw new InvalidActionException("Tranca está associada a uma bicicleta");
         }
         Funcionario funcionario = aluguelClient.obterFuncionario(idFuncionario);
+        if(funcionario == null){
+            throw new NotFoundException("Funcionário não encontrado");
+        }
         Integer idTotemValidado = totemRepository.findTotemByTranca(tranca);
         if (idTotemValidado == null || !idTotemValidado.equals(idTotem)) {
             throw new InvalidActionException("Tranca já se encontra desassociada do totem");
@@ -281,7 +291,35 @@ public class TrancaService {
             tranca.setDataHoraInsRet(LocalDateTime.now());
             tranca.setFuncionario(idFuncionario);
         }
+        repository.save(tranca);
         enviarEmailRemocao(funcionario, tranca);
+    }
+
+    @PostConstruct
+    public void initialData(){
+        Tranca tranca = new Tranca(1, 1, 12345, "Rio de Janeiro", "2020", "Caloi", "OCUPADA", null, 0);
+        Tranca tranca2 = new Tranca(2, 0, 12345, "Rio de Janeiro", "2020", "Caloi", "LIVRE", null, 0);
+        Tranca tranca3 = new Tranca(3, 2, 12345, "Rio de Janeiro", "2020", "Caloi", "OCUPADA", null, 0);
+        Tranca tranca4 = new Tranca(4, 5, 12345, "Rio de Janeiro", "2020", "Caloi", "OCUPADA", null, 0);
+        Tranca tranca5 = new Tranca(5, 0, 12345, "Rio de Janeiro", "2020", "Caloi", "EM_REPARO", null, 0);
+        Tranca tranca6 = new Tranca(6, 0, 12345, "Rio de Janeiro", "2020", "Caloi", "REPARO_SOLICITADA", null, 0);
+        repository.save(tranca);
+        repository.save(tranca2);
+        repository.save(tranca3);
+        repository.save(tranca4);
+        repository.save(tranca5);
+        repository.save(tranca6);
+
+        totemRepository.addTrancasByTotemId(1, tranca);
+        totemRepository.addTrancasByTotemId(1, tranca2);
+        totemRepository.addTrancasByTotemId(1, tranca3);
+        totemRepository.addTrancasByTotemId(1, tranca4);
+        totemRepository.addTrancasByTotemId(1, tranca5);
+        totemRepository.addTrancasByTotemId(1, tranca6);
+    }
+
+    public void trancaClear(){
+        repository.trancaClear();
     }
 }
 

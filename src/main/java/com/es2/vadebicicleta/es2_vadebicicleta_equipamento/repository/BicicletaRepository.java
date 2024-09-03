@@ -49,4 +49,8 @@ public class BicicletaRepository {
         }
         return false;
     }
+
+    public void bicicletaClear(){
+        bicicletas.clear();
+    }
 }

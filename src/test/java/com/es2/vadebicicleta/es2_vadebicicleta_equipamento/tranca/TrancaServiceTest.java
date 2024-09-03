@@ -451,10 +451,13 @@ class TrancaServiceTest {
     
     @Test
     void incluirTrancaNaRedeTotem_TrancaAlreadyAssociated_ThrowsInvalidActionException() {
+    Funcionario funcionario = new Funcionario(1, "funcionario@example.com"); // Funcionário 1
     // Mock do comportamento dos repositórios
     when(totemRepository.findById(anyInt())).thenReturn(Optional.of(totem));
     when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
     when(totemRepository.findTotemByTranca(any(Tranca.class))).thenReturn(1);  // Tranca já associada
+    when(aluguelClient.obterFuncionario(anyInt())).thenReturn(funcionario);
+
 
     // Verifica se a exceção InvalidActionException é lançada
     assertThrows(InvalidActionException.class, () -> trancaService.incluirTrancaNaRedeTotem(1, 1, 1));
@@ -513,10 +516,13 @@ class TrancaServiceTest {
     
     @Test
     void retirarTrancaDaRedeTotem_TrancaNotAssociated_ThrowsInvalidActionException() {
+    Funcionario funcionario = new Funcionario(1, "funcionario@example.com");
     // Mock do comportamento dos repositórios
     when(totemRepository.findById(anyInt())).thenReturn(Optional.of(totem));
     when(trancaRepository.findById(anyInt())).thenReturn(Optional.of(tranca));
     when(totemRepository.findTotemByTranca(any(Tranca.class))).thenReturn(null);  // Tranca não associada
+    when(aluguelClient.obterFuncionario(anyInt())).thenReturn(funcionario);
+
 
     // Verifica se a exceção InvalidActionException é lançada
     assertThrows(InvalidActionException.class, () -> trancaService.retirarTrancaDaRedeTotem(1, 1, 1, "APOSENTADA"));

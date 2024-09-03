@@ -26,4 +26,10 @@ public class IdGenerator {
         idTranca++;
         return idTranca;
     }
+
+    public void idGeneratorClear(){
+        idBicicleta = 0;
+        idTotem = 0;
+        idTranca = 0;
+    }
 }

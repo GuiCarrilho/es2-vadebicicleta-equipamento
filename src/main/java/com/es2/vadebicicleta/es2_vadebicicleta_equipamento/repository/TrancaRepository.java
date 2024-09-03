@@ -54,4 +54,8 @@ public class TrancaRepository {
         }
         return false;
     }
+
+    public void trancaClear(){
+        trancas.clear();
+    }
 }

@@ -6,6 +6,9 @@ import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Tranca;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.InvalidActionException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.exception.NotFoundException;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.TotemRepository;
+
+import jakarta.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -84,5 +87,14 @@ public class TotemService {
             throw new NotFoundException(totemMens);
         }
         return repository.findBicicletasByTotemId(idTotem);
+    }
+
+    @PostConstruct
+    public void initialData(){
+        repository.save(new Totem(1, "Urca", "em frente a Unirio"));
+    }
+
+    public void totemClear(){
+        repository.totemClear();
     }
 }

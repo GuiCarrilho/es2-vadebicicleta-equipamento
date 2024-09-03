@@ -123,4 +123,9 @@ public class TotemRepository {
         
         return bicicletas;
     }
+
+    public void totemClear(){
+        totens.clear();
+        trancasByTotemId.clear();
+    }
 }

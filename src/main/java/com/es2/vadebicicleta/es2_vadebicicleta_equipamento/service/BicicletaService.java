@@ -1,6 +1,8 @@
 package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.service;
 
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Aluguel;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Bicicleta;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Devolucao;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.EnderecoEmail;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Funcionario;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.StatusBicicletaEnum;
@@ -12,6 +14,9 @@ import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.integracao.ExternoCli
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.BicicletaRepository;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.TotemRepository;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.repository.TrancaRepository;
+
+import jakarta.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -174,12 +179,24 @@ public class BicicletaService {
             throw new InvalidActionException("Status de tranca inválido");
         }
         Funcionario funcionario = aluguelClient.obterFuncionario(idFuncionario);
+        if(funcionario == null){
+            throw new NotFoundException("Funcionário não encontrado");
+        }
         Integer idTotem = totemRepository.findTotemByTranca(tranca);
         if(idTotem == null){
             throw new InvalidActionException("Tranca não está relacionada com nenhum totem");
         }
         Bicicleta bicicleta = repository.findById(idBicicleta).orElseThrow(
             () -> new InvalidActionException(bicicletaMens));
+        if(bicicleta.getStatus().equals("EM_USO")) {
+          Devolucao devolucao = new Devolucao();
+          devolucao.setIdTranca(idTranca);
+          devolucao.setIdBicicleta(idBicicleta);  
+          Aluguel aluguel = aluguelClient.devolucaoBicicleta(devolucao);
+          if(aluguel == null){
+            throw new InvalidActionException("Devolução inválida");
+          }
+        }
         if(!bicicleta.getStatus().equals("NOVA") && !bicicleta.getStatus().equals("EM_REPARO")){
             throw new InvalidActionException("Status da bicicleta inválido");
         }
@@ -194,6 +211,7 @@ public class BicicletaService {
             tranca = trancaService.trancar(idTranca, idBicicleta);
             bicicleta.setDataHoraInsRet(LocalDateTime.now());
         }
+        repository.save(bicicleta);
         enviarEmailInclusao(funcionario, bicicleta, tranca);
     }
 
@@ -204,6 +222,9 @@ public class BicicletaService {
             throw new InvalidActionException("A bicicleta não está associada a uma tranca");
         }
         Funcionario funcionario = aluguelClient.obterFuncionario(idFuncionario);
+        if(funcionario == null){
+            throw new NotFoundException("Funcionário não encontrado");
+        }
         if(!tranca.getStatus().equals("OCUPADA")){
             throw new InvalidActionException("Status da tranca inválido");
         }
@@ -228,7 +249,21 @@ public class BicicletaService {
             bicicleta.setStatus(statusAcaoReparador);
             bicicleta.setFuncionario(idFuncionario);
         }
+        repository.save(bicicleta);
         enviarEmailRemocao(funcionario, bicicleta, tranca);
+    }
+
+    @PostConstruct
+    public void initialData(){
+        repository.save(new Bicicleta(1, "Caloi", "Caloi", "2020", 12345, "DISPONIVEL", null, 0));
+        repository.save(new Bicicleta(2, "Caloi", "Caloi", "2020", 12345, "REPARO_SOLICITADO", null, 0));
+        repository.save(new Bicicleta(3, "Caloi", "Caloi", "2020", 12345, "EM_USO", null, 0));
+        repository.save(new Bicicleta(4, "Caloi", "Caloi", "2020", 12345, "EM_REPARO", null, 0));
+        repository.save(new Bicicleta(5, "Caloi", "Caloi", "2020", 12345, "EM_USO", null, 0));
+    }
+
+    public void bicicletaClear(){
+        repository.bicicletaClear();
     }
 }
 

@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Aluguel;
+import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Devolucao;
 import com.es2.vadebicicleta.es2_vadebicicleta_equipamento.domain.Funcionario;
 
 
@@ -28,7 +30,16 @@ public class AluguelClient {
             return null;
         }
         return response.getBody();
+    }
 
+
+
+    public Aluguel devolucaoBicicleta(Devolucao devolucao){
+        ResponseEntity<Aluguel> response = template.postForEntity(url+"/devolucao", devolucao ,Aluguel.class);
+        if(!response.getStatusCode().equals(HttpStatus.OK)){
+            return null;
+        }
+        return response.getBody();
     }
 
 }
