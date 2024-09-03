@@ -89,7 +89,7 @@ public class TrancaController {
         return ResponseEntity.ok().body(dtoReturn);
     }
 
-    @PostMapping("/tranca/incluirNaRede")
+    @PostMapping("/tranca/integrarNaRede")
     public ResponseEntity<Void> incluirNaRede(@RequestBody TrancaIncluirNaRedeRequest request) {
     Integer idTotem = request.getIdTotem();
     Integer idTranca = request.getIdTranca();

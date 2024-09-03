@@ -12,6 +12,7 @@ import lombok.Setter;
 public class TrancaDtoReturn {
 
     private Integer id;
+    private Integer bicicleta;
     private Integer numero;
     private String localizacao;
     private String anoDeFabricacao;

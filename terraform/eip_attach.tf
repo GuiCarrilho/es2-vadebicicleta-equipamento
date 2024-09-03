@@ -9,7 +9,7 @@ data "terraform_remote_state" "infra" {
 
 resource "aws_eip_association" "my_eip_association" {
   instance_id = aws_instance.example_app.id
-  allocation_id = data.terraform_remote_state.infra.outputs.eip_vadebicicleta-equipamento_id ### MUDA EXAMPLE PARA O NOME DO SEU MICROSERVICO
+  allocation_id = data.terraform_remote_state.infra.outputs.eip_equipamento_id
 }
 
 output "app_ip2" {

@@ -24,6 +24,7 @@ public class TrancaConverter {
         TrancaDtoReturn dtoReturn = new TrancaDtoReturn();
 
         dtoReturn.setId(tranca.getId());
+        dtoReturn.setBicicleta(tranca.getBicicleta());
         dtoReturn.setLocalizacao(tranca.getLocalizacao());
         dtoReturn.setAnoDeFabricacao(tranca.getAnoDeFabricacao());
         dtoReturn.setNumero(tranca.getNumero());

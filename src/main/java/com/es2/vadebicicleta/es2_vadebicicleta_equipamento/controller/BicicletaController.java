@@ -68,7 +68,7 @@ public class BicicletaController {
         return ResponseEntity.ok().body(dtoReturn);
     }
 
-    @PostMapping("bicicleta/incluirNaRede")
+    @PostMapping("bicicleta/integrarNaRede")
     public ResponseEntity<Void> incluirNaRede(@RequestBody BicicletaIncluirNaRedeRequest request){
         Integer idTranca = request.getIdTranca();
         Integer idBicicleta = request.getIdBicicleta();
