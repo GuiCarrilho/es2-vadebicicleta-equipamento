@@ -3,6 +3,7 @@ package com.es2.vadebicicleta.es2_vadebicicleta_equipamento.bicicleta;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDateTime;
@@ -606,4 +607,3 @@ void retirarBicicletaDaRedeTotem_StatusAcaoReparadorInvalido_ThrowsInvalidAction
     assertThrows(InvalidActionException.class, () -> bicicletaService.retirarBicicletaDaRedeTotem(1, 1, 1, "INEXISTENTE"));
 }
 }
-
