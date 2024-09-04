@@ -47,6 +47,7 @@ class TrancaConverterTest {
         // Configura a entidade com dados válidos
         Tranca tranca = new Tranca();
         tranca.setId(1);
+        tranca.setBicicleta(1);
         tranca.setLocalizacao("Unirio");
         tranca.setAnoDeFabricacao("2019");
         tranca.setNumero(123);
@@ -59,6 +60,7 @@ class TrancaConverterTest {
         // Verifica se a conversão foi bem-sucedida
         assertNotNull(dtoReturn);
         assertEquals(1, dtoReturn.getId());
+        assertEquals(1, dtoReturn.getBicicleta());
         assertEquals("Unirio", dtoReturn.getLocalizacao());
         assertEquals("2019", dtoReturn.getAnoDeFabricacao());
         assertEquals(123, dtoReturn.getNumero());

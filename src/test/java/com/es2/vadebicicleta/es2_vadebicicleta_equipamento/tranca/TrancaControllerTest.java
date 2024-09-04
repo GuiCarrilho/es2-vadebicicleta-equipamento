@@ -56,7 +56,7 @@ class TrancaControllerTest {
         // Configura um objeto Tranca para ser usado em todos os testes
         tranca = new Tranca(1, 0, 123, "Unirio", "2019", "Corrida", "NOVA", null, 0);
         trancaDto = new TrancaDto(123, "Unirio", "2019", "Corrida", "NOVA");
-        trancaDtoReturn = new TrancaDtoReturn(1, 123, "Unirio", "2019", "Corrida", "NOVA");
+        trancaDtoReturn = new TrancaDtoReturn(1, 1, 123, "Unirio", "2019", "Corrida", "NOVA");
 
     }
 
